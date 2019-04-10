@@ -9,8 +9,8 @@ export default {
 };
 ```
 
-app.jsm
-```
+app.js
+```jsx
 import state from './state';
 import { StateMachineProvider, store as stateMachineStore, createStore } from './stateMachine';
 
@@ -41,7 +41,7 @@ function updateName(state, payload) {
 ```
 
 yourComponent.js
-```
+```jsx
 function YourComponent() {
     const {
         state: { name },
