@@ -8,6 +8,7 @@
 
 - Follow flux application architecture
 - Tiny and simple
+- Build with React Hook
 
 ## Install
 
