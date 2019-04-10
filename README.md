@@ -40,9 +40,10 @@ const App = ({children}) => {
 
 yourComponent.js
 ```jsx
+import { updateName } from './action.js'
 import { useStateMachine } from 'little-state-machine'
 
-function YourComponent() {
+export default function YourComponent() {
   const {
     state: { name },
   } = useStateMachine(updateName);
@@ -62,7 +63,7 @@ export default {
 
 action.js
 ```js
-function updateName(state, payload) {
+export function updateName(state, payload) {
   return {
     ...state,
     name: payload,
