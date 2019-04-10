@@ -23,7 +23,7 @@ app.js
 ```jsx
 import state from './state'
 import YourComponent from './yourComponent'
-import { StateMachineProvider, store as stateMachineStore, createStore } from './stateMachine'
+import { StateMachineProvider, createStore } from './stateMachine'
 
 createStore({
   state,
