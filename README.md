@@ -6,7 +6,7 @@ state.js
 ```
 export default {
   name: 'test',
-};
+}
 ```
 
 action.js
