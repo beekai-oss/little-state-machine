@@ -5,7 +5,7 @@
 state.js
 ```
 export default {
-    name: 'test',
+  name: 'test',
 };
 ```
 
@@ -19,36 +19,36 @@ createStore({
 });
 
 const App = ({children}) => {
-    return <StateMachineProvider
-      value={{
-        store: globalState,
-        updateStore,
-      }}
-    >
-        {children}
-    </StateMachineProvider>
+  return <StateMachineProvider
+    value={{
+      store: globalState,
+      updateStore,
+    }}
+  >
+    {children}
+  </StateMachineProvider>
 }
 ```
 
 action.js
 ```
 function updateName(state, payload) {
-    return {
-        ...state,
-        name: payload,
-    }
+  return {
+    ...state,
+    name: payload,
+  }
 }
 ```
 
 yourComponent.js
 ```jsx
 function YourComponent() {
-    const {
-        state: { name },
-    } = useStateMachine(updateName);
+  const {
+    state: { name },
+  } = useStateMachine(updateName);
 
-    return <div onClick={() => updateName('bill')}>
-       {name}
-    </div>
+  return <div onClick={() => updateName('bill')}>
+    {name}
+  </div>
 }
 ```
