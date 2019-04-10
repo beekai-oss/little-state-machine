@@ -9,10 +9,21 @@ export default {
 };
 ```
 
+action.js
+```
+function updateName(state, payload) {
+  return {
+    ...state,
+    name: payload,
+  }
+}
+```
+
 app.js
 ```jsx
-import state from './state';
-import { StateMachineProvider, store as stateMachineStore, createStore } from './stateMachine';
+import state from './state'
+import YourComponent from './yourComponent'
+import { StateMachineProvider, store as stateMachineStore, createStore } from './stateMachine'
 
 createStore({
   state,
@@ -25,18 +36,8 @@ const App = ({children}) => {
       updateStore,
     }}
   >
-    {children}
+    <YourComponent />
   </StateMachineProvider>
-}
-```
-
-action.js
-```
-function updateName(state, payload) {
-  return {
-    ...state,
-    name: payload,
-  }
 }
 ```
 
