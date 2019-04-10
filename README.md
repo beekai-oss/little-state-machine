@@ -9,30 +9,17 @@
 - Follow flux application architecture
 - Tiny and simple
 
+## Install
+
+    $ npm install little-state-machine
+
 ## usage
-
-state.js
-```
-export default {
-  name: 'test',
-}
-```
-
-action.js
-```
-function updateName(state, payload) {
-  return {
-    ...state,
-    name: payload,
-  }
-}
-```
 
 app.js
 ```jsx
 import state from './state'
 import YourComponent from './yourComponent'
-import { StateMachineProvider, createStore } from './stateMachine'
+import { StateMachineProvider, createStore } from 'little-state-machine'
 
 createStore({
   state,
@@ -52,6 +39,8 @@ const App = ({children}) => {
 
 yourComponent.js
 ```jsx
+import { useStateMachine } from 'little-state-machine'
+
 function YourComponent() {
   const {
     state: { name },
@@ -60,5 +49,22 @@ function YourComponent() {
   return <div onClick={() => updateName('bill')}>
     {name}
   </div>
+}
+```
+
+state.js
+```
+export default {
+  name: 'test',
+}
+```
+
+action.js
+```
+function updateName(state, payload) {
+  return {
+    ...state,
+    name: payload,
+  }
 }
 ```
