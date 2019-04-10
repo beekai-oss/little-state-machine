@@ -9,9 +9,6 @@
 - Follow flux application architecture
 - Tiny and simple
 
-
-## why?
-
 ## usage
 
 state.js
