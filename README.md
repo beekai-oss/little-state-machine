@@ -14,7 +14,7 @@
 
     $ npm install little-state-machine
 
-## usage
+## Usage
 
 app.js
 ```jsx
@@ -54,14 +54,14 @@ function YourComponent() {
 ```
 
 state.js
-```
+```js
 export default {
   name: 'test',
 }
 ```
 
 action.js
-```
+```js
 function updateName(state, payload) {
   return {
     ...state,
