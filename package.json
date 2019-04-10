@@ -1,0 +1,8 @@
+{
+  "name": "little-state-machine",
+  "version": "1.0.0-beta.1",
+  "main": "index.js",
+  "repository": "git@github.com:bluebill1049/react-state-machine.git",
+  "author": "<bluebill1049@hotmail.com>",
+  "license": "MIT"
+}
