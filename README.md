@@ -28,7 +28,8 @@ Options: {
 ##### 🔗 `useStateMachine(Action | Actions, Options) =>` 
 `{ action: (any) => void, actions: { [key: string] : (any) => void}, state: Object }`
 
-
+##### 🔗 `window.STATE_MACHINE = true`
+This will turn on the dev tool at console
 
 ## Example
 
