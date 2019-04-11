@@ -11,7 +11,7 @@ export function createStore(data: any) {
   }
 }
 
-export const StateMachineContext = React.createContext({
+const StateMachineContext = React.createContext({
   store,
   updateStore: () => {},
 });
