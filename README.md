@@ -8,6 +8,7 @@
 
 - Follow flux application architecture
 - Tiny and simple
+- Persist your state by default
 - Build with React Hook
 
 ## Install
