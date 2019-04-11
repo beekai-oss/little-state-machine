@@ -26,7 +26,7 @@ Options: {
 
 ```
 ##### 🔗 `useStateMachine(Action | Actions, Options) =>` 
-`{ action: (any) => void, actions: { [key: string] : (any) => void} }`
+`{ action: (any) => void, actions: { [key: string] : (any) => void}, state: Object }`
 
 
 
