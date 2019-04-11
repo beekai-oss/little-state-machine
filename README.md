@@ -17,19 +17,23 @@
     
 ## API
 ```typescript
+// individual action
 Action: (store: Object, payload: any) => void;
+// multiple actions
 Actions: { [key: string] : Action }
+// options to name action in debug, and weather trigger global state update to re-render entire app 
 Options: {
   debugName: string, 
-  isGlobal: boolean, 
+  shouldReRenderApp: boolean, 
 }
 
 ```
 ##### 🔗 `useStateMachine(Action | Actions, Options) =>` 
 `{ action: (any) => void, actions: { [key: string] : (any) => void}, state: Object }`
+This hook function will return actions and state of the app. 
 
 ##### 🔗 `window.STATE_MACHINE = true`
-This will turn on the dev tool at console
+This will turn on the dev tool at console.
 
 <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
  

@@ -31,7 +31,7 @@ const actionTemplate = ({ options, callback, key, updateStore, globalState }: an
   store = callback && callback(store, payload);
   sessionStorage.setItem('sessionStateMachine', JSON.stringify(store));
 
-  if (options.isGlobal !== false) {
+  if (options.shouldReRenderApp !== false) {
     updateStore(store);
   }
 
@@ -44,10 +44,10 @@ export function useStateMachine(
   callbacks?: { [key: string]: (Object, any) => Object } | ((Object, any) => Object),
   options: {
     debugName: string | { [key: string]: string },
-    isGlobal?: boolean,
+    shouldReRenderApp?: boolean,
   } = {
     debugName: '',
-    isGlobal: true,
+    shouldReRenderApp: true,
   },
 ): {
   action: Function,
