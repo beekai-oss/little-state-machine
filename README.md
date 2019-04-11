@@ -14,8 +14,22 @@
 ## Install
 
     $ npm install little-state-machine
+    
+## API
+```typescript
+Action: (store: Object, payload: any) => void;
+Actions: { [key: string] : Action }
+Options: {
+  debugName: string, 
+  isGlobal: boolean, 
+}
 
-## Usage
+```
+##### 🔗 `useStateMachine(Action | Actions, Options) => { action: (any) => void, actions: { [key: string] : (any) => void} }`
+
+
+
+## Example
 
 app.js
 ```jsx
