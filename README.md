@@ -7,7 +7,7 @@
 [![npm](https://img.shields.io/npm/l/little-state-machine.svg?style=flat-square)](https://www.npmjs.com/package/react-lazyload-image)
 
 - Follow flux application architecture
-- Tiny and simple
+- Tiny and simple (663B)
 - Persist your state by default
 - Build with React Hook
 
