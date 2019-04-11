@@ -45,10 +45,11 @@ import { useStateMachine } from 'little-state-machine'
 
 export default function YourComponent() {
   const {
+    action,
     state: { name },
   } = useStateMachine(updateName);
 
-  return <div onClick={() => updateName('bill')}>
+  return <div onClick={() => action('bill')}>
     {name}
   </div>
 }
