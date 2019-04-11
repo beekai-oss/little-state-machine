@@ -1,4 +1,6 @@
-# little-state-machine
+<div align="center"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png" alt="React forme Logo - React hook form valiation" width="350px" />
+    <h2>little-state-machine</h2>
+</div>
 
 > Flux state management should be easy
 
