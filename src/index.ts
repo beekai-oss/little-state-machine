@@ -1,6 +1,5 @@
 // @flow
-import React, { useContext } from 'react';
-import objectDifference from './utilities/objectDifference';
+import * as React from 'react';
 
 const sessionStorageData = sessionStorage.getItem('sessionStateMachine');
 
@@ -12,10 +11,7 @@ export function createStore(data: any) {
   }
 }
 
-export const StateMachineContext = React.createContext<{
-  store: Object,
-  updateStore: any => void,
-}>({
+export const StateMachineContext = React.createContext({
   store,
   updateStore: () => {},
 });
@@ -23,6 +19,7 @@ export const StateMachineContext = React.createContext<{
 export const StateMachineProvider = StateMachineContext.Provider;
 
 const actionTemplate = ({ options, callback, key, updateStore, globalState }: any) => (payload: any) => {
+  // @ts-ignore
   sessionStorage.setItem('stateMachineDebug', window.STATE_MACHINE);
   const debug = sessionStorage.getItem('stateMachineDebug') === 'true';
 
@@ -39,27 +36,25 @@ const actionTemplate = ({ options, callback, key, updateStore, globalState }: an
   }
 
   if (debug) {
-    console.log('├─after:', store);
-    console.log('└─diff:', objectDifference(globalState, store));
+    console.log('└─after:', store);
   }
 };
 
 export function useStateMachine(
   callbacks?: { [key: string]: (Object, any) => Object } | ((Object, any) => Object),
-  options?: {
+  options: {
     debugName: string | { [key: string]: string },
     isGlobal?: boolean,
   } = {
     debugName: '',
     isGlobal: true,
-    name: '',
   },
 ): {
   action: Function,
   actions: { [key: string]: Function },
   state: Object,
 } {
-  const { store: globalState, updateStore } = useContext(StateMachineContext);
+  const { store: globalState, updateStore } = React.useContext(StateMachineContext);
 
   if (callbacks && Object.keys(callbacks).length) {
     return {
@@ -69,14 +64,14 @@ export function useStateMachine(
             return previous;
           }, {})
         : {},
-      action: '',
+      action: () => {},
       state: globalState,
     };
   }
 
   return {
     actions: {},
-    action: callbacks ? actionTemplate({ options, callback: callbacks, updateStore, globalState }) : '',
+    action: callbacks ? actionTemplate({ options, callback: callbacks, updateStore, globalState }) : () => {},
     state: globalState,
   };
 }
