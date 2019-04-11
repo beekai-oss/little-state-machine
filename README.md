@@ -20,13 +20,16 @@ app.js
 ```jsx
 import state from './state'
 import YourComponent from './yourComponent'
-import { StateMachineProvider, createStore } from 'little-state-machine'
+import { StateMachineProvider, store, createStore } from 'little-state-machine'
 
+// create your store
 createStore({
   state,
 });
 
 const App = ({children}) => {
+  const [globalState, updateStore] = useState(stateMachineStore);
+  
   return <StateMachineProvider
     value={{
       store: globalState,
