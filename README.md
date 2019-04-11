@@ -18,6 +18,7 @@
 
 app.js
 ```jsx
+import React, { useState } from 'react'
 import state from './state'
 import YourComponent from './yourComponent'
 import { StateMachineProvider, store, createStore } from 'little-state-machine'
@@ -43,6 +44,7 @@ const App = ({children}) => {
 
 yourComponent.js
 ```jsx
+import React from 'react'
 import { updateName } from './action.js'
 import { useStateMachine } from 'little-state-machine'
 
