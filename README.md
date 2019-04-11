@@ -31,7 +31,7 @@ Options: {
 ##### 🔗 `useStateMachine(Action | Actions, Options) =>` 
 `{ action: (any) => void, actions: { [key: string] : (any) => void}, state: Object }`
 
-This hook function will return actions and state of the app. 
+This hook function will return action/actions and state of the app. 
 
 ##### 🔗 `window.STATE_MACHINE = true`
 This will turn on the dev tool at console.
