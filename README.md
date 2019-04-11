@@ -30,6 +30,7 @@ Options: {
 
 ##### 🔗 `window.STATE_MACHINE = true`
 This will turn on the dev tool at console
+
 <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
  
 ## Example
