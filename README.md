@@ -17,6 +17,8 @@
 
     $ npm install little-state-machine
     
+## Demo[https://codesandbox.io/s/lrz5wloklm]
+    
 ## API
 ```typescript
 // individual action
