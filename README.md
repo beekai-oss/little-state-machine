@@ -17,7 +17,7 @@
 
     $ npm install little-state-machine
     
-## [Docs](https://codesandbox.io/s/lrz5wloklm)
+## [Demo](https://codesandbox.io/s/lrz5wloklm)
     
 ## API
 ```typescript
