@@ -9,7 +9,7 @@
 [![npm](https://badgen.net/bundlephobia/minzip/little-state-machine)](https://badgen.net/bundlephobia/minzip/little-state-machine)
 
 - Follow flux application architecture
-- Tiny and simple (663B)
+- Tiny, 0 dependency and simple
 - Persist your state by default
 - Build with React Hook
 
