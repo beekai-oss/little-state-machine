@@ -1,4 +1,4 @@
-<div align="center"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png" alt="React forme Logo - React hook form valiation" width="200px" />
+<div align="center"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png" alt="React forme Logo - React hook form valiation" width="180px" />
     <h1>Little State Machine</h2>
 </div>
 
