@@ -38,8 +38,12 @@ Options: {
 
 This hook function will return action/actions and state of the app. 
 
-##### 🔗 `window.STATE_MACHINE = true`
+##### 🔗 `window.STATE_MACHINE_DEBUG`
 This will turn on the dev tool at console.
+
+`window.STATE_MACHINE_DEBUG(true)` to turn debug on in console
+
+`window.STATE_MACHINE_DEBUG(false)` to turn off debug on in console
 
 <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
 
