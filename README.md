@@ -71,7 +71,7 @@ createStore({
 });
 
 const App = ({children}) => {
-  const [globalState, updateStore] = useState(stateMachineStore);
+  const [globalState, updateStore] = useState(store);
   
   return <StateMachineProvider
     value={{
