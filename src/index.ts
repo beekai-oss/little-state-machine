@@ -56,7 +56,7 @@ export function useStateMachine(
   const { store: globalState, updateStore } = React.useContext(StateMachineContext);
 
   // @ts-ignore
-  if (!typeof window === 'undefined') {
+  if (typeof window !== 'undefined') {
     // @ts-ignore
     window.STATE_MACHINE_DEBUG = (value: string) => {
       sessionStorage.setItem('stateMachineDebug', value);
