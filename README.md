@@ -52,22 +52,19 @@ This is a Component to wrapper around your entire app in order to create context
 
 ##### 🔗 `createStore`
 Function to initial the global store, call at app root where `StateMachineProvider` is.
-
-##### 🔗 `store`
-The global store. 
  
 ## Example
 
 app.js
 ```jsx
 import React, { useState } from 'react'
-import state from './state'
+import yourDetail from './yourDetail'
 import YourComponent from './yourComponent'
-import { StateMachineProvider, store, createStore } from 'little-state-machine'
+import { StateMachineProvider, createStore } from 'little-state-machine'
 
 // create your store
 createStore({
-  state,
+  yourDetail,
 });
 
 const App = ({children}) => {
@@ -97,7 +94,7 @@ export default function YourComponent() {
 }
 ```
 
-state.js
+yourDetail.js
 ```js
 export default {
   name: 'test',
