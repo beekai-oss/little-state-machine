@@ -16,7 +16,21 @@ export const StateMachineContext = React.createContext({
   updateStore: () => {},
 });
 
-export const StateMachineProvider = StateMachineContext.Provider;
+export function StateMachineProvider(props) {
+  const [globalState, updateStore] = React.useState(props.stateMachineStore);
+  const value = React.useMemo(
+    () => {
+      return {
+        globalState,
+        updateStore,
+      };
+    },
+    [globalState],
+  );
+
+  // @ts-ignore
+  return <StateMachineProvider.Provider value={value} {...props} />;
+}
 
 const actionTemplate = ({ options, callback, key, updateStore, globalState }: any) => (payload: any) => {
   // @ts-ignore
