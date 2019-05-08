@@ -71,9 +71,11 @@ createStore({
 });
 
 const App = ({children}) => {
-  return <StateMachineProvider>
-    <YourComponent />
-  </StateMachineProvider>
+  return (
+    <StateMachineProvider>
+      <YourComponent />
+    </StateMachineProvider>
+  )
 }
 ```
 

@@ -1,7 +1,13 @@
 // @flow
 import * as React from 'react';
 
-const sessionStorageData = sessionStorage.getItem('sessionStateMachine');
+let storeName = 'sessionStateMachine';
+
+export function setStoreName(name) {
+  storeName = name;
+}
+
+const sessionStorageData = sessionStorage.getItem(storeName);
 
 export let store = sessionStorageData ? JSON.parse(sessionStorageData) : {};
 
@@ -72,7 +78,7 @@ export function useStateMachine(
   if (typeof window !== 'undefined') {
     // @ts-ignore
     window.STATE_MACHINE_DEBUG = (value: string) => {
-      sessionStorage.setItem('stateMachineDebug', value);
+      sessionStorage.setItem(storeName, value);
     };
   }
 
