@@ -39,7 +39,7 @@ Options: {
 This hook function will return action/actions and state of the app. 
 
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
-This will turn on the dev tool at console.
+This will toggle the console output in dev tool.
 
 `window.LITTLE_STATE_MACHINE_DEBUG(true)` to turn debug on in console
 
