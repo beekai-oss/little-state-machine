@@ -48,7 +48,7 @@ This will toggle the console output in dev tool.
 <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
 
 ##### 🔗 `StateMachineProvider`
-This is a Component to wrapper around your entire app in order to create context.
+This is a Provider Component to wrapper around your entire app in order to create context.
 
 ##### 🔗 `createStore`
 Function to initial the global store, call at app root where `StateMachineProvider` is.
