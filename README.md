@@ -21,6 +21,15 @@
 Check out the [Demo](https://codesandbox.io/s/lrz5wloklm).
     
 ## API
+##### 🔗 `StateMachineProvider`
+This is a Provider Component to wrapper around your entire app in order to create context.
+
+##### 🔗 `createStore`
+Function to initial the global store, call at app root where `StateMachineProvider` is.
+
+##### 🔗 `useStateMachine(Action | Actions, Options) =>` 
+`{ action: (any) => void, actions: { [key: string] : (any) => void}, state: Object }`
+
 ```typescript
 // individual action
 Action: (store: Object, payload: any) => void;
@@ -31,10 +40,7 @@ Options: {
   debugName: string, // unique debug name can really help you :)
   shouldReRenderApp: boolean, 
 }
-
 ```
-##### 🔗 `useStateMachine(Action | Actions, Options) =>` 
-`{ action: (any) => void, actions: { [key: string] : (any) => void}, state: Object }`
 
 This hook function will return action/actions and state of the app. 
 
@@ -46,12 +52,6 @@ This will toggle the console output in dev tool.
 `window.LITTLE_STATE_MACHINE_DEBUG(false)` to turn off debug on in console
 
 <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
-
-##### 🔗 `StateMachineProvider`
-This is a Provider Component to wrapper around your entire app in order to create context.
-
-##### 🔗 `createStore`
-Function to initial the global store, call at app root where `StateMachineProvider` is.
  
 ## Example
 
