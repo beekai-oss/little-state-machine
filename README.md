@@ -106,7 +106,9 @@ action.js
 export function updateName(state, payload) {
   return {
     ...state,
-    name: payload,
+    yourDetail: {
+      name: payload,
+    }
   }
 }
 ```
