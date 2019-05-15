@@ -64,11 +64,16 @@ export function StateMachineProvider(props) {
 }
 
 const actionTemplate = ({ options, callback, key, updateStore }: any) => (payload: any) => {
-  const debug = storageType.getItem('__STATE_MACHINE_DEBUG') === 'true';
+  let debug;
 
-  if (debug) {
-    console.log(`%c${key ? options.debugName[key] : options.debugName}`, 'color: #bada55');
-    console.log('├─before:', get());
+  if (process.env.NODE_ENV !== 'production') {
+    const cloneDeep = require('lodash.clonedeep');
+    debug = storageType.getItem('__STATE_MACHINE_DEBUG') === 'true';
+
+    if (debug) {
+      console.log(`%c${key ? options.debugName[key] : options.debugName}`, 'color: #bada55');
+      console.log('├─before:', cloneDeep(get()));
+    }
   }
 
   set(callback && callback(get(), payload));
@@ -78,8 +83,10 @@ const actionTemplate = ({ options, callback, key, updateStore }: any) => (payloa
     updateStore(get());
   }
 
-  if (debug) {
-    console.log('└─after:', get());
+  if (process.env.NODE_ENV !== 'production') {
+    if (debug) {
+      console.log('└─after:', get());
+    }
   }
 };
 
