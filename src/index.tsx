@@ -109,7 +109,7 @@ export function useStateMachine(
   if (typeof window !== 'undefined') {
     // @ts-ignore
     window.LITTLE_STATE_MACHINE_DEBUG = (value: string) => {
-      storageType.setItem(getName(), value);
+      storageType.setItem('__STATE_MACHINE_DEBUG', value);
     };
   }
 
