@@ -2,6 +2,11 @@
 import * as React from 'react';
 
 let storageType = window.sessionStorage;
+let get;
+let set;
+let getName;
+let setStorageName;
+
 const STATE_MACHINE_DEBUG_NAME = '__STATE_MACHINE_DEBUG__';
 
 export function setStorageType(type) {
@@ -35,15 +40,19 @@ function storeFactory() {
   };
 }
 
-const { setName: setStorageName, getName, get, set } = storeFactory();
-
-export { setStorageName };
-
 export function createStore(data: any) {
+  const factoryResult = storeFactory();
+  setStorageName = factoryResult.setName;
+  getName = factoryResult.getName;
+  get = factoryResult.get;
+  set = factoryResult.set;
+
   const result = get();
   if (result && Object.keys(result).length) return;
   set(data);
 }
+
+export { setStorageName };
 
 export const StateMachineContext = React.createContext({
   store: {},
@@ -119,7 +128,13 @@ export function useStateMachine(
     return {
       actions: callbacks
         ? Object.entries(callbacks).reduce((previous, [key, callback]) => {
-            previous[key] = actionTemplate({ options, callback, updateStore, globalState, key });
+            previous[key] = actionTemplate({
+              options,
+              callback,
+              updateStore,
+              globalState,
+              key,
+            });
             return previous;
           }, {})
         : {},
@@ -130,7 +145,14 @@ export function useStateMachine(
 
   return {
     actions: {},
-    action: callbacks ? actionTemplate({ options, callback: callbacks, updateStore, globalState }) : () => {},
+    action: callbacks
+      ? actionTemplate({
+          options,
+          callback: callbacks,
+          updateStore,
+          globalState,
+        })
+      : () => {},
     state: globalState,
   };
 }
