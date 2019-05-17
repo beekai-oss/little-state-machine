@@ -2,13 +2,14 @@
 import * as React from 'react';
 
 let storageType = window.sessionStorage;
+const STATE_MACHINE_DEBUG_NAME = '__STATE_MACHINE_DEBUG__';
 
 export function setStorageType(type) {
   storageType = type;
 }
 
 function storeFactory() {
-  let storeName = 'SESSION_LITTLE_STATE_MACHINE';
+  let storeName = '__LITTLE_STATE_MACHINE__';
   const sessionStorageData = storageType.getItem(storeName);
   let store = sessionStorageData ? JSON.parse(sessionStorageData) : {};
 
@@ -69,7 +70,7 @@ const actionTemplate = ({ options, callback, key, updateStore }: any) => (payloa
 
   if (process.env.NODE_ENV !== 'production') {
     const cloneDeep = require('lodash.clonedeep');
-    debug = storageType.getItem('__STATE_MACHINE_DEBUG') === 'true';
+    debug = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
 
     if (debug) {
       console.log(`%c${key ? options.debugName[key] : options.debugName}`, 'color: #bada55');
@@ -110,7 +111,7 @@ export function useStateMachine(
   if (typeof window !== 'undefined') {
     // @ts-ignore
     window.LITTLE_STATE_MACHINE_DEBUG = (value: string) => {
-      storageType.setItem('__STATE_MACHINE_DEBUG', value);
+      storageType.setItem(STATE_MACHINE_DEBUG_NAME, value);
     };
   }
 
