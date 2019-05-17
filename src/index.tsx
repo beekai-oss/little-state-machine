@@ -39,7 +39,8 @@ const { setName: setStorageName, getName, get, set } = storeFactory();
 export { setStorageName };
 
 export function createStore(data: any) {
-  if (Object.keys(get()).length) return;
+  const result = get();
+  if (result && Object.keys(result).length) return;
   set(data);
 }
 
