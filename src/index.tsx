@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 
-let storageType = window.sessionStorage;
+let storageType = typeof window === 'undefined' ? {} : window.sessionStorage;
 let get;
 let set;
 let getName;
