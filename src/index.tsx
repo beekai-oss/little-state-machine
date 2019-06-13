@@ -1,7 +1,10 @@
 // @flow
 import * as React from 'react';
 
-let storageType = typeof window === 'undefined' ? { getItem: () => {}, setItem: () => {} } : window.sessionStorage;
+let storageType =
+  typeof window === 'undefined'
+    ? { getItem: () => {}, setItem: () => {}, clear: () => {} }
+    : window.sessionStorage;
 let get;
 let set;
 let getName;
@@ -61,29 +64,33 @@ export const StateMachineContext = React.createContext({
 
 export function StateMachineProvider(props) {
   const [globalState, updateStore] = React.useState(get());
-  const value = React.useMemo(
-    () => {
-      return {
-        store: globalState,
-        updateStore,
-      };
-    },
-    [globalState],
-  );
+  const value = React.useMemo(() => {
+    return {
+      store: globalState,
+      updateStore,
+    };
+  }, [globalState]);
 
   return <StateMachineContext.Provider value={value} {...props} />;
 }
 
-const actionTemplate = ({ options, callback, key, updateStore }: any) => (payload: any) => {
+const actionTemplate = ({ options, callback, key, updateStore }: any) => (
+  payload: any,
+) => {
   let debug;
+  let copy;
 
   if (process.env.NODE_ENV !== 'production') {
     const cloneDeep = require('lodash.clonedeep');
+    copy = cloneDeep(get());
     debug = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
 
     if (debug) {
-      console.log(`%c${key ? options.debugName[key] : options.debugName}`, 'color: #bada55');
-      console.log('├─before:', cloneDeep(get()));
+      console.log(
+        `%c${key ? options.debugName[key] : options.debugName}`,
+        'color: #bada55',
+      );
+      console.log('├─before:', copy);
     }
   }
 
@@ -96,13 +103,35 @@ const actionTemplate = ({ options, callback, key, updateStore }: any) => (payloa
 
   if (process.env.NODE_ENV !== 'production') {
     if (debug) {
-      console.log('└─after:', get());
+      console.log('├─after:', get());
+
+      function difference(object, base) {
+        const transform = require('lodash.transform');
+        const isEqual = require('lodash.isequal');
+        const isObject = require('lodash.isobject');
+
+        function changes(object, base) {
+          return transform(object, function(result, value, key) {
+            if (!isEqual(value, base[key])) {
+              result[key] =
+                isObject(value) && isObject(base[key])
+                  ? changes(value, base[key])
+                  : value;
+            }
+          });
+        }
+        return changes(object, base);
+      }
+
+      console.log('└─diff:', difference(copy, get()));
     }
   }
 };
 
 export function useStateMachine(
-  callbacks?: { [key: string]: (Object, any) => Object } | ((Object, any) => Object),
+  callbacks?:
+    | { [key: string]: (Object, any) => Object }
+    | ((Object, any) => Object),
   options: {
     debugName: string | { [key: string]: string };
     shouldReRenderApp?: boolean;
@@ -115,12 +144,19 @@ export function useStateMachine(
   actions: { [key: string]: Function };
   state: Object;
 } {
-  const { store: globalState, updateStore } = React.useContext(StateMachineContext);
+  const { store: globalState, updateStore } = React.useContext(
+    StateMachineContext,
+  );
 
   if (typeof window !== 'undefined') {
     // @ts-ignore
     window.LITTLE_STATE_MACHINE_DEBUG = (value: string) => {
       storageType.setItem(STATE_MACHINE_DEBUG_NAME, value);
+    };
+
+    // @ts-ignore
+    window.LITTLE_STATE_MACHINE_RESET = () => {
+      storageType.clear();
     };
   }
 
