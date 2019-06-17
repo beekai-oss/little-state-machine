@@ -87,7 +87,10 @@ const actionTemplate = ({ options, callback, key, updateStore }: any) => (
 
     if (debug) {
       console.log(
-        `%c${key ? options.debugName[key] : options.debugName}`,
+        '┌─────────────────────────────────────────────────────────────────',
+      );
+      console.log(
+        `├─%c${key ? options.debugName[key] : options.debugName}`,
         'color: #bada55',
       );
       console.log('├─before:', copy);
@@ -103,13 +106,15 @@ const actionTemplate = ({ options, callback, key, updateStore }: any) => (
 
   if (process.env.NODE_ENV !== 'production') {
     if (debug) {
-      console.log('├─after:', get());
+      const transform = require('lodash.transform');
+      const isEqual = require('lodash.isequal');
+      const isObject = require('lodash.isobject');
+      const isEmpty = require('lodash.isempty');
+      const diff = difference(get(), copy);
+      const noChange = isEmpty(diff);
 
+      console.log(noChange ? '└─after' : '├─after:', get());
       function difference(object, base) {
-        const transform = require('lodash.transform');
-        const isEqual = require('lodash.isequal');
-        const isObject = require('lodash.isobject');
-
         function changes(object, base) {
           return transform(object, function(result, value, key) {
             if (!isEqual(value, base[key])) {
@@ -123,7 +128,9 @@ const actionTemplate = ({ options, callback, key, updateStore }: any) => (
         return changes(object, base);
       }
 
-      console.log('└─diff:', difference(copy, get()));
+      if (!noChange) {
+        console.log('└─diff:', difference(copy, get()), ' → ', difference(get(), copy));
+      }
     }
   }
 };
@@ -151,12 +158,15 @@ export function useStateMachine(
   if (typeof window !== 'undefined') {
     // @ts-ignore
     window.LITTLE_STATE_MACHINE_DEBUG = (value: string) => {
-      storageType.setItem(STATE_MACHINE_DEBUG_NAME, value);
+      storageType.setItem(getName(), value);
     };
-
     // @ts-ignore
     window.LITTLE_STATE_MACHINE_RESET = () => {
       storageType.clear();
+    };
+    // @ts-ignore
+    window.LITTLE_STATE_MACHINE_GET = () => {
+      storageType.getItem(getName());
     };
   }
 

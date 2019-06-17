@@ -52,6 +52,11 @@ This will toggle the console output in dev tool.
 `window.LITTLE_STATE_MACHINE_DEBUG(false)` to turn off debug on in console
 
 <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
+
+##### 🔗 `window.STATE_MACHINE_RESET`
+This will reset the entire store.
+
+`window.LITTLE_STATE_MACHINE_RESET()` to reset the localStorage or sessionStorage
  
 ## Example
 
