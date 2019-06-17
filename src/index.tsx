@@ -87,7 +87,7 @@ const actionTemplate = ({ options, callback, key, updateStore }: any) => (
 
     if (debug) {
       console.log(
-        '┌─────────────────────────────────────────────────────────────────',
+        '┌───────────────────────────────────────',
       );
       console.log(
         `├─%c${key ? options.debugName[key] : options.debugName}`,
@@ -158,7 +158,7 @@ export function useStateMachine(
   if (typeof window !== 'undefined') {
     // @ts-ignore
     window.LITTLE_STATE_MACHINE_DEBUG = (value: string) => {
-      storageType.setItem(getName(), value);
+      storageType.setItem(STATE_MACHINE_DEBUG_NAME, value);
     };
     // @ts-ignore
     window.LITTLE_STATE_MACHINE_RESET = () => {
