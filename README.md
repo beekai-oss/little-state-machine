@@ -76,6 +76,7 @@ Load saved state into your app, you can either supply a session/local storage na
 `window.STATE_MACHINE_GET_STORE({ storeName: string, data: Object })`
 
 storeName: external session/local storage name
+
 data: string of data
  
 ## Example
