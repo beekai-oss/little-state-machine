@@ -44,7 +44,7 @@ Options: {
 
 This hook function will return action/actions and state of the app. 
 
-## Dev tools
+## DevTools
 
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
 This will toggle the console output in dev tool.
@@ -59,6 +59,24 @@ This will toggle the console output in dev tool.
 This will reset the entire store.
 
 `window.LITTLE_STATE_MACHINE_RESET()` to reset the localStorage or sessionStorage
+
+##### 🔗 `window.STATE_MACHINE_GET_STORE`
+This will return the entire store.
+
+`window.STATE_MACHINE_GET_STORE()`
+
+##### 🔗 `window.STATE_MACHINE_SAVE_TO`
+Save into another session/local storage
+
+`window.STATE_MACHINE_GET_STORE(name: string)`
+
+##### 🔗 `window.STATE_MACHINE_LOAD`
+Load saved state into your app, you can either supply a session/local storage name, or supply a string of data.
+
+`window.STATE_MACHINE_GET_STORE({ storeName: string, data: Object })`
+
+storeName: external session/local storage name
+data: string of data
  
 ## Example
 

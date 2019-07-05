@@ -23,8 +23,8 @@ export function setUpDevTools(isDevMode, storageType, getName, getStore) {
     storeName,
     data,
   }: {
-    storeName: string;
-    data: any;
+    storeName?: string;
+    data?: any;
   }) => {
     storageType.setItem(getName(), data || storageType.getItem(storeName));
   };
