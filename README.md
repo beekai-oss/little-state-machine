@@ -44,6 +44,8 @@ Options: {
 
 This hook function will return action/actions and state of the app. 
 
+## Dev tools
+
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
 This will toggle the console output in dev tool.
 
