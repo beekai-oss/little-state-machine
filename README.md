@@ -53,7 +53,7 @@ This will toggle the console output in dev tool.
 
 `window.LITTLE_STATE_MACHINE_DEBUG(false)` to turn off debug on in console
 
-<img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
+<img width="600" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
 
 ##### 🔗 `window.STATE_MACHINE_RESET`
 This will reset the entire store.
@@ -64,7 +64,7 @@ This will reset the entire store.
 
 app.js
 ```jsx
-import React, { useState } from 'react'
+import React from 'react'
 import yourDetail from './yourDetail'
 import YourComponent from './yourComponent'
 import { StateMachineProvider, createStore } from 'little-state-machine'
@@ -74,7 +74,7 @@ createStore({
   yourDetail,
 });
 
-const App = ({children}) => {
+export default () => {
   return (
     <StateMachineProvider>
       <YourComponent />
@@ -95,9 +95,7 @@ export default function YourComponent() {
     state: { yourDetail: { name } },
   } = useStateMachine(updateName);
 
-  return <div onClick={() => action('bill')}>
-    {name}
-  </div>
+  return <div onClick={() => action('bill')}>{name}</div>
 }
 ```
 
@@ -113,7 +111,9 @@ action.js
 export function updateName(state, payload) {
   return {
     ...state,
-    yourDetail: payload,
+    yourDetail: {
+      name: payload
+    },
   }
 }
 ```
