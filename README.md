@@ -81,7 +81,7 @@ Load saved state into your app, you can either supply a name of your session/loc
  
 ## Example
 
-app.js
+`app.js`
 ```jsx
 import React from 'react'
 import yourDetail from './yourDetail'
@@ -102,7 +102,7 @@ export default () => {
 }
 ```
 
-yourComponent.js
+`yourComponent.js`
 ```jsx
 import React from 'react'
 import { updateName } from './action.js'
@@ -118,14 +118,14 @@ export default function YourComponent() {
 }
 ```
 
-yourDetail.js
+`yourDetail.js`
 ```js
 export default {
   name: 'test',
 }
 ```
 
-action.js
+`action.js`
 ```js
 export function updateName(state, payload) {
   return {
