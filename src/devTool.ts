@@ -12,11 +12,11 @@ export function setUpDevTools(isDevMode, storageType, getName, getStore) {
   };
 
   window['STATE_MACHINE_GET_STORE'] = () => {
-    storageType.getItem(getName());
+    return storageType.getItem(getName());
   };
 
   window['STATE_MACHINE_SAVE_TO'] = (name) => {
-    storageType.setItem(name, getStore());
+    storageType.setItem(name, JSON.stringify(getStore()));
   };
 
   window['STATE_MACHINE_LOAD'] = ({
@@ -26,6 +26,7 @@ export function setUpDevTools(isDevMode, storageType, getName, getStore) {
     storeName?: string;
     data?: any;
   }) => {
+    if (!storeName && !data) return;
     storageType.setItem(getName(), data || storageType.getItem(storeName));
   };
 }
