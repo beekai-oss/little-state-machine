@@ -2,7 +2,7 @@
     <h1>Little State Machine</h2>
 </div>
 
-> Flux state management should be easy
+> Flux state management made super simple
 
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Little-State-Machine&url=https://github.com/bluebill1049/little-state-machine)&nbsp; [![npm downloads](https://img.shields.io/npm/dm/little-state-machine.svg?style=flat-square)](https://www.npmjs.com/package/little-state-machine)
 [![npm](https://img.shields.io/npm/dt/little-state-machine.svg?style=flat-square)](https://www.npmjs.com/package/little-state-machine)
@@ -44,6 +44,8 @@ Options: {
 
 This hook function will return action/actions and state of the app. 
 
+## DevTools
+
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
 This will toggle the console output in dev tool.
 
@@ -57,12 +59,30 @@ This will toggle the console output in dev tool.
 This will reset the entire store.
 
 `window.LITTLE_STATE_MACHINE_RESET()` to reset the localStorage or sessionStorage
+
+##### 🔗 `window.STATE_MACHINE_GET_STORE`
+This will return the entire store.
+
+`window.STATE_MACHINE_GET_STORE()`
+
+##### 🔗 `window.STATE_MACHINE_SAVE_TO`
+Save into another session/local storage
+
+`window.STATE_MACHINE_GET_STORE(name: string)`
+
+##### 🔗 `window.STATE_MACHINE_LOAD`
+Load saved state into your app, you can either supply a session/local storage name, or supply a string of data.
+
+`window.STATE_MACHINE_GET_STORE({ storeName: string, data: Object })`
+
+storeName: external session/local storage name
+data: string of data
  
 ## Example
 
 app.js
 ```jsx
-import React, { useState } from 'react'
+import React from 'react'
 import yourDetail from './yourDetail'
 import YourComponent from './yourComponent'
 import { StateMachineProvider, createStore } from 'little-state-machine'
@@ -72,7 +92,7 @@ createStore({
   yourDetail,
 });
 
-const App = ({children}) => {
+export default () => {
   return (
     <StateMachineProvider>
       <YourComponent />
@@ -93,9 +113,7 @@ export default function YourComponent() {
     state: { yourDetail: { name } },
   } = useStateMachine(updateName);
 
-  return <div onClick={() => action('bill')}>
-    {name}
-  </div>
+  return <div onClick={() => action('bill')}>{name}</div>
 }
 ```
 
@@ -111,7 +129,9 @@ action.js
 export function updateName(state, payload) {
   return {
     ...state,
-    yourDetail: payload,
+    yourDetail: {
+      name: payload
+    },
   }
 }
 ```
