@@ -1,4 +1,4 @@
-import { STORE_DEFAULT_NAME } from '../constants';
+import { STORE_DEFAULT_NAME } from './constants';
 
 export default function storeFactory(storageType: any) {
   let storeName = STORE_DEFAULT_NAME;

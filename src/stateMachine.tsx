@@ -25,7 +25,7 @@ export function createStore(data: any) {
   setStore = methods.set;
   const result = getStore();
 
-  setUpDevTools(isDevMode, storageType, getName);
+  setUpDevTools(isDevMode, storageType, getName, getStore);
 
   if (result && Object.keys(result).length) return;
   setStore(data);
