@@ -71,13 +71,13 @@ Save into another session/local storage
 `window.STATE_MACHINE_GET_STORE(name: string)`
 
 ##### 🔗 `window.STATE_MACHINE_LOAD`
-Load saved state into your app, you can either supply a session/local storage name, or supply a string of data.
+Load saved state into your app, you can either supply a name of your session/local storage, or supply a string of data.
 
-`window.STATE_MACHINE_GET_STORE({ storeName: string, data: Object })`
+`window.STATE_MACHINE_GET_STORE({ storeName?: string, data?: Object })`
 
-storeName: external session/local storage name
+`storeName`: external session/local storage name
 
-data: string of data
+`data`: string of data
  
 ## Example
 
