@@ -3,6 +3,7 @@ import storeFactory from './storeFactory';
 import { STATE_MACHINE_DEBUG_NAME } from './constants';
 import { CallbackFunction } from './types';
 import { setUpDevTools } from './devTool';
+import difference from "./difference";
 
 let storageType =
   typeof window === 'undefined'
@@ -14,9 +15,7 @@ let getName;
 let setStorageName;
 const isDevMode = process.env.NODE_ENV !== 'production';
 
-export function setStorageType(type) {
-  storageType = type;
-}
+export const setStorageType = type => (storageType = type);
 
 export function createStore(data: any) {
   const methods = storeFactory(storageType);
@@ -39,13 +38,13 @@ export const StateMachineContext = React.createContext({
 
 export function StateMachineProvider(props: any) {
   const [globalState, updateStore] = React.useState(getStore());
-  const value = React.useMemo(() => {
-    return {
+  const value = React.useMemo(
+    () => ({
       store: globalState,
       updateStore,
-    };
-  }, [globalState]);
-
+    }),
+    [globalState],
+  );
   return <StateMachineContext.Provider value={value} {...props} />;
 }
 
@@ -90,27 +89,11 @@ const actionTemplate = ({
 
   if (isDevMode) {
     if (isDebugOn) {
-      const transform = require('lodash.transform');
-      const isEqual = require('lodash.isequal');
-      const isObject = require('lodash.isobject');
       const isEmpty = require('lodash.isempty');
       const diff = difference(getStore(), storeCopy);
       const noChange = isEmpty(diff);
 
       console.log(noChange ? '└─after' : '├─after:', getStore());
-      function difference(object, base) {
-        function changes(object, base) {
-          return transform(object, function(result, value, key) {
-            if (!isEqual(value, base[key])) {
-              result[key] =
-                isObject(value) && isObject(base[key])
-                  ? changes(value, base[key])
-                  : value;
-            }
-          });
-        }
-        return changes(object, base);
-      }
 
       if (!noChange) {
         console.log(
