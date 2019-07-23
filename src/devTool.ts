@@ -27,6 +27,6 @@ export function setUpDevTools(isDevMode, storageType, getName, getStore) {
     data?: any;
   }) => {
     if (!storeName && !data) return;
-    window.localStorage.setItem(getName(), data || window.localStorage.getItem(storeName));
+    storageType.setItem(getName(), data || window.localStorage.getItem(storeName));
   };
 }
