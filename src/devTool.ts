@@ -16,7 +16,7 @@ export function setUpDevTools(isDevMode, storageType, getName, getStore) {
   };
 
   window['STATE_MACHINE_SAVE_TO'] = (name) => {
-    storageType.setItem(name, JSON.stringify(getStore()));
+    window.localStorage.setItem(name, JSON.stringify(getStore()));
   };
 
   window['STATE_MACHINE_LOAD'] = ({
@@ -27,6 +27,6 @@ export function setUpDevTools(isDevMode, storageType, getName, getStore) {
     data?: any;
   }) => {
     if (!storeName && !data) return;
-    storageType.setItem(getName(), data || storageType.getItem(storeName));
+    window.localStorage.setItem(getName(), data || window.localStorage.getItem(storeName));
   };
 }
