@@ -6,6 +6,7 @@ import {
   StateMachineContext,
   setStorageName,
 } from './stateMachine';
+import DevTool from './devToolComponent';
 
 export {
   setStorageType,
@@ -14,4 +15,5 @@ export {
   useStateMachine,
   StateMachineContext,
   setStorageName,
+  DevTool,
 };
