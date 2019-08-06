@@ -5,10 +5,9 @@ import ReactJson from 'react-json-view';
 const { useState } = React;
 
 export default function devToolComponent() {
+  if (process.env.NODE_ENV === 'production') return null;
   const { state } = useStateMachine();
-  const [isCurrentState, setCurrentState] = useState(true);
   const [isClose, setClose] = useState(false);
-  console.log('isClose', isClose);
 
   return (
     <div
@@ -77,7 +76,7 @@ export default function devToolComponent() {
           </button>
           <section style={{ padding: 10 }}>
             <ReactJson
-              src={isCurrentState ? state : {}}
+              src={state}
               theme="harmonic"
               iconStyle="square"
               enableClipboard
