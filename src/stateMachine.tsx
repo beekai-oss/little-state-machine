@@ -55,7 +55,7 @@ const actionTemplate = ({
   updateStore,
 }: {
   callback?: any;
-  options: {
+  options?: {
     debugName: string | { [key: string]: string };
     shouldReRenderApp?: boolean;
   };
@@ -109,12 +109,9 @@ const actionTemplate = ({
 
 export function useStateMachine(
   updateStoreFunction?: CallbackFunction,
-  options: {
+  options?: {
     debugName: string | { [key: string]: string };
     shouldReRenderApp?: boolean;
-  } = {
-    debugName: '',
-    shouldReRenderApp: true,
   },
 ): {
   action: Function;
