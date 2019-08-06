@@ -87,7 +87,7 @@ export default function devToolComponent() {
               style={{
                 fontSize: 12,
                 overflow: 'scroll',
-                height: '100vh',
+                height: 'calc(100vh - 40px)',
               }}
             />
           </section>
