@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useStateMachine } from './stateMachine';
+import DevToolStorage from './devToolStorage';
 import ReactJson from 'react-json-view';
 
 const { useState } = React;
@@ -8,6 +9,7 @@ export default function devToolComponent() {
   if (process.env.NODE_ENV === 'production') return null;
   const { state } = useStateMachine();
   const [isClose, setClose] = useState(false);
+  const [isLoadPanelShow, setLoadPanel] = useState(false);
 
   return (
     <div
@@ -45,6 +47,7 @@ export default function devToolComponent() {
             background: '#0a1c2c',
           }}
         >
+          {isLoadPanelShow && <DevToolStorage setLoadPanel={setLoadPanel} />}
           <h3
             style={{
               fontWeight: 'lighter',
@@ -57,6 +60,37 @@ export default function devToolComponent() {
           >
             Little State Machine
           </h3>
+          <section
+            style={{
+              marginLeft: 10,
+            }}
+          >
+            <button
+              onClick={() => {
+                const name = prompt('💁🏻‍♀️ Give it a name.');
+                if (name) {
+                  window.localStorage.setItem(name, JSON.stringify(state));
+                }
+              }}
+              style={{
+                margin: '0 10px 0 0',
+                padding: '5px 20px',
+                display: 'inline',
+              }}
+            >
+              Save
+            </button>
+            <button
+              style={{
+                margin: 0,
+                padding: '5px 20px',
+                display: 'inline',
+              }}
+              onClick={() => setLoadPanel(!isLoadPanelShow)}
+            >
+              Load
+            </button>
+          </section>
           <button
             style={{
               color: 'white',
@@ -79,7 +113,7 @@ export default function devToolComponent() {
               src={state}
               theme="harmonic"
               iconStyle="square"
-              enableClipboard
+              enableClipboard={false}
               collapsed
               displayObjectSize={false}
               displayDataTypes={false}
