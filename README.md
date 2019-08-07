@@ -49,7 +49,7 @@ Building in DevTool component.
 ```jsx
 <DevTool />
 ```
-<img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devTool.png" />
+<img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png" />
 
 ## Window DevTools Object
 
