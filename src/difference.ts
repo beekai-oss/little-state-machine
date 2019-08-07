@@ -2,8 +2,8 @@ const transform = require('lodash.transform');
 const isEqual = require('lodash.isequal');
 const isObject = require('lodash.isobject');
 
-export default function difference(object: any, base: string) {
-  function changes(object: any, base: string) {
+export default function difference(object: any, base: any) {
+  function changes(object: any, base: any) {
     return transform(object, function(result: any, value: any, key: any) {
       if (!isEqual(value, base[key])) {
         result[key] =

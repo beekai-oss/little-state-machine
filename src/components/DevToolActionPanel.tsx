@@ -25,7 +25,7 @@ const DevToolActionPanel = ({
           borderBottom: '1px solid rgb(17, 50, 76)',
         }}
       >
-        Actions
+        <span style={{fontSize: 10}}>▼</span> Actions
       </p>
       <input
         name="filter"

@@ -12,7 +12,7 @@ export const middleWare = (data?: any) => {
   return options;
 };
 
-let storageType =
+let storageType: any =
   typeof window === 'undefined'
     ? { getItem: () => {}, setItem: () => {}, clear: () => {} }
     : window.sessionStorage;
@@ -22,9 +22,11 @@ let getName: any;
 let setStorageName;
 const isDevMode = process.env.NODE_ENV !== 'production';
 
-export const setStorageType = (type: any) => (storageType = type);
+export function setStorageType<T>(type: T) {
+  storageType = type
+}
 
-export function createStore(data: any) {
+export function createStore(data: Record<string, any>) {
   const methods = storeFactory(storageType);
   setStorageName = methods.setName;
   getName = methods.getName;
