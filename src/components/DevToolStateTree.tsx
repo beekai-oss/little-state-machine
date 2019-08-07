@@ -53,6 +53,10 @@ export default ({
             margin: '0 10px 0 0',
             padding: '5px 20px',
             display: 'inline',
+            fontSize: '12px',
+            border: 'none',
+            borderRadius: '2px',
+            textTransform: 'uppercase',
           }}
         >
           Save
@@ -62,6 +66,10 @@ export default ({
             margin: '0 10px 0 0',
             padding: '5px 20px',
             display: 'inline',
+            fontSize: '12px',
+            border: 'none',
+            borderRadius: '2px',
+            textTransform: 'uppercase',
           }}
           onClick={() => setLoadPanel(!isLoadPanelShow)}
         >
@@ -72,6 +80,10 @@ export default ({
             margin: 0,
             padding: '5px 20px',
             display: 'inline',
+            fontSize: '12px',
+            border: 'none',
+            borderRadius: '2px',
+            textTransform: 'uppercase',
           }}
           onClick={() => {
             const expandValue = !isCollapse;

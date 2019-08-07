@@ -25,7 +25,7 @@ const DevToolActionPanel = ({
           borderBottom: '1px solid rgb(17, 50, 76)',
         }}
       >
-        <span style={{fontSize: 10}}>▼</span> Actions
+        <span style={{ fontSize: 10 }}>▼</span> Actions
       </p>
       <input
         name="filter"
@@ -35,6 +35,10 @@ const DevToolActionPanel = ({
           marginTop: 10,
           border: 'none',
           color: 'white',
+          padding: '5px 10px',
+          width: '100%',
+          boxSizing: 'border-box',
+          fontSize: '14px',
         }}
         onChange={(event: React.ChangeEvent) =>
           // @ts-ignore
@@ -54,7 +58,9 @@ const DevToolActionPanel = ({
         {actions
           .filter(
             data =>
-              (data.name && data.name.toLowerCase().includes(filterName)) ||
+              (data.name &&
+                data.name.toLowerCase &&
+                data.name.toLowerCase().includes(filterName)) ||
               (!data.name && !filterName),
           )
           .map(({ name, state }, index) => (

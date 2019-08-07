@@ -7,7 +7,7 @@ export default function DevToolStorage({ setLoadPanel }: any) {
       style={{
         color: 'white',
         position: 'absolute',
-        top: 30,
+        top: 50,
         right: 0,
         width: 450,
         margin: 0,
@@ -54,6 +54,9 @@ export default function DevToolStorage({ setLoadPanel }: any) {
       <button
         style={{
           margin: 0,
+          borderRadius: '4px',
+          padding: '10px',
+          width: '100%',
         }}
         onClick={() => setLoadPanel(false)}
       >

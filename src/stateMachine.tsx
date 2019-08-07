@@ -3,12 +3,14 @@ import storeFactory from './storeFactory';
 import { STATE_MACHINE_DEBUG_NAME } from './constants';
 import { CallbackFunction } from './types';
 import { setUpDevTools } from './devTool';
-import difference from "./difference";
+import difference from './difference';
 
 let options: any;
 
 export const middleWare = (data?: any) => {
-  if (data) options = data;
+  if (data) {
+    options = data;
+  }
   return options;
 };
 
@@ -23,7 +25,7 @@ let setStorageName;
 const isDevMode = process.env.NODE_ENV !== 'production';
 
 export function setStorageType<T>(type: T) {
-  storageType = type
+  storageType = type;
 }
 
 export function createStore(data: Record<string, any>) {
@@ -73,6 +75,12 @@ const actionTemplate = ({
 }) => (payload: any) => {
   let isDebugOn;
   let storeCopy;
+  const debugName =
+    options && options.debugName
+      ? key
+        ? options.debugName[key]
+        : options.debugName
+      : { debugName: '' };
 
   if (isDevMode) {
     const cloneDeep = require('lodash.clonedeep');
@@ -82,21 +90,23 @@ const actionTemplate = ({
     if (isDebugOn) {
       console.log('┌───────────────────────────────────────>');
       console.log(
-          // @ts-ignore
-        `├─%c${key ? options.debugName[key] : options.debugName}`,
+        // @ts-ignore
+        `├─%c${debugName}`,
         'color: #bada55',
       );
       console.log('├─before:', storeCopy);
     }
   }
 
-  middleWare(options);
+  if (isDevMode) {
+    middleWare({ debugName });
+  }
 
   setStore(callback && callback(getStore(), payload));
   storageType.setItem(getName(), JSON.stringify(getStore()));
 
   // @ts-ignore
-  if (options.shouldReRenderApp !== false) {
+  if (options && options.shouldReRenderApp !== false) {
     updateStore(getStore());
   }
 

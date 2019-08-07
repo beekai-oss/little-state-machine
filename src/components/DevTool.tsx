@@ -16,7 +16,7 @@ const config =
     ? // @ts-ignore
       JSON.parse(window.localStorage.getItem(DEV_TOOL_CONFIG) || '{}')
     : {};
-let previousisCollapse = config.isCollapse;
+let previousIsCollpase = config.isCollapse;
 
 const DevTool: React.FC = () => {
   const { state } = useStateMachine();
@@ -29,7 +29,7 @@ const DevTool: React.FC = () => {
     previousStateIndex === stateIndex &&
     previousIsClose === isClose &&
     previousIsLoadPanelShow === isLoadPanelShow &&
-    previousisCollapse === isCollapse
+    previousIsCollpase === isCollapse
   ) {
     actions.push({
       name: (middleWare() || {}).debugName,
@@ -40,7 +40,7 @@ const DevTool: React.FC = () => {
   previousStateIndex = stateIndex;
   previousIsClose = isClose;
   previousIsLoadPanelShow = isLoadPanelShow;
-  previousisCollapse = isCollapse;
+  previousIsCollpase = isCollapse;
 
   return (
     <div
@@ -57,7 +57,7 @@ const DevTool: React.FC = () => {
             style={{
               position: 'fixed',
               right: 0,
-              top: 0,
+              top: '-1px',
               width: 200,
               margin: 0,
               padding: 10,
