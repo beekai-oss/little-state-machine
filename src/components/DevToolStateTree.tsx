@@ -3,6 +3,15 @@ import ReactJson from 'react-json-view';
 import * as React from 'react';
 import { actions, DEV_TOOL_CONFIG } from './DevTool';
 
+const buttonStyle = {
+    margin: '0 10px 0 0',
+    padding: '5px 20px',
+    display: 'inline',
+    fontSize: '12px',
+    border: 'none',
+    borderRadius: '2px',
+};
+
 export default ({
   isLoadPanelShow,
   setLoadPanel,
@@ -49,42 +58,18 @@ export default ({
               window.localStorage.setItem(name, JSON.stringify(state));
             }
           }}
-          style={{
-            margin: '0 10px 0 0',
-            padding: '5px 20px',
-            display: 'inline',
-            fontSize: '12px',
-            border: 'none',
-            borderRadius: '2px',
-            textTransform: 'uppercase',
-          }}
+          style={buttonStyle}
         >
           Save
         </button>
         <button
-          style={{
-            margin: '0 10px 0 0',
-            padding: '5px 20px',
-            display: 'inline',
-            fontSize: '12px',
-            border: 'none',
-            borderRadius: '2px',
-            textTransform: 'uppercase',
-          }}
+          style={buttonStyle}
           onClick={() => setLoadPanel(!isLoadPanelShow)}
         >
           Load
         </button>
         <button
-          style={{
-            margin: 0,
-            padding: '5px 20px',
-            display: 'inline',
-            fontSize: '12px',
-            border: 'none',
-            borderRadius: '2px',
-            textTransform: 'uppercase',
-          }}
+          style={buttonStyle}
           onClick={() => {
             const expandValue = !isCollapse;
             setExpand(expandValue);

@@ -6,17 +6,17 @@ import { Animate } from 'react-simple-animate';
 const cloneDeep = require('lodash.clonedeep');
 
 const { useState } = React;
-export let actions: { name: string; state: Object }[] = [];
 let previousStateIndex = -1;
 let previousIsClose = false;
 let previousIsLoadPanelShow = false;
+export let actions: { name: string; state: Object }[] = [];
 export const DEV_TOOL_CONFIG = 'dev_tool_config';
 const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
       JSON.parse(window.localStorage.getItem(DEV_TOOL_CONFIG) || '{}')
     : {};
-let previousIsCollpase = config.isCollapse;
+let previousIsCollapse = config.isCollapse;
 
 const DevTool: React.FC = () => {
   const { state } = useStateMachine();
@@ -29,7 +29,7 @@ const DevTool: React.FC = () => {
     previousStateIndex === stateIndex &&
     previousIsClose === isClose &&
     previousIsLoadPanelShow === isLoadPanelShow &&
-    previousIsCollpase === isCollapse
+    previousIsCollapse === isCollapse
   ) {
     actions.push({
       name: (middleWare() || {}).debugName,
@@ -40,7 +40,7 @@ const DevTool: React.FC = () => {
   previousStateIndex = stateIndex;
   previousIsClose = isClose;
   previousIsLoadPanelShow = isLoadPanelShow;
-  previousIsCollpase = isCollapse;
+  previousIsCollapse = isCollapse;
 
   return (
     <div
