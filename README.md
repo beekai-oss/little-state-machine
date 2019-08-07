@@ -43,6 +43,14 @@ Options: {
 
 This hook function will return action/actions and state of the app. 
 
+## DevTools Component
+
+Building in DevTool component.
+``jsx
+<DevTool />
+```
+<img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devTool.png" />
+
 ## DevTools
 
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
