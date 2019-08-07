@@ -28,28 +28,30 @@ export default function DevToolStorage({ setLoadPanel }) {
           lineHeight: 1.5,
         }}
       >
-        {Object.entries(window.localStorage).map(([key, value]) => (
-          <li>
-            <button
-              style={{
-                padding: 10,
-                margin: '0 0 20px',
-                width: '100%',
-                textAlign: 'left',
-                background: 'none',
-                color: 'white',
-                border: '1px solid #335c7d',
-              }}
-              onClick={() => {
-                if (confirm('Are you sure to load state?')) {
-                  window.sessionStorage.setItem(STORE_DEFAULT_NAME, value);
-                }
-              }}
-            >
-              {key}
-            </button>
-          </li>
-        ))}
+        {Object.entries(window.localStorage)
+          .reverse()
+          .map(([key, value]) => (
+            <li>
+              <button
+                style={{
+                  padding: 10,
+                  margin: '0 0 20px',
+                  width: '100%',
+                  textAlign: 'left',
+                  background: 'none',
+                  color: 'white',
+                  border: '1px solid #335c7d',
+                }}
+                onClick={() => {
+                  if (confirm('Are you sure to load state?')) {
+                    window.sessionStorage.setItem(STORE_DEFAULT_NAME, value);
+                  }
+                }}
+              >
+                {key}
+              </button>
+            </li>
+          ))}
       </ul>
       <button
         style={{

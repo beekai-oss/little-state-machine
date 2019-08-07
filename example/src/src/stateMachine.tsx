@@ -5,12 +5,10 @@ import { CallbackFunction } from './types';
 import { setUpDevTools } from './devTool';
 import difference from "./difference";
 
-let options;
+let options: any;
 
 export const middleWare = (data?: any) => {
-  if (data) {
-    options = data;
-  }
+  if (data) options = data;
   return options;
 };
 
@@ -18,13 +16,13 @@ let storageType =
   typeof window === 'undefined'
     ? { getItem: () => {}, setItem: () => {}, clear: () => {} }
     : window.sessionStorage;
-let getStore;
-let setStore;
-let getName;
+let getStore: any;
+let setStore: any;
+let getName: any;
 let setStorageName;
 const isDevMode = process.env.NODE_ENV !== 'production';
 
-export const setStorageType = type => (storageType = type);
+export const setStorageType = (type: any) => (storageType = type);
 
 export function createStore(data: any) {
   const methods = storeFactory(storageType);
@@ -82,6 +80,7 @@ const actionTemplate = ({
     if (isDebugOn) {
       console.log('┌───────────────────────────────────────>');
       console.log(
+          // @ts-ignore
         `├─%c${key ? options.debugName[key] : options.debugName}`,
         'color: #bada55',
       );
@@ -89,9 +88,12 @@ const actionTemplate = ({
     }
   }
 
+  middleWare(options);
+
   setStore(callback && callback(getStore(), payload));
   storageType.setItem(getName(), JSON.stringify(getStore()));
 
+  // @ts-ignore
   if (options.shouldReRenderApp !== false) {
     updateStore(getStore());
   }
@@ -136,6 +138,7 @@ export function useStateMachine(
       actions: updateStoreFunction
         ? Object.entries(updateStoreFunction).reduce(
             (previous, [key, callback]) => {
+              // @ts-ignore
               previous[key] = actionTemplate({
                 options,
                 callback,
