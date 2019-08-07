@@ -6,7 +6,6 @@ body {
 }
 
 form {
-  max-width: 500px;
   margin: 0 auto;
 }
 
@@ -20,7 +19,6 @@ h1 {
 
 .form {
   background: #0e101c;
-  max-width: 400px;
   margin: 0 auto;
 }
 
