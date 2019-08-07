@@ -43,7 +43,7 @@ Options: {
 
 This hook function will return action/actions and state of the app. 
 
-## DevTools Component
+## React DevTool Component
 
 Building in DevTool component.
 ```jsx
@@ -51,7 +51,7 @@ Building in DevTool component.
 ```
 <img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devTool.png" />
 
-## DevTools
+## Window DevTools Object
 
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
 This will toggle the console output in dev tool.
