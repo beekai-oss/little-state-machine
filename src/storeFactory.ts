@@ -7,13 +7,13 @@ export default function storeFactory(storageType: any) {
 
   const getName = () => storeName;
 
-  const setName = name => {
+  const setName = (name: string) => {
     const data = storageType.getItem(name);
     storeName = name;
     store = data ? JSON.parse(data) : {};
   };
 
-  const set = value => {
+  const set = (value: any) => {
     store = value;
   };
 
