@@ -12,6 +12,7 @@
     "react-dom": "^16.8.6",
     "react-hook-form": "^3.21.7",
     "react-scripts": "3.0.1",
+    "react-simple-animate": "^3.3.0",
     "typescript": "3.5.3"
   },
   "scripts": {

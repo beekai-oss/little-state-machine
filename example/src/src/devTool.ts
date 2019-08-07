@@ -28,10 +28,9 @@ export function setUpDevTools(isDevMode: boolean, storageType: any, getName: Fun
     storeName,
     data,
   }: {
-    storeName?: string;
+    storeName: string;
     data?: any;
   }) => {
-    // @ts-ignore
     storageType.setItem(getName() || STATE_MACHINE_DEBUG_NAME, data || window.localStorage.getItem(storeName));
   };
 }
