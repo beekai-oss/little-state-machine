@@ -20,6 +20,7 @@ const DevToolActionPanel = ({
         style={{
           color: 'white',
           fontSize: 13,
+          lineHeight: 20,
           margin: 0,
           padding: '10px 10px 9px',
           borderBottom: '1px solid rgb(17, 50, 76)',
