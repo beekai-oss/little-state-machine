@@ -1,7 +1,6 @@
 import DevToolStorage from './DevToolStorage';
 import ReactJson from 'react-json-view';
 import * as React from 'react';
-import { actions } from './DevTool';
 import { STATE_MACHINE_DEV_TOOL_CONFIG } from '../constants';
 
 const buttonStyle = {
@@ -21,6 +20,7 @@ export default ({
   isCollapse,
   closePanel,
   stateIndex,
+  actions,
 }: {
   isLoadPanelShow: boolean;
   setLoadPanel: (payload: boolean) => void;
@@ -30,6 +30,10 @@ export default ({
   closePanel: () => void;
   stateIndex: number;
   isCollapse: boolean;
+  actions: {
+    name: string;
+    state: Object;
+  }[];
 }) => {
   const collapse = () => {
     const expandValue = !isCollapse;

@@ -122,11 +122,13 @@ const DevTool: React.FC = () => {
           >
             <DevToolActionPanel
               stateIndex={stateIndex}
+              actions={actions}
               setStateIndex={setStateIndex}
             />
             <DevToolStateTree
               {...{
                 closePanel,
+                actions,
                 isLoadPanelShow,
                 setLoadPanel,
                 state,

@@ -5,7 +5,7 @@ export default {
   plugins: [
     typescript(),
   ],
-  external: ['react'],
+  external: ['react', 'react-simple-animate', 'react-json-view'],
   output: [
     {
       file: 'dist/index.js',

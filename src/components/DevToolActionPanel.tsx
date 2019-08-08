@@ -1,13 +1,17 @@
 import * as React from 'react';
-import { actions } from './DevTool';
 import { useState } from 'react';
 
 const DevToolActionPanel = ({
   setStateIndex,
   stateIndex,
+  actions,
 }: {
   setStateIndex: (index: number) => void;
   stateIndex: number;
+  actions: {
+    name: string;
+    state: Object;
+  }[];
 }) => {
   const [filterName, setFilterName] = useState('');
   return (
