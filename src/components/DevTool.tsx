@@ -3,17 +3,20 @@ import { useStateMachine, middleWare } from '../stateMachine';
 import DevToolActionPanel from './DevToolActionPanel';
 import DevToolStateTree from './DevToolStateTree';
 import { Animate } from 'react-simple-animate';
+import { STATE_MACHINE_DEV_TOOL_CONFIG } from '../constants';
+
 const cloneDeep = require('lodash.clonedeep');
 
 const { useState } = React;
 let previousStateIndex = -1;
 let previousIsLoadPanelShow = false;
 export let actions: { name: string; state: Object }[] = [];
-export const DEV_TOOL_CONFIG = 'dev_tool_config';
 const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
-      JSON.parse(window.localStorage.getItem(DEV_TOOL_CONFIG) || '{}')
+      JSON.parse(
+        window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) || '{}',
+      )
     : {
         isCollapse: false,
         isClose: false,
@@ -27,6 +30,23 @@ const DevTool: React.FC = () => {
   const [isLoadPanelShow, setLoadPanel] = useState(false);
   const [isCollapse, setExpand] = useState(config.isCollapse);
   const [stateIndex, setStateIndex] = useState(-1);
+
+  const closePanel = () => {
+    const closeValue = !isClose;
+    setClose(closeValue);
+    const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
+    try {
+      window.localStorage.setItem(
+        STATE_MACHINE_DEV_TOOL_CONFIG,
+        config
+          ? JSON.stringify({
+              ...JSON.parse(config),
+              isClose: closeValue,
+            })
+          : JSON.stringify({ isClose: closeValue }),
+      );
+    } catch {}
+  };
 
   if (
     previousStateIndex === stateIndex &&
@@ -54,7 +74,7 @@ const DevTool: React.FC = () => {
       <Animate
         play={!isClose}
         end={{ transform: 'translateY(-50px)' }}
-        delay={0.4}
+        delay={0.5}
         render={({ style }) => (
           <button
             style={{
@@ -68,9 +88,10 @@ const DevTool: React.FC = () => {
               color: 'white',
               zIndex: 100000000,
               fontSize: 12,
+              lineHeight: '25px',
               ...style,
             }}
-            onClick={() => setClose(!isClose)}
+            onClick={() => isCollapse()}
           >
             Little State Machine
           </button>
@@ -103,6 +124,7 @@ const DevTool: React.FC = () => {
             />
             <DevToolStateTree
               {...{
+                closePanel,
                 isLoadPanelShow,
                 setLoadPanel,
                 state,

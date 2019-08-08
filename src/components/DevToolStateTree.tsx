@@ -1,7 +1,8 @@
 import DevToolStorage from './DevToolStorage';
 import ReactJson from 'react-json-view';
 import * as React from 'react';
-import { actions, DEV_TOOL_CONFIG } from './DevTool';
+import { actions } from './DevTool';
+import { STATE_MACHINE_DEV_TOOL_CONFIG } from '../constants';
 
 const buttonStyle = {
   margin: '0 10px 0 0',
@@ -18,8 +19,7 @@ export default ({
   state,
   setExpand,
   isCollapse,
-  setClose,
-  isClose,
+  closePanel,
   stateIndex,
 }: {
   isLoadPanelShow: boolean;
@@ -27,34 +27,17 @@ export default ({
   state: Object;
   setExpand: (payload: boolean) => void;
   setClose: (payload: boolean) => void;
-  isCollapse: boolean;
-  isClose: boolean;
+  closePanel: () => void;
   stateIndex: number;
+  isCollapse: boolean;
 }) => {
-  const closePanel = () => {
-    const closeValue = !isClose;
-    setClose(closeValue);
-    const config = window.localStorage.getItem(DEV_TOOL_CONFIG);
-    try {
-      window.localStorage.setItem(
-        DEV_TOOL_CONFIG,
-        config
-          ? JSON.stringify({
-              ...JSON.parse(config),
-              isClose: closeValue,
-            })
-          : JSON.stringify({ isClose: closeValue }),
-      );
-    } catch {}
-  };
-
   const collapse = () => {
     const expandValue = !isCollapse;
     setExpand(expandValue);
-    const config = window.localStorage.getItem(DEV_TOOL_CONFIG);
+    const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
     try {
       window.localStorage.setItem(
-        DEV_TOOL_CONFIG,
+        STATE_MACHINE_DEV_TOOL_CONFIG,
         config
           ? JSON.stringify({
               ...JSON.parse(config),
@@ -120,7 +103,7 @@ export default ({
           padding: 10,
           appearance: 'none',
           background: 'none',
-          fontSize: 20,
+          fontSize: 26,
           border: 0,
           margin: 0,
         }}
@@ -152,7 +135,7 @@ export default ({
           style={{
             fontSize: 12,
             overflow: 'auto',
-            height: 'calc(100vh - 94px)',
+            height: 'calc(100vh - 90px)',
           }}
         />
       </section>
