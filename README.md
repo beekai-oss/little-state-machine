@@ -42,7 +42,7 @@ Options: {
   shouldReRenderApp: boolean, 
 }
 ```
-<br />
+
 <h2>⚒ React DevTools</h2>
 
 Built-in DevTool component to track your state change and action.
