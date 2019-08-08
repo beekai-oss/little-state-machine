@@ -61,7 +61,7 @@ export default ({
           borderBottom: '1px solid rgb(17, 50, 76)',
         }}
       >
-        Little State Machine
+        ♆ Little State Machine
       </h3>
       <section
         style={{

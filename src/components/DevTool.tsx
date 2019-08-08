@@ -93,7 +93,7 @@ const DevTool: React.FC = () => {
             }}
             onClick={() => closePanel()}
           >
-            Little State Machine
+            ♆ LITTLE STATE MACHINE
           </button>
         )}
       />
