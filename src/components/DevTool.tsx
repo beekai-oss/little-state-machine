@@ -15,7 +15,10 @@ const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
       JSON.parse(window.localStorage.getItem(DEV_TOOL_CONFIG) || '{}')
-    : {};
+    : {
+        isCollapse: false,
+        isClose: false,
+      };
 let previousIsCollapse = config.isCollapse;
 
 const DevTool: React.FC = () => {

@@ -4,12 +4,12 @@ import * as React from 'react';
 import { actions, DEV_TOOL_CONFIG } from './DevTool';
 
 const buttonStyle = {
-    margin: '0 10px 0 0',
-    padding: '5px 20px',
-    display: 'inline',
-    fontSize: '12px',
-    border: 'none',
-    borderRadius: '2px',
+  margin: '0 10px 0 0',
+  padding: '5px 20px',
+  display: 'inline',
+  fontSize: '12px',
+  border: 'none',
+  borderRadius: '2px',
 };
 
 export default ({
@@ -31,6 +31,40 @@ export default ({
   isClose: boolean;
   stateIndex: number;
 }) => {
+  const closePanel = () => {
+    const closeValue = !isClose;
+    setClose(closeValue);
+    const config = window.localStorage.getItem(DEV_TOOL_CONFIG);
+    try {
+      window.localStorage.setItem(
+        DEV_TOOL_CONFIG,
+        config
+          ? JSON.stringify({
+              ...JSON.parse(config),
+              isClose: closeValue,
+            })
+          : JSON.stringify({ isClose: closeValue }),
+      );
+    } catch {}
+  };
+
+  const collapse = () => {
+    const expandValue = !isCollapse;
+    setExpand(expandValue);
+    const config = window.localStorage.getItem(DEV_TOOL_CONFIG);
+    try {
+      window.localStorage.setItem(
+        DEV_TOOL_CONFIG,
+        config
+          ? JSON.stringify({
+              ...JSON.parse(config),
+              isCollapse: expandValue,
+            })
+          : JSON.stringify({ isCollapse: expandValue }),
+      );
+    } catch {}
+  };
+
   return (
     <section>
       {isLoadPanelShow && <DevToolStorage setLoadPanel={setLoadPanel} />}
@@ -71,20 +105,7 @@ export default ({
         <button
           style={buttonStyle}
           onClick={() => {
-            const expandValue = !isCollapse;
-            setExpand(expandValue);
-            const config = window.localStorage.getItem(DEV_TOOL_CONFIG);
-            try {
-              window.localStorage.setItem(
-                DEV_TOOL_CONFIG,
-                config
-                  ? JSON.stringify({
-                      ...JSON.parse(config),
-                      isCollapse: expandValue,
-                    })
-                  : JSON.stringify({ isCollapse: expandValue }),
-              );
-            } catch {}
+            collapse();
           }}
         >
           {isCollapse ? 'Expand' : 'collapse'}
@@ -103,7 +124,9 @@ export default ({
           border: 0,
           margin: 0,
         }}
-        onClick={() => setClose(!isClose)}
+        onClick={() => {
+          closePanel();
+        }}
       >
         ×
       </button>
