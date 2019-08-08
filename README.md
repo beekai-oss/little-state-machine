@@ -15,7 +15,6 @@
 <h2>📦 Installation</h2>
 
     $ npm install little-state-machine
-<br />   
  
 <h2>🖥 <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a></h2>
 Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
