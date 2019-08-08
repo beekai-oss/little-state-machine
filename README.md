@@ -12,7 +12,7 @@
 - Persist your state by default (`sessionStorage`)
 - Build with React Hooks
 
-## 📦 Install
+<h2 align="center">📦 Install</h2>
 
     $ npm install little-state-machine
     
