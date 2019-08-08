@@ -12,15 +12,15 @@
 - Persist your state by default (`sessionStorage`)
 - Build with React Hooks
 
-<h2 align="center">📦 Installation</h2>
+<h2>📦 Installation</h2>
 
     $ npm install little-state-machine
  <br />   
-<h2 align="center">🖥 <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a></h2>
+<h2>🖥 <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a></h2>
 Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
   <br />  
   
-<h2 align="center">🕹 API</h2>
+<h2>🕹 API</h2>
 
 ##### 🔗 `StateMachineProvider`
 This is a Provider Component to wrapper around your entire app in order to create context.
@@ -43,7 +43,7 @@ Options: {
 }
 ```
 <br />
-<h2 align="center">⚒ React DevTools</h2>
+<h2>⚒ React DevTools</h2>
 
 Built-in DevTool component to track your state change and action.
 ```jsx
@@ -53,7 +53,7 @@ Built-in DevTool component to track your state change and action.
 ```
 <img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png" />
 <br />
-<h2 align="center">🛠 Window Object</h2>
+<h2>🛠 Window Object</h2>
 
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
 This will toggle the console output in dev tool.
@@ -88,7 +88,7 @@ Load saved state into your app, you can either supply a name of your session/loc
 
 `data`: string of data
  <br />
-<h2 align="center">📖 Example</h2>
+<h2>📖 Example</h2>
 
 📋 `app.js`
 ```jsx
