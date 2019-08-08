@@ -47,7 +47,9 @@ This hook function will return action/actions and state of the app.
 
 Built-in DevTool component to track your state change and action.
 ```jsx
-<DevTool />
+<StateMachineProvider>
+ {process.env.NODE_ENV !== 'production' && <DevTool />}
+</StateMachineProvider>
 ```
 <img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png" />
 
