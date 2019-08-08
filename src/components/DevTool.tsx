@@ -91,7 +91,7 @@ const DevTool: React.FC = () => {
               lineHeight: '25px',
               ...style,
             }}
-            onClick={() => isCollapse()}
+            onClick={() => closePanel()}
           >
             Little State Machine
           </button>
