@@ -125,12 +125,16 @@ export default ({
           margin: 0,
         }}
         onClick={() => {
-          closePanel();
+          if (isLoadPanelShow) {
+            setLoadPanel(false);
+          } else {
+            closePanel();
+          }
         }}
       >
         ×
       </button>
-      <section style={{ padding: 10 }}>
+      <section style={{ padding: '10px 0px 10px 10px' }}>
         <ReactJson
           src={
             (stateIndex === -1

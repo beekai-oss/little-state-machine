@@ -7,7 +7,6 @@ const cloneDeep = require('lodash.clonedeep');
 
 const { useState } = React;
 let previousStateIndex = -1;
-let previousIsClose = false;
 let previousIsLoadPanelShow = false;
 export let actions: { name: string; state: Object }[] = [];
 export const DEV_TOOL_CONFIG = 'dev_tool_config';
@@ -20,10 +19,11 @@ const config =
         isClose: false,
       };
 let previousIsCollapse = config.isCollapse;
+let previousIsClose = config.isClose;
 
 const DevTool: React.FC = () => {
   const { state } = useStateMachine();
-  const [isClose, setClose] = useState(false);
+  const [isClose, setClose] = useState(config.isClose);
   const [isLoadPanelShow, setLoadPanel] = useState(false);
   const [isCollapse, setExpand] = useState(config.isCollapse);
   const [stateIndex, setStateIndex] = useState(-1);
@@ -53,7 +53,7 @@ const DevTool: React.FC = () => {
     >
       <Animate
         play={!isClose}
-        end={{ opacity: 0 }}
+        end={{ transform: 'translateY(-50px)' }}
         delay={0.4}
         render={({ style }) => (
           <button
