@@ -10,7 +10,7 @@
 - Follow flux application architecture
 - Tiny with 0 dependency and simple (less 1kb)
 - Persist your state by default
-- Build with React Hook
+- Build with React Hooks
 
 ## Install
 
