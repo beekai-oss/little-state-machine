@@ -51,7 +51,7 @@ Building in DevTool component.
 ```
 <img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png" />
 
-## Window DevTools Object
+## Window Object
 
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
 This will toggle the console output in dev tool.
