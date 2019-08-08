@@ -16,7 +16,7 @@
 
     $ npm install little-state-machine
     
-## [Demo](https://codesandbox.io/s/lrz5wloklm)
+## 🖥 [Demo](https://codesandbox.io/s/lrz5wloklm)
 Check out the [Demo](https://codesandbox.io/s/lrz5wloklm).
     
 ## 🕹 API
