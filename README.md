@@ -18,7 +18,7 @@
  <br />   
 <h2>🖥 <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a></h2>
 Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
-  <br />  
+  <br />  <br />  
   
 <h2>🕹 API</h2>
 
