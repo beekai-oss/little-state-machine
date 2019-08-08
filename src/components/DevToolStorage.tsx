@@ -41,6 +41,7 @@ export default function DevToolStorage({ setLoadPanel }: any) {
                 background: 'none',
                 color: 'white',
                 border: '1px solid #335c7d',
+                overflowWrap: 'break-word',
               }}
               onClick={() => {
                 if (window.confirm('Are you sure to load state?')) {
