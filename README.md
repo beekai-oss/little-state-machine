@@ -43,9 +43,9 @@ Options: {
 
 This hook function will return action/actions and state of the app. 
 
-## React DevTool Component
+## React DevTools
 
-Building in DevTool component.
+Built-in DevTool component to track your state change and action.
 ```jsx
 <DevTool />
 ```
