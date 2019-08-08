@@ -7,7 +7,7 @@ export default function DevToolStorage({ setLoadPanel }: any) {
       style={{
         color: 'white',
         position: 'absolute',
-        top: 50,
+        top: 40,
         right: 0,
         width: 450,
         margin: 0,
