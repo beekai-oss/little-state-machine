@@ -57,6 +57,7 @@ export default ({
           color: 'white',
           fontSize: 12,
           padding: 10,
+          lineHeight: '20px',
           margin: '0 0 10px 0',
           borderBottom: '1px solid rgb(17, 50, 76)',
         }}
