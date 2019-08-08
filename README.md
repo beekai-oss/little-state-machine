@@ -1,5 +1,5 @@
 <div align="center"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png" alt="React forme Logo - React hook form valiation" width="180px" />
-    <h1>Little State Machine</h2>
+    <h1>♆ Little State Machine</h2>
 </div>
 
 > Flux state management made super simple
@@ -56,16 +56,16 @@ Building in DevTool component.
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
 This will toggle the console output in dev tool.
 
-`window.LITTLE_STATE_MACHINE_DEBUG(true)` to turn debug on in console
+`window.STATE_MACHINE_DEBUG(true)` to turn debug on in console
 
-`window.LITTLE_STATE_MACHINE_DEBUG(false)` to turn off debug on in console
+`window.STATE_MACHINE_DEBUG(false)` to turn off debug on in console
 
 <img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png" />
 
 ##### 🔗 `window.STATE_MACHINE_RESET`
 This will reset the entire store.
 
-`window.LITTLE_STATE_MACHINE_RESET()` to reset the localStorage or sessionStorage
+`window.STATE_MACHINE_RESET()` to reset the localStorage or sessionStorage
 
 ##### 🔗 `window.STATE_MACHINE_GET_STORE`
 This will return the entire store.
