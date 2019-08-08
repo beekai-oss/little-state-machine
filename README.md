@@ -26,7 +26,7 @@ This is a Provider Component to wrapper around your entire app in order to creat
 ##### 🔗 `createStore`
 Function to initial the global store, call at app root where `StateMachineProvider` is.
 
-##### 🔗 `useStateMachine(Action | Actions, Options) =>`
+##### 🔗 `useStateMachine(Action | Actions, Options?) =>`
 
 ```typescript
 // individual action
