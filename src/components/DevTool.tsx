@@ -3,33 +3,56 @@ import { useStateMachine, middleWare } from '../stateMachine';
 import DevToolActionPanel from './DevToolActionPanel';
 import DevToolStateTree from './DevToolStateTree';
 import { Animate } from 'react-simple-animate';
+import { STATE_MACHINE_DEV_TOOL_CONFIG } from '../constants';
+
 const cloneDeep = require('lodash.clonedeep');
 
 const { useState } = React;
-export let actions: { name: string; state: Object }[] = [];
 let previousStateIndex = -1;
-let previousIsClose = false;
 let previousIsLoadPanelShow = false;
-export const DEV_TOOL_CONFIG = 'dev_tool_config';
+export let actions: { name: string; state: Object }[] = [];
 const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
-      JSON.parse(window.localStorage.getItem(DEV_TOOL_CONFIG) || '{}')
-    : {};
-let previousIsCollpase = config.isCollapse;
+      JSON.parse(
+        window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) || '{}',
+      )
+    : {
+        isCollapse: false,
+        isClose: false,
+      };
+let previousIsCollapse = config.isCollapse;
+let previousIsClose = config.isClose;
 
 const DevTool: React.FC = () => {
   const { state } = useStateMachine();
-  const [isClose, setClose] = useState(false);
+  const [isClose, setClose] = useState(config.isClose);
   const [isLoadPanelShow, setLoadPanel] = useState(false);
   const [isCollapse, setExpand] = useState(config.isCollapse);
   const [stateIndex, setStateIndex] = useState(-1);
+
+  const closePanel = () => {
+    const closeValue = !isClose;
+    setClose(closeValue);
+    const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
+    try {
+      window.localStorage.setItem(
+        STATE_MACHINE_DEV_TOOL_CONFIG,
+        config
+          ? JSON.stringify({
+              ...JSON.parse(config),
+              isClose: closeValue,
+            })
+          : JSON.stringify({ isClose: closeValue }),
+      );
+    } catch {}
+  };
 
   if (
     previousStateIndex === stateIndex &&
     previousIsClose === isClose &&
     previousIsLoadPanelShow === isLoadPanelShow &&
-    previousIsCollpase === isCollapse
+    previousIsCollapse === isCollapse
   ) {
     actions.push({
       name: (middleWare() || {}).debugName,
@@ -40,7 +63,7 @@ const DevTool: React.FC = () => {
   previousStateIndex = stateIndex;
   previousIsClose = isClose;
   previousIsLoadPanelShow = isLoadPanelShow;
-  previousIsCollpase = isCollapse;
+  previousIsCollapse = isCollapse;
 
   return (
     <div
@@ -50,8 +73,8 @@ const DevTool: React.FC = () => {
     >
       <Animate
         play={!isClose}
-        end={{ opacity: 0 }}
-        delay={0.4}
+        end={{ transform: 'translateY(-50px)' }}
+        delay={0.5}
         render={({ style }) => (
           <button
             style={{
@@ -65,11 +88,12 @@ const DevTool: React.FC = () => {
               color: 'white',
               zIndex: 100000000,
               fontSize: 12,
+              lineHeight: '25px',
               ...style,
             }}
-            onClick={() => setClose(!isClose)}
+            onClick={() => closePanel()}
           >
-            Little State Machine
+            ♆ LITTLE STATE MACHINE
           </button>
         )}
       />
@@ -100,6 +124,7 @@ const DevTool: React.FC = () => {
             />
             <DevToolStateTree
               {...{
+                closePanel,
                 isLoadPanelShow,
                 setLoadPanel,
                 state,

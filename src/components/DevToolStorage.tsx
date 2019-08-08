@@ -15,8 +15,10 @@ export default function DevToolStorage({ setLoadPanel }: any) {
         background: '#0a1c2c',
         fontSize: 12,
         boxSizing: 'border-box',
-        height: '100vh',
         zIndex: 99999999,
+        overflowY: 'auto',
+        height: 'calc(100vh - 50px)',
+        overflowX: 'hidden',
       }}
     >
       <ul

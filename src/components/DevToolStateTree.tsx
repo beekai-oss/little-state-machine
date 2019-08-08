@@ -1,7 +1,17 @@
 import DevToolStorage from './DevToolStorage';
 import ReactJson from 'react-json-view';
 import * as React from 'react';
-import { actions, DEV_TOOL_CONFIG } from './DevTool';
+import { actions } from './DevTool';
+import { STATE_MACHINE_DEV_TOOL_CONFIG } from '../constants';
+
+const buttonStyle = {
+  margin: '0 10px 0 0',
+  padding: '5px 20px',
+  display: 'inline',
+  fontSize: '12px',
+  border: 'none',
+  borderRadius: '2px',
+};
 
 export default ({
   isLoadPanelShow,
@@ -9,8 +19,7 @@ export default ({
   state,
   setExpand,
   isCollapse,
-  setClose,
-  isClose,
+  closePanel,
   stateIndex,
 }: {
   isLoadPanelShow: boolean;
@@ -18,10 +27,27 @@ export default ({
   state: Object;
   setExpand: (payload: boolean) => void;
   setClose: (payload: boolean) => void;
-  isCollapse: boolean;
-  isClose: boolean;
+  closePanel: () => void;
   stateIndex: number;
+  isCollapse: boolean;
 }) => {
+  const collapse = () => {
+    const expandValue = !isCollapse;
+    setExpand(expandValue);
+    const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
+    try {
+      window.localStorage.setItem(
+        STATE_MACHINE_DEV_TOOL_CONFIG,
+        config
+          ? JSON.stringify({
+              ...JSON.parse(config),
+              isCollapse: expandValue,
+            })
+          : JSON.stringify({ isCollapse: expandValue }),
+      );
+    } catch {}
+  };
+
   return (
     <section>
       {isLoadPanelShow && <DevToolStorage setLoadPanel={setLoadPanel} />}
@@ -35,7 +61,7 @@ export default ({
           borderBottom: '1px solid rgb(17, 50, 76)',
         }}
       >
-        Little State Machine
+        ♆ Little State Machine
       </h3>
       <section
         style={{
@@ -49,57 +75,20 @@ export default ({
               window.localStorage.setItem(name, JSON.stringify(state));
             }
           }}
-          style={{
-            margin: '0 10px 0 0',
-            padding: '5px 20px',
-            display: 'inline',
-            fontSize: '12px',
-            border: 'none',
-            borderRadius: '2px',
-            textTransform: 'uppercase',
-          }}
+          style={buttonStyle}
         >
           Save
         </button>
         <button
-          style={{
-            margin: '0 10px 0 0',
-            padding: '5px 20px',
-            display: 'inline',
-            fontSize: '12px',
-            border: 'none',
-            borderRadius: '2px',
-            textTransform: 'uppercase',
-          }}
+          style={buttonStyle}
           onClick={() => setLoadPanel(!isLoadPanelShow)}
         >
           Load
         </button>
         <button
-          style={{
-            margin: 0,
-            padding: '5px 20px',
-            display: 'inline',
-            fontSize: '12px',
-            border: 'none',
-            borderRadius: '2px',
-            textTransform: 'uppercase',
-          }}
+          style={buttonStyle}
           onClick={() => {
-            const expandValue = !isCollapse;
-            setExpand(expandValue);
-            const config = window.localStorage.getItem(DEV_TOOL_CONFIG);
-            try {
-              window.localStorage.setItem(
-                DEV_TOOL_CONFIG,
-                config
-                  ? JSON.stringify({
-                      ...JSON.parse(config),
-                      isCollapse: expandValue,
-                    })
-                  : JSON.stringify({ isCollapse: expandValue }),
-              );
-            } catch {}
+            collapse();
           }}
         >
           {isCollapse ? 'Expand' : 'collapse'}
@@ -114,15 +103,21 @@ export default ({
           padding: 10,
           appearance: 'none',
           background: 'none',
-          fontSize: 20,
+          fontSize: 26,
           border: 0,
           margin: 0,
         }}
-        onClick={() => setClose(!isClose)}
+        onClick={() => {
+          if (isLoadPanelShow) {
+            setLoadPanel(false);
+          } else {
+            closePanel();
+          }
+        }}
       >
         ×
       </button>
-      <section style={{ padding: 10 }}>
+      <section style={{ padding: '10px 0px 10px 10px' }}>
         <ReactJson
           src={
             (stateIndex === -1
@@ -140,7 +135,7 @@ export default ({
           style={{
             fontSize: 12,
             overflow: 'auto',
-            height: 'calc(100vh - 94px)',
+            height: 'calc(100vh - 90px)',
           }}
         />
       </section>
