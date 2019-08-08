@@ -20,6 +20,7 @@
 Check out the [Demo](https://codesandbox.io/s/lrz5wloklm).
   <br />  
 <h2 align="center">🕹 API</h2>
+
 ##### 🔗 `StateMachineProvider`
 This is a Provider Component to wrapper around your entire app in order to create context.
 
