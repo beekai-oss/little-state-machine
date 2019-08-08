@@ -15,10 +15,11 @@
 <h2>📦 Installation</h2>
 
     $ npm install little-state-machine
- <br />   
+<br />   
+ 
 <h2>🖥 <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a></h2>
 Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
-  <br />  <br />  
+<br />
   
 <h2>🕹 API</h2>
 
@@ -87,7 +88,7 @@ Load saved state into your app, you can either supply a name of your session/loc
 `storeName`: external session/local storage name
 
 `data`: string of data
- <br />
+<br />
 <h2>📖 Example</h2>
 
 📋 `app.js`
