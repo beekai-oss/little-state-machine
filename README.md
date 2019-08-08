@@ -27,6 +27,7 @@ This is a Provider Component to wrapper around your entire app in order to creat
 Function to initial the global store, call at app root where `StateMachineProvider` is.
 
 ##### 🔗 `useStateMachine(Action | Actions, Options?) =>`
+This hook function will return action/actions and state of the app. 
 
 ```typescript
 // individual action
@@ -39,8 +40,6 @@ Options: {
   shouldReRenderApp: boolean, 
 }
 ```
-
-This hook function will return action/actions and state of the app. 
 
 ## React DevTools
 
