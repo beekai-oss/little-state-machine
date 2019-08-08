@@ -89,6 +89,8 @@ const DevTool: React.FC = () => {
               zIndex: 100000000,
               fontSize: 12,
               lineHeight: '25px',
+              border: 0,
+              borderRadius: 0,
               ...style,
             }}
             onClick={() => closePanel()}
