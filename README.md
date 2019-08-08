@@ -52,7 +52,7 @@ Built-in DevTool component to track your state change and action.
 </StateMachineProvider>
 ```
 <img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png" />
-<br />
+
 <h2>🛠 Window Object</h2>
 
 ##### 🔗 `window.STATE_MACHINE_DEBUG`
@@ -87,7 +87,7 @@ Load saved state into your app, you can either supply a name of your session/loc
 `storeName`: external session/local storage name
 
 `data`: string of data
-<br />
+
 <h2>📖 Example</h2>
 
 📋 `app.js`
