@@ -103,6 +103,7 @@ export default ({
           margin: 0,
           lineHeight: '22px',
         }}
+        aria-label="close panel"
         onClick={() => {
           if (isLoadPanelShow) {
             setLoadPanel(false);

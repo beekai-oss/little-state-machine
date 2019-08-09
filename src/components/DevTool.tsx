@@ -31,11 +31,11 @@ const DevTool: React.FC = () => {
   const [isCollapse, setExpand] = useState(config.isCollapse);
   const [stateIndex, setStateIndex] = useState(-1);
 
-  const closePanel = useCallback(() => {
+  const closePanel = () => {
     const closeValue = !isClose;
     setClose(closeValue);
     saveSetting({ isClose: closeValue });
-  }, []);
+  };
 
   if (
     previousStateIndex === stateIndex &&
