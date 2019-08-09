@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Store } from './types';
+import { Store, UpdateStoreFunction } from './types';
 
 export default React.createContext<{
   store: Store;
-  updateStore: any;
+  updateStore: UpdateStoreFunction;
 }>({
   store: {},
-  updateStore: () => {},
+  updateStore: (payload) => payload,
 });

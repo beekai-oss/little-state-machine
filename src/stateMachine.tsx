@@ -12,6 +12,8 @@ import {
   Options,
   Action,
   Actions,
+  UpdateStoreFunction,
+  StoreUpdateFunction,
 } from './types';
 import { setUpDevTools } from './devTool';
 import StateMachineContext from './StateMachineContext';
@@ -59,7 +61,7 @@ export function createStore(data: Store) {
 }
 
 export function StateMachineProvider<T>(props: T) {
-  const [globalState, updateStore] = React.useState(getStore());
+  const [globalState, updateStore] = React.useState<Store>(getStore());
   const value = React.useMemo(
     () => ({
       store: globalState,
@@ -67,6 +69,7 @@ export function StateMachineProvider<T>(props: T) {
     }),
     [globalState],
   );
+  // @ts-ignore
   return <StateMachineContext.Provider value={value} {...props} />;
 }
 
@@ -76,10 +79,10 @@ const actionTemplate = ({
   key,
   updateStore,
 }: {
-  callback?: any;
+  callback?: StoreUpdateFunction;
   options?: Options;
   key?: string;
-  updateStore: Function;
+  updateStore: UpdateStoreFunction;
 }) => (payload: any) => {
   let isDebugOn;
   let storeCopy;
@@ -148,7 +151,7 @@ export function useStateMachine(
     action: updateStoreFunction
       ? actionTemplate({
           options,
-          callback: updateStoreFunction,
+          callback: updateStoreFunction as StoreUpdateFunction,
           updateStore,
         })
       : () => {},

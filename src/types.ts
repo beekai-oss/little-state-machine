@@ -6,6 +6,8 @@ export type UpdateStore =
   | StoreUpdateFunction
   | { [key: string]: StoreUpdateFunction };
 
+export type UpdateStoreFunction = <T>(payload: T) => T;
+
 export type ActionName = { debugName: string };
 
 export type SetStore = <T>(value: T) => void;
