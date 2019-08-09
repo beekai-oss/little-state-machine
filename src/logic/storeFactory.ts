@@ -1,5 +1,5 @@
-import { STORE_DEFAULT_NAME } from './constants';
-import { GetStoreName, GetStore, SetStore, Store, SetStoreName } from './types';
+import { STORE_DEFAULT_NAME } from '../constants';
+import { GetStoreName, GetStore, SetStore, Store, SetStoreName } from '../types';
 
 export default function storeFactory(
   storageType: Storage,

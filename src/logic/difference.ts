@@ -1,4 +1,4 @@
-import { Store } from './types';
+import { Store } from '../types';
 const transform = require('lodash.transform');
 const isEqual = require('lodash.isequal');
 const isObject = require('lodash.isobject');

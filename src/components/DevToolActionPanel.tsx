@@ -91,7 +91,7 @@ const DevToolActionPanel = ({
                   borderBottom:
                     stateIndex === index
                       ? '1px solid #ec5990'
-                      : `1px solid ${secondary}`,
+                      : `1px solid ${COLORS.secondary}`,
                 }}
                 onClick={() => {
                   setStateIndex(index);
