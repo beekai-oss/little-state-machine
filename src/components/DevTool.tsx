@@ -3,10 +3,11 @@ import { useStateMachine, middleWare } from '../stateMachine';
 import DevToolActionPanel from './DevToolActionPanel';
 import DevToolStateTree from './DevToolStateTree';
 import { Animate } from 'react-simple-animate';
-import { STATE_MACHINE_DEV_TOOL_CONFIG, COLORS } from '../constants';
+import { STATE_MACHINE_DEV_TOOL_CONFIG, COLORS, Z_INDEX } from '../constants';
+import saveSetting from '../logic/saveSetting';
 const cloneDeep = require('lodash.clonedeep');
 
-const { useState } = React;
+const { useState, useCallback } = React;
 export let actions: { name: string; state: Object }[] = [];
 let previousStateIndex = -1;
 let previousIsLoadPanelShow = false;
@@ -30,22 +31,12 @@ const DevTool: React.FC = () => {
   const [isCollapse, setExpand] = useState(config.isCollapse);
   const [stateIndex, setStateIndex] = useState(-1);
 
-  const closePanel = () => {
+  const closePanel = useCallback(() => {
     const closeValue = !isClose;
     setClose(closeValue);
     const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
-    try {
-      window.localStorage.setItem(
-        STATE_MACHINE_DEV_TOOL_CONFIG,
-        config
-          ? JSON.stringify({
-              ...JSON.parse(config),
-              isClose: closeValue,
-            })
-          : JSON.stringify({ isClose: closeValue }),
-      );
-    } catch {}
-  };
+    saveSetting(config || '', { isClose: closeValue });
+  }, []);
 
   if (
     previousStateIndex === stateIndex &&
@@ -85,7 +76,7 @@ const DevTool: React.FC = () => {
               padding: 10,
               background: COLORS.primary,
               color: 'white',
-              zIndex: 100000000,
+              zIndex: Z_INDEX.top,
               fontSize: 13,
               lineHeight: '20px',
               border: 0,
@@ -106,7 +97,7 @@ const DevTool: React.FC = () => {
         render={({ style }) => (
           <div
             style={{
-              zIndex: 100000000,
+              zIndex: Z_INDEX.top,
               position: 'fixed',
               right: 0,
               top: 0,

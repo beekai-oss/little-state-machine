@@ -1,7 +1,8 @@
 import DevToolStorage from './DevToolStorage';
 import ReactJson from 'react-json-view';
 import * as React from 'react';
-import { STATE_MACHINE_DEV_TOOL_CONFIG } from '../constants';
+import { STATE_MACHINE_DEV_TOOL_CONFIG, COLORS } from '../constants';
+import saveSetting from '../logic/saveSetting';
 
 const buttonStyle = {
   margin: '0 10px 0 0',
@@ -39,17 +40,7 @@ export default ({
     const expandValue = !isCollapse;
     setExpand(expandValue);
     const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
-    try {
-      window.localStorage.setItem(
-        STATE_MACHINE_DEV_TOOL_CONFIG,
-        config
-          ? JSON.stringify({
-              ...JSON.parse(config),
-              isCollapse: expandValue,
-            })
-          : JSON.stringify({ isCollapse: expandValue }),
-      );
-    } catch {}
+    saveSetting(config || '', { isCollapse: expandValue });
   };
 
   return (
@@ -63,7 +54,7 @@ export default ({
           padding: 10,
           lineHeight: '20px',
           margin: '0 0 10px 0',
-          borderBottom: '1px solid rgb(17, 50, 76)',
+          borderBottom: `1px solid ${COLORS.secondary}`,
         }}
       >
         ♆ Little State Machine
