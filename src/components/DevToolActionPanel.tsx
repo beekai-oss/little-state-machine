@@ -68,7 +68,7 @@ const DevToolActionPanel = ({
                 data.name.toLowerCase().includes(filterName)) ||
               (!data.name && !filterName),
           )
-          .map(({ name, state }, index) => (
+          .map(({ name }, index) => (
             <li
               style={{
                 fontSize: 13,

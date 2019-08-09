@@ -95,7 +95,7 @@ const actionTemplate = ({
 
   if (isDevMode) {
     isDebugOn = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
-    storeCopy = logStartAction({ debugName, getStore });
+    storeCopy = logStartAction({ debugName, getStore, middleWare });
   }
 
   setStore(callback && callback(getStore(), payload));

@@ -1,14 +1,15 @@
-import { middleWare } from './stateMachine';
 import difference from './difference';
-import { GetStore, Store } from './types';
+import { ActionName, GetStore, Store } from './types';
 const cloneDeep = require('lodash.clonedeep');
 
 export function logStartAction({
   debugName,
   getStore,
+  middleWare,
 }: {
   debugName: string;
   getStore: GetStore;
+  middleWare: (data?: ActionName) => ActionName;
 }) {
   const storeCopy = cloneDeep(getStore());
   console.log('┌───────────────────────────────────────>');
