@@ -34,8 +34,7 @@ const DevTool: React.FC = () => {
   const closePanel = useCallback(() => {
     const closeValue = !isClose;
     setClose(closeValue);
-    const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
-    saveSetting(config || '', { isClose: closeValue });
+    saveSetting({ isClose: closeValue });
   }, []);
 
   if (

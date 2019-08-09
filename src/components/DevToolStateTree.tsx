@@ -1,7 +1,7 @@
 import DevToolStorage from './DevToolStorage';
 import ReactJson from 'react-json-view';
 import * as React from 'react';
-import { STATE_MACHINE_DEV_TOOL_CONFIG, COLORS } from '../constants';
+import { COLORS } from '../constants';
 import saveSetting from '../logic/saveSetting';
 
 const buttonStyle = {
@@ -39,8 +39,7 @@ export default ({
   const collapse = () => {
     const expandValue = !isCollapse;
     setExpand(expandValue);
-    const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
-    saveSetting(config || '', { isCollapse: expandValue });
+    saveSetting({ isCollapse: expandValue });
   };
 
   return (
