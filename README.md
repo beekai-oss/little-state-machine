@@ -37,7 +37,7 @@ Action: (store: Object, payload: any) => void;
 // multiple actions
 Actions: { [key: string] : Action }
 // options to name action in debug, and weather trigger global state update to re-render entire app 
-Options: {
+Options?: {
   debugName?: string, // unique debug name can really help you :)
   debugNames?: {[key:string]: string},
   shouldReRenderApp?: boolean, 
