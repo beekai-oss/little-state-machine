@@ -2,19 +2,22 @@ import * as React from 'react';
 import storeFactory from './storeFactory';
 import { STATE_MACHINE_DEBUG_NAME } from './constants';
 import {
-  CallbackFunction,
-  Action,
+  UpdateStore,
+  ActionName,
   GetStore,
   SetStore,
   GetStoreName,
   SetStoreName,
   Store,
+  Options,
+  Action,
+  Actions,
 } from './types';
 import { setUpDevTools } from './devTool';
 import difference from './difference';
 import { StateMachineContext } from './StateMachineContext';
 
-let action: Action;
+let action: ActionName;
 let storageType: Storage =
   typeof window === 'undefined'
     ? {
@@ -32,7 +35,7 @@ let getName: GetStoreName;
 let setStorageName: SetStoreName;
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
-export const middleWare = (data?: Action): Action => {
+export const middleWare = (data?: ActionName): ActionName => {
   if (data) action = data;
   return action;
 };
@@ -74,10 +77,7 @@ const actionTemplate = ({
   updateStore,
 }: {
   callback?: any;
-  options?: {
-    debugName: string | { [key: string]: string };
-    shouldReRenderApp?: boolean;
-  };
+  options?: Options;
   key?: string;
   updateStore: Function;
 }) => (payload: any) => {
@@ -104,49 +104,41 @@ const actionTemplate = ({
       );
       console.log('├─before:', storeCopy);
     }
-  }
 
-  if (isDevMode) {
     middleWare({ debugName });
   }
 
   setStore(callback && callback(getStore(), payload));
   storageType.setItem(getName(), JSON.stringify(getStore()));
 
-  // @ts-ignore
   if (options && options.shouldReRenderApp !== false) {
     updateStore(getStore());
   }
 
-  if (isDevMode) {
-    if (isDebugOn) {
-      const isEmpty = require('lodash.isempty');
-      const diff = difference(getStore(), storeCopy);
-      const noChange = isEmpty(diff);
+  if (isDevMode && isDebugOn) {
+    const isEmpty = require('lodash.isempty');
+    const diff = difference(getStore(), storeCopy);
+    const noChange = isEmpty(diff);
 
-      console.log(noChange ? '└─after' : '├─after:', getStore());
+    console.log(noChange ? '└─after' : '├─after:', getStore());
 
-      if (!noChange) {
-        console.log(
-          '└─diff:',
-          difference(storeCopy, getStore()),
-          ' → ',
-          difference(getStore(), storeCopy),
-        );
-      }
+    if (!noChange) {
+      console.log(
+        '└─diff:',
+        difference(storeCopy, getStore()),
+        ' → ',
+        difference(getStore(), storeCopy),
+      );
     }
   }
 };
 
 export function useStateMachine(
-  updateStoreFunction?: CallbackFunction,
-  options?: {
-    debugName: string | { [key: string]: string };
-    shouldReRenderApp?: boolean;
-  },
+  updateStoreFunction?: UpdateStore,
+  options?: Options,
 ): {
-  action: Function;
-  actions: { [key: string]: Function };
+  action: Action;
+  actions: Actions;
   state: Object;
 } {
   const { store: globalState, updateStore } = React.useContext(
@@ -157,16 +149,15 @@ export function useStateMachine(
     return {
       actions: updateStoreFunction
         ? Object.entries(updateStoreFunction).reduce(
-            (previous, [key, callback]) => {
-              // @ts-ignore
-              previous[key] = actionTemplate({
+            (previous, [key, callback]) => ({
+              ...previous,
+              [key]: actionTemplate({
                 options,
                 callback,
                 updateStore,
                 key,
-              });
-              return previous;
-            },
+              }),
+            }),
             {},
           )
         : {},
