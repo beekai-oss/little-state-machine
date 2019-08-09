@@ -1,23 +1,34 @@
 import { STORE_DEFAULT_NAME } from './constants';
+import { GetStoreName, GetStore, SetStore, Store, SetStoreName } from './types';
 
-export default function storeFactory(storageType: any) {
+export default function storeFactory(
+  storageType: Storage,
+): {
+  set: SetStore;
+  get: GetStore;
+  getName: GetStoreName;
+  setName: SetStoreName;
+} {
   let storeName = STORE_DEFAULT_NAME;
+  let store: Store = {};
   const sessionStorageData = storageType.getItem(storeName);
-  let store = sessionStorageData ? JSON.parse(sessionStorageData) : {};
+  try {
+    sessionStorageData ? JSON.parse(sessionStorageData) : {};
+  } catch {}
 
-  const getName = () => storeName;
+  const getName = (): string => storeName;
 
-  const setName = (name: string) => {
+  const setName = (name: string): void => {
     const data = storageType.getItem(name);
     storeName = name;
     store = data ? JSON.parse(data) : {};
   };
 
-  const set = (value: any) => {
+  const set = <T>(value: T): void => {
     store = value;
   };
 
-  const get = () => store;
+  const get = (): Store => store;
 
   return {
     set,

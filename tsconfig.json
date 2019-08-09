@@ -5,9 +5,17 @@
     "target": "es2017",
     "moduleResolution": "node",
     "outDir": "./dist",
-    "declaration": true,
     "jsx": "react",
-    "lib": ["dom", "dom.iterable", "esnext"]
+    "skipLibCheck": true,
+    "declaration": true,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "test", "examples"]

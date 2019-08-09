@@ -1,34 +1,47 @@
 import * as React from 'react';
 import storeFactory from './storeFactory';
 import { STATE_MACHINE_DEBUG_NAME } from './constants';
-import { CallbackFunction } from './types';
+import {
+  CallbackFunction,
+  Action,
+  GetStore,
+  SetStore,
+  GetStoreName,
+  SetStoreName,
+  Store,
+} from './types';
 import { setUpDevTools } from './devTool';
 import difference from './difference';
+import { StateMachineContext } from './StateMachineContext';
 
-let options: any;
+let action: Action;
+let storageType: Storage =
+  typeof window === 'undefined'
+    ? {
+        getItem: payload => payload,
+        setItem: (payload: string) => payload,
+        clear: () => {},
+        length: 0,
+        key: (payload: number) => payload.toString(),
+        removeItem: () => {},
+      }
+    : window.sessionStorage;
+let getStore: GetStore;
+let setStore: SetStore;
+let getName: GetStoreName;
+let setStorageName: SetStoreName;
+const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
-export const middleWare = (data?: any) => {
-  if (data) {
-    options = data;
-  }
-  return options;
+export const middleWare = (data?: Action): Action => {
+  if (data) action = data;
+  return action;
 };
 
-let storageType: any =
-  typeof window === 'undefined'
-    ? { getItem: () => {}, setItem: () => {}, clear: () => {} }
-    : window.sessionStorage;
-let getStore: any;
-let setStore: any;
-let getName: any;
-let setStorageName;
-const isDevMode = process.env.NODE_ENV !== 'production';
-
-export function setStorageType<T>(type: T) {
+export function setStorageType(type: Storage): void {
   storageType = type;
 }
 
-export function createStore(data: Record<string, any>) {
+export function createStore(data: Store) {
   const methods = storeFactory(storageType);
   setStorageName = methods.setName;
   getName = methods.getName;
@@ -42,12 +55,7 @@ export function createStore(data: Record<string, any>) {
   setStore(data);
 }
 
-export const StateMachineContext = React.createContext({
-  store: {},
-  updateStore: () => {},
-});
-
-export function StateMachineProvider(props: any) {
+export function StateMachineProvider<T>(props: T) {
   const [globalState, updateStore] = React.useState(getStore());
   const value = React.useMemo(
     () => ({
