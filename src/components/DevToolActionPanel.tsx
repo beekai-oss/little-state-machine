@@ -92,6 +92,7 @@ const DevToolActionPanel = ({
                     stateIndex === index
                       ? '1px solid #ec5990'
                       : `1px solid ${COLORS.secondary}`,
+                  textTransform: 'initial',
                 }}
                 onClick={() => {
                   setStateIndex(index);
