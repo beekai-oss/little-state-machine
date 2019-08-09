@@ -15,7 +15,7 @@ import {
 } from './types';
 import { setUpDevTools } from './devTool';
 import difference from './difference';
-import { StateMachineContext } from './StateMachineContext';
+import StateMachineContext from './StateMachineContext';
 
 let action: ActionName;
 let storageType: Storage =
