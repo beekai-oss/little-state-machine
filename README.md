@@ -43,7 +43,7 @@ Options: {
 }
 ```
 
-<h2>⚒ React DevTools</h2>
+<h2>⚒ DevTool</h2>
 
 Built-in DevTool component to track your state change and action.
 ```jsx
