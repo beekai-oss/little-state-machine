@@ -95,7 +95,7 @@ Load saved state into your app, you can either supply a name of your session/loc
 import React from 'react'
 import yourDetail from './yourDetail'
 import YourComponent from './yourComponent'
-import { StateMachineProvider, createStore } from 'little-state-machine'
+import { StateMachineProvider, createStore, DevTool } from 'little-state-machine'
 
 // create your store
 createStore({
@@ -105,6 +105,7 @@ createStore({
 export default () => {
   return (
     <StateMachineProvider>
+      {process.env.NODE_ENV !== 'production' && <DevTool />}
       <YourComponent />
     </StateMachineProvider>
   )
