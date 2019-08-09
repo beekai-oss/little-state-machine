@@ -1,6 +1,6 @@
 {
   "name": "little-state-machine",
-  "version": "2.7.8",
+  "version": "2.8.0",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
