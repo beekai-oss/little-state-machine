@@ -14,8 +14,8 @@ import {
   Actions,
 } from './types';
 import { setUpDevTools } from './devTool';
-import difference from './difference';
 import StateMachineContext from './StateMachineContext';
+import { logEndAction, logStartAction } from './devToolLogger';
 
 let action: ActionName;
 let storageType: Storage =
@@ -91,17 +91,8 @@ const actionTemplate = ({
       : '';
 
   if (isDevMode) {
-    const cloneDeep = require('lodash.clonedeep');
-    storeCopy = cloneDeep(getStore());
     isDebugOn = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
-
-    if (isDebugOn) {
-      console.log('┌───────────────────────────────────────>');
-      console.log(`├─%c${debugName}`, 'color: #bada55');
-      console.log('├─before:', storeCopy);
-    }
-
-    middleWare({ debugName });
+    storeCopy = logStartAction({ debugName, getStore });
   }
 
   setStore(callback && callback(getStore(), payload));
@@ -112,20 +103,10 @@ const actionTemplate = ({
   }
 
   if (isDevMode && isDebugOn) {
-    const isEmpty = require('lodash.isempty');
-    const diff = difference(getStore(), storeCopy);
-    const noChange = isEmpty(diff);
-
-    console.log(noChange ? '└─after' : '├─after:', getStore());
-
-    if (!noChange) {
-      console.log(
-        '└─diff:',
-        difference(storeCopy, getStore()),
-        ' → ',
-        difference(getStore(), storeCopy),
-      );
-    }
+    logEndAction({
+      getStore,
+      storeCopy,
+    });
   }
 };
 
