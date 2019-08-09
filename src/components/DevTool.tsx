@@ -7,7 +7,7 @@ import { STATE_MACHINE_DEV_TOOL_CONFIG, COLORS, Z_INDEX } from '../constants';
 import saveSetting from '../logic/saveSetting';
 const cloneDeep = require('lodash.clonedeep');
 
-const { useState, useCallback } = React;
+const { useState } = React;
 export let actions: { name: string; state: Object }[] = [];
 let previousStateIndex = -1;
 let previousIsLoadPanelShow = false;
