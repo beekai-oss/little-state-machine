@@ -1,5 +1,5 @@
 import * as React from 'react';
-import storeFactory from './storeFactory';
+import storeFactory from './logic/storeFactory';
 import { STATE_MACHINE_DEBUG_NAME } from './constants';
 import {
   UpdateStore,
@@ -15,9 +15,9 @@ import {
   UpdateStoreFunction,
   StoreUpdateFunction,
 } from './types';
-import { setUpDevTools } from './devTool';
+import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
-import { logEndAction, logStartAction } from './devToolLogger';
+import { logEndAction, logStartAction } from './logic/devToolLogger';
 
 let action: ActionName;
 let storageType: Storage =

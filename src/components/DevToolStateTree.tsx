@@ -111,6 +111,7 @@ export default ({
           fontSize: 26,
           border: 0,
           margin: 0,
+          lineHeight: '22px',
         }}
         onClick={() => {
           if (isLoadPanelShow) {

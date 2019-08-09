@@ -1,5 +1,5 @@
-import { STATE_MACHINE_DEBUG_NAME } from './constants';
-import { GetStore } from './types';
+import { STATE_MACHINE_DEBUG_NAME } from '../constants';
+import { GetStore } from '../types';
 
 export function setUpDevTools(
   isDevMode: boolean,

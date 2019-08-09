@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { STORE_DEFAULT_NAME } from '../constants';
+import { STORE_DEFAULT_NAME, COLORS } from '../constants';
 
 export default function DevToolStorage({ setLoadPanel }: any) {
   return (
@@ -12,7 +12,7 @@ export default function DevToolStorage({ setLoadPanel }: any) {
         width: 450,
         margin: 0,
         padding: 10,
-        background: '#0a1c2c',
+        background: COLORS.primary,
         fontSize: 12,
         boxSizing: 'border-box',
         zIndex: 99999999,

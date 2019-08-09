@@ -3,14 +3,13 @@ import { useStateMachine, middleWare } from '../stateMachine';
 import DevToolActionPanel from './DevToolActionPanel';
 import DevToolStateTree from './DevToolStateTree';
 import { Animate } from 'react-simple-animate';
-import { STATE_MACHINE_DEV_TOOL_CONFIG } from '../constants';
-
+import { STATE_MACHINE_DEV_TOOL_CONFIG, COLORS } from '../constants';
 const cloneDeep = require('lodash.clonedeep');
 
 const { useState } = React;
+export let actions: { name: string; state: Object }[] = [];
 let previousStateIndex = -1;
 let previousIsLoadPanelShow = false;
-export let actions: { name: string; state: Object }[] = [];
 const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
@@ -80,11 +79,11 @@ const DevTool: React.FC = () => {
             style={{
               position: 'fixed',
               right: 0,
-              top: '-1px',
+              top: -1,
               width: 200,
               margin: 0,
               padding: 10,
-              background: '#0a1c2c',
+              background: COLORS.primary,
               color: 'white',
               zIndex: 100000000,
               fontSize: 13,
@@ -113,10 +112,10 @@ const DevTool: React.FC = () => {
               top: 0,
               width: 600,
               height: '100vh',
-              background: '#0a1c2c',
+              background: COLORS.primary,
               display: 'grid',
               gridTemplateColumns: '150px auto',
-              boxShadow: '0 0 8px 2px #080808',
+              boxShadow: '0 0 8px 3px #080808',
               ...style,
             }}
           >

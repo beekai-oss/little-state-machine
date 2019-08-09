@@ -1,5 +1,5 @@
 import difference from './difference';
-import { ActionName, GetStore, Store } from './types';
+import { ActionName, GetStore, Store } from '../types';
 const cloneDeep = require('lodash.clonedeep');
 
 export function logStartAction({
