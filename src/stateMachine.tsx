@@ -85,10 +85,10 @@ const actionTemplate = ({
   let storeCopy;
   const debugName =
     options && options.debugName
-      ? key
-        ? options.debugName[key]
+      ? key && options.debugNames
+        ? options.debugNames[key]
         : options.debugName
-      : { debugName: '' };
+      : '';
 
   if (isDevMode) {
     const cloneDeep = require('lodash.clonedeep');
@@ -97,11 +97,7 @@ const actionTemplate = ({
 
     if (isDebugOn) {
       console.log('┌───────────────────────────────────────>');
-      console.log(
-        // @ts-ignore
-        `├─%c${debugName}`,
-        'color: #bada55',
-      );
+      console.log(`├─%c${debugName}`, 'color: #bada55');
       console.log('├─before:', storeCopy);
     }
 
@@ -137,9 +133,9 @@ export function useStateMachine(
   updateStoreFunction?: UpdateStore,
   options?: Options,
 ): {
-  action: Action;
-  actions: Actions;
-  state: Object;
+  action?: Action;
+  actions?: Actions;
+  state: Store;
 } {
   const { store: globalState, updateStore } = React.useContext(
     StateMachineContext,
