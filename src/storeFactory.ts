@@ -21,7 +21,9 @@ export default function storeFactory(
   const setName = (name: string): void => {
     const data = storageType.getItem(name);
     storeName = name;
-    store = data ? JSON.parse(data) : {};
+    try {
+      store = data ? JSON.parse(data) : {};
+    } catch {}
   };
 
   const set = <T>(value: T): void => {
