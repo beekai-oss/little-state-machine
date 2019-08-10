@@ -9,7 +9,7 @@
 
 - Follow flux application architecture
 - Tiny with 0 dependency and simple (less 1kb)
-- Persist your state by default (`sessionStorage`)
+- Persist state by default (`sessionStorage`)
 - Build with React Hooks
 
 <h2>📦 Installation</h2>
