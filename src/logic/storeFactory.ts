@@ -13,7 +13,7 @@ export default function storeFactory(
   let store: Store = {};
   const sessionStorageData = storageType.getItem(storeName);
   try {
-    sessionStorageData ? JSON.parse(sessionStorageData) : {};
+    store = sessionStorageData ? JSON.parse(sessionStorageData) : {};
   } catch {}
 
   const getName = (): string => storeName;
