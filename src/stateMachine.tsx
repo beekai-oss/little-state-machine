@@ -86,7 +86,7 @@ const actionTemplate = ({
 }) => (payload: any) => {
   let isDebugOn;
   let storeCopy;
-  const debugName =
+  const debugName: string | undefined =
     options && (options.debugName || options.debugNames)
       ? key && options.debugNames
         ? options.debugNames[key]
@@ -96,8 +96,9 @@ const actionTemplate = ({
   if (isDevMode) {
     isDebugOn = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
     if (isDebugOn) {
-      storeCopy = logStartAction({ debugName: debugName || '', getStore, middleWare });
+      storeCopy = logStartAction({ debugName: debugName || '', getStore });
     }
+    middleWare({ debugName: debugName || '' });
   }
 
   setStore(callback && callback(getStore(), payload));
