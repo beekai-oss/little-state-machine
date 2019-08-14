@@ -87,7 +87,7 @@ const actionTemplate = ({
   let isDebugOn;
   let storeCopy;
   const debugName =
-    options && options.debugName
+    options && (options.debugName || options.debugNames)
       ? key && options.debugNames
         ? options.debugNames[key]
         : options.debugName
@@ -96,7 +96,7 @@ const actionTemplate = ({
   if (isDevMode) {
     isDebugOn = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
     if (isDebugOn) {
-      storeCopy = logStartAction({ debugName, getStore, middleWare });
+      storeCopy = logStartAction({ debugName: debugName || '', getStore, middleWare });
     }
   }
 
