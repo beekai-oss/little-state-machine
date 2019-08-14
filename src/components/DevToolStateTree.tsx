@@ -86,7 +86,7 @@ export default ({
             collapse();
           }}
         >
-          {isCollapse ? 'Expand' : 'collapse'}
+          {isCollapse ? 'Expand' : 'Collapse'}
         </button>
       </section>
       <button

@@ -63,7 +63,7 @@ const DevTool: React.FC = () => {
       <Animate
         play={!isClose}
         end={{ transform: 'translateY(-50px)' }}
-        delay={0.5}
+        delay={0.3}
         render={({ style }) => (
           <button
             style={{
@@ -92,7 +92,7 @@ const DevTool: React.FC = () => {
         play={isClose}
         end={{ transform: 'translateX(800px)' }}
         easeType="ease-out"
-        duration={0.5}
+        duration={0.3}
         render={({ style }) => (
           <div
             style={{
