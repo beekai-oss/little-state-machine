@@ -1,7 +1,20 @@
 import DevToolStorage from './DevToolStorage';
 import ReactJson from 'react-json-view';
 import * as React from 'react';
-import { actions, DEV_TOOL_CONFIG } from './DevTool';
+import { COLORS } from '../constants';
+import saveSetting from '../logic/saveSetting';
+import { useState } from 'react';
+import search from '../logic/filterObject';
+const clone = require('lodash.clonedeep');
+
+const buttonStyle = {
+  margin: '0 10px 0 0',
+  padding: '5px 15px',
+  display: 'inline',
+  fontSize: '12px',
+  border: 'none',
+  borderRadius: '2px',
+};
 
 export default ({
   isLoadPanelShow,
@@ -9,19 +22,36 @@ export default ({
   state,
   setExpand,
   isCollapse,
-  setClose,
-  isClose,
+  closePanel,
   stateIndex,
+  actions,
 }: {
   isLoadPanelShow: boolean;
   setLoadPanel: (payload: boolean) => void;
   state: Object;
   setExpand: (payload: boolean) => void;
   setClose: (payload: boolean) => void;
-  isCollapse: boolean;
-  isClose: boolean;
+  closePanel: () => void;
   stateIndex: number;
+  isCollapse: boolean;
+  actions: {
+    name: string;
+    state: Object;
+  }[];
 }) => {
+  const collapse = () => {
+    const expandValue = !isCollapse;
+    setExpand(expandValue);
+    saveSetting({ isCollapse: expandValue });
+  };
+  const [filterValue, setFilterValue] = useState('');
+  let data = (stateIndex === -1
+    ? actions[actions.length - 1]
+    : actions[stateIndex]
+  ).state;
+
+  if (filterValue) data = search(clone(data), filterValue);
+
   return (
     <section>
       {isLoadPanelShow && <DevToolStorage setLoadPanel={setLoadPanel} />}
@@ -31,11 +61,12 @@ export default ({
           color: 'white',
           fontSize: 12,
           padding: 10,
+          lineHeight: '20px',
           margin: '0 0 10px 0',
-          borderBottom: '1px solid rgb(17, 50, 76)',
+          borderBottom: `1px solid ${COLORS.secondary}`,
         }}
       >
-        Little State Machine
+        ♆ Little State Machine
       </h3>
       <section
         style={{
@@ -49,48 +80,23 @@ export default ({
               window.localStorage.setItem(name, JSON.stringify(state));
             }
           }}
-          style={{
-            margin: '0 10px 0 0',
-            padding: '5px 20px',
-            display: 'inline',
-          }}
+          style={buttonStyle}
         >
           Save
         </button>
         <button
-          style={{
-            margin: '0 10px 0 0',
-            padding: '5px 20px',
-            display: 'inline',
-          }}
+          style={buttonStyle}
           onClick={() => setLoadPanel(!isLoadPanelShow)}
         >
           Load
         </button>
         <button
-          style={{
-            margin: 0,
-            padding: '5px 20px',
-            display: 'inline',
-          }}
+          style={buttonStyle}
           onClick={() => {
-            const expandValue = !isCollapse;
-            setExpand(expandValue);
-            const config = window.localStorage.getItem(DEV_TOOL_CONFIG);
-            try {
-              window.localStorage.setItem(
-                DEV_TOOL_CONFIG,
-                config
-                  ? JSON.stringify({
-                      ...JSON.parse(config),
-                      isCollapse: expandValue,
-                    })
-                  : JSON.stringify({ isCollapse: expandValue }),
-              );
-            } catch {}
+            collapse();
           }}
         >
-          {isCollapse ? 'Expand' : 'collapse'}
+          {isCollapse ? 'Expand' : 'Collapse'}
         </button>
       </section>
       <button
@@ -102,22 +108,43 @@ export default ({
           padding: 10,
           appearance: 'none',
           background: 'none',
-          fontSize: 20,
+          fontSize: 26,
           border: 0,
           margin: 0,
+          lineHeight: '22px',
         }}
-        onClick={() => setClose(!isClose)}
+        aria-label="close panel"
+        onClick={() => {
+          if (isLoadPanelShow) {
+            setLoadPanel(false);
+          } else {
+            closePanel();
+          }
+        }}
       >
         ×
       </button>
-      <section style={{ padding: 10 }}>
+      <section style={{ padding: '10px 0px 10px 10px' }}>
+        <input
+          name="filter"
+          style={{
+            borderRadius: 0,
+            background: '#11334c',
+            marginTop: 10,
+            border: 0,
+            color: 'white',
+            padding: '10px 10px',
+            boxSizing: 'border-box',
+            fontSize: '14px',
+            width: 'calc(100% + 10px)',
+            margin: '0 -10px 10px',
+          }}
+          type="search"
+          placeholder="Search..."
+          onChange={e => setFilterValue(e.target.value)}
+        />
         <ReactJson
-          src={
-            (stateIndex === -1
-              ? actions[actions.length - 1]
-              : actions[stateIndex]
-            ).state
-          }
+          src={data}
           theme="harmonic"
           iconStyle="square"
           enableClipboard={false}
@@ -128,7 +155,7 @@ export default ({
           style={{
             fontSize: 12,
             overflow: 'auto',
-            height: 'calc(100vh - 94px)',
+            height: 'calc(100vh - 90px)',
           }}
         />
       </section>

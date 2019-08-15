@@ -3,33 +3,45 @@ import { useStateMachine, middleWare } from '../stateMachine';
 import DevToolActionPanel from './DevToolActionPanel';
 import DevToolStateTree from './DevToolStateTree';
 import { Animate } from 'react-simple-animate';
+import { STATE_MACHINE_DEV_TOOL_CONFIG, COLORS, Z_INDEX } from '../constants';
+import saveSetting from '../logic/saveSetting';
 const cloneDeep = require('lodash.clonedeep');
 
 const { useState } = React;
 export let actions: { name: string; state: Object }[] = [];
 let previousStateIndex = -1;
-let previousIsClose = false;
 let previousIsLoadPanelShow = false;
-export const DEV_TOOL_CONFIG = 'dev_tool_config';
 const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
-      JSON.parse(window.localStorage.getItem(DEV_TOOL_CONFIG) || '{}')
-    : {};
-let previousisCollapse = config.isCollapse;
+      JSON.parse(
+        window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) || '{}',
+      )
+    : {
+        isCollapse: false,
+        isClose: false,
+      };
+let previousIsCollapse = config.isCollapse;
+let previousIsClose = config.isClose;
 
 const DevTool: React.FC = () => {
   const { state } = useStateMachine();
-  const [isClose, setClose] = useState(false);
+  const [isClose, setClose] = useState(config.isClose);
   const [isLoadPanelShow, setLoadPanel] = useState(false);
   const [isCollapse, setExpand] = useState(config.isCollapse);
   const [stateIndex, setStateIndex] = useState(-1);
+
+  const closePanel = () => {
+    const closeValue = !isClose;
+    setClose(closeValue);
+    saveSetting({ isClose: closeValue });
+  };
 
   if (
     previousStateIndex === stateIndex &&
     previousIsClose === isClose &&
     previousIsLoadPanelShow === isLoadPanelShow &&
-    previousisCollapse === isCollapse
+    previousIsCollapse === isCollapse
   ) {
     actions.push({
       name: (middleWare() || {}).debugName,
@@ -40,7 +52,7 @@ const DevTool: React.FC = () => {
   previousStateIndex = stateIndex;
   previousIsClose = isClose;
   previousIsLoadPanelShow = isLoadPanelShow;
-  previousisCollapse = isCollapse;
+  previousIsCollapse = isCollapse;
 
   return (
     <div
@@ -50,26 +62,29 @@ const DevTool: React.FC = () => {
     >
       <Animate
         play={!isClose}
-        end={{ opacity: 0 }}
-        delay={0.4}
+        end={{ transform: 'translateY(-50px)' }}
+        delay={0.3}
         render={({ style }) => (
           <button
             style={{
               position: 'fixed',
               right: 0,
-              top: 0,
+              top: -1,
               width: 200,
               margin: 0,
               padding: 10,
-              background: '#0a1c2c',
+              background: COLORS.primary,
               color: 'white',
-              zIndex: 100000000,
-              fontSize: 12,
+              zIndex: Z_INDEX.top,
+              fontSize: 13,
+              lineHeight: '20px',
+              border: 0,
+              borderRadius: 0,
               ...style,
             }}
-            onClick={() => setClose(!isClose)}
+            onClick={() => closePanel()}
           >
-            Little State Machine
+            ♆ LITTLE STATE MACHINE
           </button>
         )}
       />
@@ -77,29 +92,32 @@ const DevTool: React.FC = () => {
         play={isClose}
         end={{ transform: 'translateX(800px)' }}
         easeType="ease-out"
-        duration={0.5}
+        duration={0.3}
         render={({ style }) => (
           <div
             style={{
-              zIndex: 100000000,
+              zIndex: Z_INDEX.top,
               position: 'fixed',
               right: 0,
               top: 0,
               width: 600,
               height: '100vh',
-              background: '#0a1c2c',
+              background: COLORS.primary,
               display: 'grid',
               gridTemplateColumns: '150px auto',
-              boxShadow: '0 0 8px 2px #080808',
+              boxShadow: '0 0 8px 3px #080808',
               ...style,
             }}
           >
             <DevToolActionPanel
               stateIndex={stateIndex}
+              actions={actions}
               setStateIndex={setStateIndex}
             />
             <DevToolStateTree
               {...{
+                closePanel,
+                actions,
                 isLoadPanelShow,
                 setLoadPanel,
                 state,

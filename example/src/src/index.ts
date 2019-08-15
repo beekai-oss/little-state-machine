@@ -3,11 +3,10 @@ import {
   createStore,
   StateMachineProvider,
   useStateMachine,
-  StateMachineContext,
-  // @ts-ignore
   setStorageName,
 } from './stateMachine';
 import DevTool from './components/DevTool';
+import StateMachineContext from './StateMachineContext';
 
 export {
   setStorageType,
@@ -15,7 +14,7 @@ export {
   StateMachineProvider,
   useStateMachine,
   StateMachineContext,
-  // @ts-ignore
   setStorageName,
   DevTool,
 };
+

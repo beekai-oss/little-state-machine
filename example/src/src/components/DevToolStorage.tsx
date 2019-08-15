@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { STORE_DEFAULT_NAME } from '../constants';
+import { STORE_DEFAULT_NAME, COLORS, Z_INDEX } from '../constants';
 
 export default function DevToolStorage({ setLoadPanel }: any) {
   return (
@@ -7,16 +7,18 @@ export default function DevToolStorage({ setLoadPanel }: any) {
       style={{
         color: 'white',
         position: 'absolute',
-        top: 30,
+        top: 40,
         right: 0,
         width: 450,
         margin: 0,
         padding: 10,
-        background: '#0a1c2c',
+        background: COLORS.primary,
         fontSize: 12,
         boxSizing: 'border-box',
-        height: '100vh',
-        zIndex: 99999999,
+        zIndex: Z_INDEX.second,
+        overflowY: 'auto',
+        height: 'calc(100vh - 50px)',
+        overflowX: 'hidden',
       }}
     >
       <ul
@@ -38,7 +40,8 @@ export default function DevToolStorage({ setLoadPanel }: any) {
                 textAlign: 'left',
                 background: 'none',
                 color: 'white',
-                border: '1px solid #335c7d',
+                border: `1px solid ${COLORS.secondary}`,
+                overflowWrap: 'break-word',
               }}
               onClick={() => {
                 if (window.confirm('Are you sure to load state?')) {
@@ -54,6 +57,9 @@ export default function DevToolStorage({ setLoadPanel }: any) {
       <button
         style={{
           margin: 0,
+          borderRadius: '4px',
+          padding: '10px',
+          width: '100%',
         }}
         onClick={() => setLoadPanel(false)}
       >

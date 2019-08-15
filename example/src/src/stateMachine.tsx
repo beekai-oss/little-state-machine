@@ -1,32 +1,52 @@
 import * as React from 'react';
-import storeFactory from './storeFactory';
+import storeFactory from './logic/storeFactory';
 import { STATE_MACHINE_DEBUG_NAME } from './constants';
-import { CallbackFunction } from './types';
-import { setUpDevTools } from './devTool';
-import difference from "./difference";
+import {
+  UpdateStore,
+  ActionName,
+  GetStore,
+  SetStore,
+  GetStoreName,
+  SetStoreName,
+  Store,
+  Options,
+  Action,
+  Actions,
+  UpdateStoreFunction,
+  StoreUpdateFunction,
+} from './types';
+import { setUpDevTools } from './logic/devTool';
+import StateMachineContext from './StateMachineContext';
+import { logEndAction, logStartAction } from './logic/devToolLogger';
 
-let options: any;
+let action: ActionName;
+let storageType: Storage =
+  typeof window === 'undefined'
+    ? {
+        getItem: payload => payload,
+        setItem: (payload: string) => payload,
+        clear: () => {},
+        length: 0,
+        key: (payload: number) => payload.toString(),
+        removeItem: () => {},
+      }
+    : window.sessionStorage;
+let getStore: GetStore;
+let setStore: SetStore;
+let getName: GetStoreName;
+let setStorageName: SetStoreName;
+const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
-export const middleWare = (data?: any) => {
-  if (data) options = data;
-  return options;
+export const middleWare = (data?: ActionName): ActionName => {
+  if (data) action = data;
+  return action;
 };
 
-let storageType: any =
-  typeof window === 'undefined'
-    ? { getItem: () => {}, setItem: () => {}, clear: () => {} }
-    : window.sessionStorage;
-let getStore: any;
-let setStore: any;
-let getName: any;
-let setStorageName;
-const isDevMode = process.env.NODE_ENV !== 'production';
-
-export function setStorageType<T>(type: T) {
-  storageType = type
+export function setStorageType(type: Storage): void {
+  storageType = type;
 }
 
-export function createStore(data: Record<string, any>) {
+export function createStore(data: Store) {
   const methods = storeFactory(storageType);
   setStorageName = methods.setName;
   getName = methods.getName;
@@ -40,13 +60,8 @@ export function createStore(data: Record<string, any>) {
   setStore(data);
 }
 
-export const StateMachineContext = React.createContext({
-  store: {},
-  updateStore: () => {},
-});
-
-export function StateMachineProvider(props: any) {
-  const [globalState, updateStore] = React.useState(getStore());
+export function StateMachineProvider<T>(props: T) {
+  const [globalState, updateStore] = React.useState<Store>(getStore());
   const value = React.useMemo(
     () => ({
       store: globalState,
@@ -54,6 +69,7 @@ export function StateMachineProvider(props: any) {
     }),
     [globalState],
   );
+  // @ts-ignore
   return <StateMachineContext.Provider value={value} {...props} />;
 }
 
@@ -63,73 +79,50 @@ const actionTemplate = ({
   key,
   updateStore,
 }: {
-  callback?: any;
-  options?: {
-    debugName: string | { [key: string]: string };
-    shouldReRenderApp?: boolean;
-  };
+  callback?: StoreUpdateFunction;
+  options?: Options;
   key?: string;
-  updateStore: Function;
+  updateStore: UpdateStoreFunction;
 }) => (payload: any) => {
   let isDebugOn;
   let storeCopy;
+  const debugName: string | undefined =
+    options && (options.debugName || options.debugNames)
+      ? key && options.debugNames
+        ? options.debugNames[key]
+        : options.debugName
+      : '';
 
   if (isDevMode) {
-    const cloneDeep = require('lodash.clonedeep');
-    storeCopy = cloneDeep(getStore());
     isDebugOn = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
-
     if (isDebugOn) {
-      console.log('┌───────────────────────────────────────>');
-      console.log(
-          // @ts-ignore
-        `├─%c${key ? options.debugName[key] : options.debugName}`,
-        'color: #bada55',
-      );
-      console.log('├─before:', storeCopy);
+      storeCopy = logStartAction({ debugName: debugName || '', getStore });
     }
+    middleWare({ debugName: debugName || '' });
   }
-
-  middleWare(options);
 
   setStore(callback && callback(getStore(), payload));
   storageType.setItem(getName(), JSON.stringify(getStore()));
 
-  // @ts-ignore
-  if (options.shouldReRenderApp !== false) {
+  if (options && options.shouldReRenderApp !== false) {
     updateStore(getStore());
   }
 
-  if (isDevMode) {
-    if (isDebugOn) {
-      const isEmpty = require('lodash.isempty');
-      const diff = difference(getStore(), storeCopy);
-      const noChange = isEmpty(diff);
-
-      console.log(noChange ? '└─after' : '├─after:', getStore());
-
-      if (!noChange) {
-        console.log(
-          '└─diff:',
-          difference(storeCopy, getStore()),
-          ' → ',
-          difference(getStore(), storeCopy),
-        );
-      }
-    }
+  if (isDevMode && isDebugOn) {
+    logEndAction({
+      getStore,
+      storeCopy,
+    });
   }
 };
 
 export function useStateMachine(
-  updateStoreFunction?: CallbackFunction,
-  options?: {
-    debugName: string | { [key: string]: string };
-    shouldReRenderApp?: boolean;
-  },
+  updateStoreFunction?: UpdateStore,
+  options?: Options,
 ): {
-  action: Function;
-  actions: { [key: string]: Function };
-  state: Object;
+  action: Action;
+  actions: Actions;
+  state: Store;
 } {
   const { store: globalState, updateStore } = React.useContext(
     StateMachineContext,
@@ -139,16 +132,15 @@ export function useStateMachine(
     return {
       actions: updateStoreFunction
         ? Object.entries(updateStoreFunction).reduce(
-            (previous, [key, callback]) => {
-              // @ts-ignore
-              previous[key] = actionTemplate({
+            (previous, [key, callback]) => ({
+              ...previous,
+              [key]: actionTemplate({
                 options,
                 callback,
                 updateStore,
                 key,
-              });
-              return previous;
-            },
+              }),
+            }),
             {},
           )
         : {},
@@ -162,7 +154,7 @@ export function useStateMachine(
     action: updateStoreFunction
       ? actionTemplate({
           options,
-          callback: updateStoreFunction,
+          callback: updateStoreFunction as StoreUpdateFunction,
           updateStore,
         })
       : () => {},

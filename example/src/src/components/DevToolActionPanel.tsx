@@ -1,13 +1,18 @@
 import * as React from 'react';
-import { actions } from './DevTool';
 import { useState } from 'react';
+import { COLORS } from '../constants';
 
 const DevToolActionPanel = ({
   setStateIndex,
   stateIndex,
+  actions,
 }: {
   setStateIndex: (index: number) => void;
   stateIndex: number;
+  actions: {
+    name: string;
+    state: Object;
+  }[];
 }) => {
   const [filterName, setFilterName] = useState('');
   return (
@@ -20,21 +25,27 @@ const DevToolActionPanel = ({
         style={{
           color: 'white',
           fontSize: 13,
+          lineHeight: '20px',
           margin: 0,
-          padding: '10px',
-          borderBottom: '1px solid rgb(17, 50, 76)',
+          padding: '10px 10px 9px',
+          borderBottom: `1px solid ${COLORS.secondary}`,
         }}
       >
-        <span style={{fontSize: 10}}>▼</span> Actions
+        <span style={{ fontSize: 10 }}>▼</span> Actions
       </p>
       <input
         name="filter"
+        type="search"
         style={{
           borderRadius: 0,
           background: '#11334c',
-          marginTop: 10,
+          marginTop: 0,
           border: 'none',
           color: 'white',
+          padding: '10px 10px',
+          width: '100%',
+          boxSizing: 'border-box',
+          fontSize: '14px',
         }}
         onChange={(event: React.ChangeEvent) =>
           // @ts-ignore
@@ -54,10 +65,12 @@ const DevToolActionPanel = ({
         {actions
           .filter(
             data =>
-              (data.name && data.name.toLowerCase().includes(filterName)) ||
+              (data.name &&
+                data.name.toLowerCase &&
+                data.name.toLowerCase().includes(filterName)) ||
               (!data.name && !filterName),
           )
-          .map(({ name, state }, index) => (
+          .map(({ name }, index) => (
             <li
               style={{
                 fontSize: 13,
@@ -79,7 +92,8 @@ const DevToolActionPanel = ({
                   borderBottom:
                     stateIndex === index
                       ? '1px solid #ec5990'
-                      : '1px solid #162a3c',
+                      : `1px solid ${COLORS.secondary}`,
+                  textTransform: 'initial',
                 }}
                 onClick={() => {
                   setStateIndex(index);
