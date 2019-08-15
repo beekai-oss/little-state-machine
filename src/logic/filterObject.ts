@@ -19,17 +19,23 @@ export default function search(
   data: Record<string, any>,
   find: string,
   keys: string[] = [],
-  originalData: Record<string, any>,
+  originalData?: Record<string, any>,
 ) {
   if (!originalData) originalData = data;
 
   for (let key in data) {
     const result = data[key];
-    if (key === find) {
+    const lowerCaseKey = key.toLowerCase();
+    const findLowerCase = find.toLowerCase();
+    if (
+      lowerCaseKey === findLowerCase ||
+      lowerCaseKey.startsWith(findLowerCase) ||
+      lowerCaseKey.includes(findLowerCase)
+    ) {
     } else if (Array.isArray(result)) {
       delete data[key];
     } else if (typeof result === 'object') {
-      search(result, find, [...keys, key], originalData);
+      search(result, find, [...(keys || []), key], originalData);
     } else {
       delete data[key];
       drillData(originalData, keys);

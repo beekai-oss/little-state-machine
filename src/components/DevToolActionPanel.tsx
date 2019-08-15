@@ -35,13 +35,14 @@ const DevToolActionPanel = ({
       </p>
       <input
         name="filter"
+        type="search"
         style={{
           borderRadius: 0,
           background: '#11334c',
-          marginTop: 10,
+          marginTop: 0,
           border: 'none',
           color: 'white',
-          padding: '5px 10px',
+          padding: '10px 10px',
           width: '100%',
           boxSizing: 'border-box',
           fontSize: '14px',

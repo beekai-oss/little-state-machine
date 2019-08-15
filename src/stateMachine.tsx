@@ -120,8 +120,8 @@ export function useStateMachine(
   updateStoreFunction?: UpdateStore,
   options?: Options,
 ): {
-  action?: Action;
-  actions?: Actions;
+  action: Action;
+  actions: Actions;
   state: Store;
 } {
   const { store: globalState, updateStore } = React.useContext(

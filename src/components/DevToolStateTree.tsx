@@ -3,10 +3,13 @@ import ReactJson from 'react-json-view';
 import * as React from 'react';
 import { COLORS } from '../constants';
 import saveSetting from '../logic/saveSetting';
+import { useState } from 'react';
+import search from '../logic/filterObject';
+const clone = require('lodash.clonedeep');
 
 const buttonStyle = {
   margin: '0 10px 0 0',
-  padding: '5px 20px',
+  padding: '5px 15px',
   display: 'inline',
   fontSize: '12px',
   border: 'none',
@@ -41,6 +44,13 @@ export default ({
     setExpand(expandValue);
     saveSetting({ isCollapse: expandValue });
   };
+  const [filterValue, setFilterValue] = useState('');
+  let data = (stateIndex === -1
+    ? actions[actions.length - 1]
+    : actions[stateIndex]
+  ).state;
+
+  if (filterValue) data = search(clone(data), filterValue);
 
   return (
     <section>
@@ -115,13 +125,26 @@ export default ({
         ×
       </button>
       <section style={{ padding: '10px 0px 10px 10px' }}>
+        <input
+          name="filter"
+          style={{
+            borderRadius: 0,
+            background: '#11334c',
+            marginTop: 10,
+            border: 0,
+            color: 'white',
+            padding: '10px 10px',
+            boxSizing: 'border-box',
+            fontSize: '14px',
+            width: 'calc(100% + 10px)',
+            margin: '0 -10px 10px',
+          }}
+          type="search"
+          placeholder="Search..."
+          onChange={e => setFilterValue(e.target.value)}
+        />
         <ReactJson
-          src={
-            (stateIndex === -1
-              ? actions[actions.length - 1]
-              : actions[stateIndex]
-            ).state
-          }
+          src={data}
           theme="harmonic"
           iconStyle="square"
           enableClipboard={false}
