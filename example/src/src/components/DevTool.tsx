@@ -15,12 +15,14 @@ const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
       JSON.parse(
-        window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) || '{}',
+        window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) ||
+          '{"isCollapse": false, "isClose": true}',
       )
     : {
         isCollapse: false,
-        isClose: false,
+        isClose: true,
       };
+
 let previousIsCollapse = config.isCollapse;
 let previousIsClose = config.isClose;
 
@@ -70,7 +72,7 @@ const DevTool: React.FC = () => {
               position: 'fixed',
               right: 0,
               top: -1,
-              width: 200,
+              width: 40,
               margin: 0,
               padding: 10,
               background: COLORS.primary,
@@ -84,7 +86,7 @@ const DevTool: React.FC = () => {
             }}
             onClick={() => closePanel()}
           >
-            ♆ LITTLE STATE MACHINE
+            ♆
           </button>
         )}
       />
@@ -124,7 +126,6 @@ const DevTool: React.FC = () => {
                 setExpand,
                 isCollapse,
                 setClose,
-                isClose,
                 stateIndex,
               }}
             />
