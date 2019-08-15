@@ -14,19 +14,19 @@ let previousIsLoadPanelShow = false;
 const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
-      JSON.parse(
-        window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) ||
-          '{"isCollapse": false, "isClose": true}',
-      )
+    JSON.parse(
+      window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) ||
+      '{"isCollapse": false, "isClose": true}',
+    )
     : {
-        isCollapse: false,
-        isClose: true,
-      };
+      isCollapse: false,
+      isClose: true,
+    };
 
 let previousIsCollapse = config.isCollapse;
 let previousIsClose = config.isClose;
 
-const DevTool: React.FC = () => {
+const DevTool = ({ iconSize }: { iconSize?: number }) => {
   const { state } = useStateMachine();
   const [isClose, setClose] = useState(config.isClose);
   const [isLoadPanelShow, setLoadPanel] = useState(false);
@@ -72,15 +72,15 @@ const DevTool: React.FC = () => {
               position: 'fixed',
               right: 0,
               top: -1,
-              width: 30,
-              height: 30,
+              width: iconSize || 40,
+              height: iconSize || 40,
               margin: 0,
               padding: 10,
               background: COLORS.primary,
               color: 'white',
               zIndex: Z_INDEX.top,
-              fontSize: 13,
-              lineHeight: '13px',
+              fontSize: 15,
+              lineHeight: '15px',
               border: 0,
               borderRadius: 0,
               ...style,
