@@ -21,6 +21,8 @@ const config =
     : {
       isCollapse: false,
       isClose: true,
+      searchTerm: '',
+      filterAction: '',
     };
 
 let previousIsCollapse = config.isCollapse;
@@ -113,6 +115,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
             }}
           >
             <DevToolActionPanel
+              config={config}
               stateIndex={stateIndex}
               actions={actions}
               setStateIndex={setStateIndex}
@@ -120,6 +123,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
             <DevToolStateTree
               {...{
                 closePanel,
+                config,
                 actions,
                 isLoadPanelShow,
                 setLoadPanel,

@@ -25,6 +25,7 @@ export default ({
   closePanel,
   stateIndex,
   actions,
+  config,
 }: {
   isLoadPanelShow: boolean;
   setLoadPanel: (payload: boolean) => void;
@@ -34,6 +35,12 @@ export default ({
   closePanel: () => void;
   stateIndex: number;
   isCollapse: boolean;
+  config: {
+    isCollapse: boolean;
+    isClose: boolean;
+    searchTerm: string;
+    filterTerm: string;
+  };
   actions: {
     name: string;
     state: Object;
@@ -44,7 +51,7 @@ export default ({
     setExpand(expandValue);
     saveSetting({ isCollapse: expandValue });
   };
-  const [filterValue, setFilterValue] = useState('');
+  const [filterValue, setFilterValue] = useState(config.searchTerm);
   let data = (stateIndex === -1
     ? actions[actions.length - 1]
     : actions[stateIndex]
@@ -141,7 +148,11 @@ export default ({
           }}
           type="search"
           placeholder="Search..."
-          onChange={e => setFilterValue(e.target.value)}
+          defaultValue={config.searchTerm}
+          onChange={e => {
+            setFilterValue(e.target.value);
+            saveSetting({ searchTerm: e.target.value });
+          }}
         />
         <ReactJson
           src={data}

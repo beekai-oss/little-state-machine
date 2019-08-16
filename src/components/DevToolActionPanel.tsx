@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { COLORS } from '../constants';
+import saveSetting from '../logic/saveSetting';
 
 const DevToolActionPanel = ({
   setStateIndex,
   stateIndex,
   actions,
+  config,
 }: {
   setStateIndex: (index: number) => void;
   stateIndex: number;
@@ -13,8 +15,14 @@ const DevToolActionPanel = ({
     name: string;
     state: Object;
   }[];
+  config: {
+    isCollapse: boolean;
+    isClose: boolean;
+    searchTerm: string;
+    filterAction: string;
+  };
 }) => {
-  const [filterName, setFilterName] = useState('');
+  const [filterName, setFilterName] = useState(config.filterAction);
   return (
     <div
       style={{
@@ -47,10 +55,11 @@ const DevToolActionPanel = ({
           boxSizing: 'border-box',
           fontSize: '14px',
         }}
-        onChange={(event: React.ChangeEvent) =>
-          // @ts-ignore
-          setFilterName(event.target.value.toLowerCase())
-        }
+        defaultValue={config.filterAction}
+        onChange={event => {
+          setFilterName(event.target.value.toLowerCase());
+          saveSetting({ filterAction: event.target.value });
+        }}
         placeholder="Filter..."
       />
       <ul

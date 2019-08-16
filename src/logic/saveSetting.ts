@@ -1,7 +1,7 @@
 import { STATE_MACHINE_DEV_TOOL_CONFIG } from '../constants';
 
 export default function saveSetting(
-  setting: { [key: string]: boolean },
+  setting: { [key: string]: boolean | string },
 ) {
   try {
     const config = window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG);
