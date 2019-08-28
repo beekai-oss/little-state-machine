@@ -26,3 +26,4 @@ tsconfig.jest.json
 /examples
 .eslintrc.js
 CODE_OF_CONDUCT.md
+.prettierrc
