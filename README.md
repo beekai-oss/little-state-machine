@@ -1,11 +1,15 @@
 <div align="center"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png" alt="Little State Machine - React Hooks for state management" width="140px" />
     <h1>♆ Little State Machine</h2>
+    
+State management made super simple
 </div>
 
-> State management made super simple
+<div align="center">
 
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Little-State-Machine&url=https://github.com/bluebill1049/little-state-machine)&nbsp; [![npm downloads](https://img.shields.io/npm/dm/little-state-machine.svg?style=flat-square)](https://www.npmjs.com/package/little-state-machine)
 [![npm](https://img.shields.io/npm/dt/little-state-machine.svg?style=flat-square)](https://www.npmjs.com/package/little-state-machine)
+
+</div>
 
 - Follow flux application architecture
 - Tiny with 0 dependency and simple (less 1kb)
