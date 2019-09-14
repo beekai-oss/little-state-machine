@@ -1,11 +1,14 @@
 import DevToolStorage from './DevToolStorage';
-import ReactJson from 'react-json-view';
 import * as React from 'react';
 import { COLORS } from '../constants';
 import saveSetting from '../logic/saveSetting';
 import { useState } from 'react';
 import search from '../logic/filterObject';
 const clone = require('lodash.clonedeep');
+let ReactJson = (props: any) => <div {...props} />;
+if (typeof window !== 'undefined') {
+  ReactJson = require('react-json-view');
+}
 
 const buttonStyle = {
   margin: '0 10px 0 0',
@@ -58,6 +61,8 @@ export default ({
   ).state;
 
   if (filterValue) data = search(clone(data), filterValue);
+
+  if (typeof window === 'undefined') return null;
 
   return (
     <section>
@@ -154,23 +159,21 @@ export default ({
             saveSetting({ searchTerm: e.target.value });
           }}
         />
-        {typeof window !== 'undefined' && (
-          <ReactJson
-            src={data}
-            theme="harmonic"
-            iconStyle="square"
-            enableClipboard={false}
-            collapsed={isCollapse}
-            displayObjectSize={false}
-            displayDataTypes={false}
-            indentWidth={2}
-            style={{
-              fontSize: 12,
-              overflow: 'auto',
-              height: 'calc(100vh - 90px)',
-            }}
-          />
-        )}
+        <ReactJson
+          src={data}
+          theme="harmonic"
+          iconStyle="square"
+          enableClipboard={false}
+          collapsed={isCollapse}
+          displayObjectSize={false}
+          displayDataTypes={false}
+          indentWidth={2}
+          style={{
+            fontSize: 12,
+            overflow: 'auto',
+            height: 'calc(100vh - 90px)',
+          }}
+        />
       </section>
     </section>
   );
