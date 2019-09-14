@@ -154,21 +154,23 @@ export default ({
             saveSetting({ searchTerm: e.target.value });
           }}
         />
-        <ReactJson
-          src={data}
-          theme="harmonic"
-          iconStyle="square"
-          enableClipboard={false}
-          collapsed={isCollapse}
-          displayObjectSize={false}
-          displayDataTypes={false}
-          indentWidth={2}
-          style={{
-            fontSize: 12,
-            overflow: 'auto',
-            height: 'calc(100vh - 90px)',
-          }}
-        />
+        {typeof window !== 'undefined' && (
+          <ReactJson
+            src={data}
+            theme="harmonic"
+            iconStyle="square"
+            enableClipboard={false}
+            collapsed={isCollapse}
+            displayObjectSize={false}
+            displayDataTypes={false}
+            indentWidth={2}
+            style={{
+              fontSize: 12,
+              overflow: 'auto',
+              height: 'calc(100vh - 90px)',
+            }}
+          />
+        )}
       </section>
     </section>
   );
