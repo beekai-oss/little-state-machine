@@ -104,7 +104,10 @@ const actionTemplate = ({
   setStore(callback && callback(getStore(), payload));
   storageType.setItem(getName(), JSON.stringify(getStore()));
 
-  if (options && options.shouldReRenderApp !== false) {
+  if (
+    options === undefined ||
+    (options && options.shouldReRenderApp !== false)
+  ) {
     updateStore(getStore());
   }
 
