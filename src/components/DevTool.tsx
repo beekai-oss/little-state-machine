@@ -23,6 +23,7 @@ const config =
       isClose: true,
       searchTerm: '',
       filterAction: '',
+      panelPosition: 'right'
     };
 
 let previousIsCollapse = config.isCollapse;
@@ -34,6 +35,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
   const [isLoadPanelShow, setLoadPanel] = useState(false);
   const [isCollapse, setExpand] = useState(config.isCollapse);
   const [stateIndex, setStateIndex] = useState(-1);
+  const [panelPosition, setPanel] = useState(config.panelPosition);
 
   const closePanel = () => {
     const closeValue = !isClose;
@@ -111,6 +113,16 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
               display: 'grid',
               gridTemplateColumns: '150px auto',
               boxShadow: '0 0 8px 3px #080808',
+              ...(panelPosition === "bottom"
+                ? {
+                  bottom: 0,
+                  width: "100%",
+                  height: "40%"
+                }
+                : {
+                  top: 0,
+                  width: 600
+                }),
               ...style,
             }}
           >
@@ -122,6 +134,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
             />
             <DevToolStateTree
               {...{
+                setPanel,
                 closePanel,
                 config,
                 actions,

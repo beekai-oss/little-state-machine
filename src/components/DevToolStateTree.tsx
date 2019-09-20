@@ -21,7 +21,7 @@ const buttonStyle = {
 
 const toggleStyle = {
   borderRadius: 0,
-  display: 'inline',
+  display: 'flex',
   padding: 0,
   margin: 0,
   width: 20,
@@ -91,7 +91,7 @@ export default ({
         }}
       >
         ♆ Little State Machine
-        <span style={{ marginRight: 40, float: 'right' }}>
+        <span style={{ marginRight: 20, float: 'right' }}>
           <button
             onClick={() => {
               setPanel('right');
