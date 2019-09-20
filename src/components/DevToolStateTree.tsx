@@ -19,7 +19,20 @@ const buttonStyle = {
   borderRadius: '2px',
 };
 
+const toggleStyle = {
+  borderRadius: 0,
+  display: 'inline',
+  padding: 0,
+  margin: 0,
+  width: 20,
+  height: 20,
+  top: 0,
+  marginRight: 10,
+  border: 0,
+};
+
 export default ({
+  setPanel,
   isLoadPanelShow,
   setLoadPanel,
   state,
@@ -44,6 +57,7 @@ export default ({
     searchTerm: string;
     filterTerm: string;
   };
+  setPanel: (arg: string) => void;
   actions: {
     name: string;
     state: Object;
@@ -62,8 +76,6 @@ export default ({
 
   if (filterValue) data = search(clone(data), filterValue);
 
-  if (typeof window === 'undefined') return null;
-
   return (
     <section>
       {isLoadPanelShow && <DevToolStorage setLoadPanel={setLoadPanel} />}
@@ -79,6 +91,22 @@ export default ({
         }}
       >
         ♆ Little State Machine
+        <span style={{ marginRight: 40, float: 'right' }}>
+          <button
+            onClick={() => {
+              setPanel('right');
+              saveSetting({ panelPosition: 'right' });
+            }}
+            style={{ ...toggleStyle, borderRight: '6px solid #ec5990' }}
+          />
+          <button
+            onClick={() => {
+              setPanel('bottom');
+              saveSetting({ panelPosition: 'bottom' });
+            }}
+            style={{ ...toggleStyle, borderBottom: '6px solid #ec5990' }}
+          />
+        </span>
       </h3>
       <section
         style={{
@@ -110,10 +138,6 @@ export default ({
         >
           {isCollapse ? 'Expand' : 'Collapse'}
         </button>
-        <button style={buttonStyle} onClick={() => {
-          // @ts-ignore
-          window.STATE_MACHINE_RESET();
-        }}>reset</button>
       </section>
       <button
         style={{
