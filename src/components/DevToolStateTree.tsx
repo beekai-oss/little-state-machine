@@ -7,12 +7,12 @@ import search from '../logic/filterObject';
 const clone = require('lodash.clonedeep');
 let ReactJson = (props: any) => <div {...props} />;
 if (typeof window !== 'undefined') {
-  ReactJson = require('react-json-view');
+  ReactJson = require('react-json-view').default;
 }
 
 const buttonStyle = {
   margin: '0 10px 0 0',
-  padding: '5px 15px',
+  padding: '5px 10px',
   display: 'inline',
   fontSize: '12px',
   border: 'none',
@@ -110,6 +110,10 @@ export default ({
         >
           {isCollapse ? 'Expand' : 'Collapse'}
         </button>
+        <button style={buttonStyle} onClick={() => {
+          // @ts-ignore
+          window.STATE_MACHINE_RESET();
+        }}>reset</button>
       </section>
       <button
         style={{
