@@ -1,13 +1,15 @@
 import * as React from 'react';
 import storeFactory from './logic/storeFactory';
 import { STATE_MACHINE_DEBUG_NAME } from './constants';
+import { setUpDevTools } from './logic/devTool';
+import StateMachineContext from './StateMachineContext';
+import { logEndAction, logStartAction } from './logic/devToolLogger';
 import {
   UpdateStore,
   ActionName,
   GetStore,
   SetStore,
   GetStoreName,
-  SetStoreName,
   Store,
   Options,
   Action,
@@ -15,9 +17,6 @@ import {
   UpdateStoreFunction,
   StoreUpdateFunction,
 } from './types';
-import { setUpDevTools } from './logic/devTool';
-import StateMachineContext from './StateMachineContext';
-import { logEndAction, logStartAction } from './logic/devToolLogger';
 
 let action: ActionName;
 let storageType: Storage =
@@ -34,7 +33,7 @@ let storageType: Storage =
 let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
-let setStorageName: SetStoreName;
+let middleWaresBucket: Function[] = [];
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
 export const middleWare = (data?: ActionName): ActionName => {
@@ -46,12 +45,18 @@ export function setStorageType(type: Storage): void {
   storageType = type;
 }
 
-export function createStore(data: Store) {
-  const methods = storeFactory(storageType);
-  setStorageName = methods.setName;
+export function createStore(
+  data: Store,
+  options: { name: string; middleWares: Function[] } = {
+    name: '',
+    middleWares: [],
+  },
+) {
+  const methods = storeFactory(storageType, options ? options.name : '');
   getName = methods.getName;
   getStore = methods.get;
   setStore = methods.set;
+  middleWaresBucket = options.middleWares;
   const result = getStore();
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
@@ -104,8 +109,17 @@ const actionTemplate = ({
   setStore(callback && callback(getStore(), payload));
   storageType.setItem(getName(), JSON.stringify(getStore()));
 
-  if (options && options.shouldReRenderApp !== false) {
-    updateStore(getStore());
+  if (
+    options === undefined ||
+    (options && options.shouldReRenderApp !== false)
+  ) {
+    updateStore(
+      middleWaresBucket.length
+        ? middleWaresBucket.forEach(callback => {
+            callback(getStore());
+          })
+        : getStore(),
+    );
   }
 
   if (isDevMode && isDebugOn) {
@@ -161,5 +175,3 @@ export function useStateMachine(
     state: globalState,
   };
 }
-
-export { setStorageName };

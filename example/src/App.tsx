@@ -2,15 +2,17 @@ import React from 'react';
 import './App.css';
 import Form from './Form';
 import yourDetails from './states/yourDetails';
-import {
-  StateMachineProvider,
-  createStore,
-  DevTool,
-} from './src';
+import { StateMachineProvider, createStore, DevTool } from './src';
 
-createStore({
-  yourDetails,
-});
+createStore(
+  {
+    yourDetails,
+  },
+  {
+    name: 'test',
+    middleWares: [],
+  },
+);
 
 const App: React.FC = () => {
   return (

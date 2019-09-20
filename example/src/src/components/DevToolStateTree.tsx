@@ -1,15 +1,18 @@
 import DevToolStorage from './DevToolStorage';
-import ReactJson from 'react-json-view';
 import * as React from 'react';
 import { COLORS } from '../constants';
 import saveSetting from '../logic/saveSetting';
 import { useState } from 'react';
 import search from '../logic/filterObject';
 const clone = require('lodash.clonedeep');
+let ReactJson = (props: any) => <div {...props} />;
+if (typeof window !== 'undefined') {
+  ReactJson = require('react-json-view').default;
+}
 
 const buttonStyle = {
   margin: '0 10px 0 0',
-  padding: '5px 15px',
+  padding: '5px 10px',
   display: 'inline',
   fontSize: '12px',
   border: 'none',
@@ -39,6 +42,7 @@ export default ({
   stateIndex,
   actions,
   config,
+  panelPosition,
 }: {
   isLoadPanelShow: boolean;
   setLoadPanel: (payload: boolean) => void;
@@ -59,6 +63,7 @@ export default ({
     name: string;
     state: Object;
   }[];
+  panelPosition: string;
 }) => {
   const collapse = () => {
     const expandValue = !isCollapse;
@@ -88,7 +93,7 @@ export default ({
         }}
       >
         ♆ Little State Machine
-        <span style={{ marginRight: 40, float: 'right' }}>
+        <span style={{ marginRight: 20, float: 'right', display: 'flex' }}>
           <button
             onClick={() => {
               setPanel('right');
@@ -134,6 +139,15 @@ export default ({
           }}
         >
           {isCollapse ? 'Expand' : 'Collapse'}
+        </button>
+        <button
+          style={buttonStyle}
+          onClick={() => {
+            // @ts-ignore
+            window.STATE_MACHINE_RESET();
+          }}
+        >
+          Reset
         </button>
       </section>
       <button
@@ -196,7 +210,7 @@ export default ({
           style={{
             fontSize: 12,
             overflow: 'auto',
-            height: 'calc(100vh - 90px)',
+            height: panelPosition === 'right' ? 'calc(100vh - 90px)' : '30vh',
           }}
         />
       </section>

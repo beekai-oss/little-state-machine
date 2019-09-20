@@ -77,7 +77,8 @@ const DevToolActionPanel = ({
               (data.name &&
                 data.name.toLowerCase &&
                 data.name.toLowerCase().includes(filterName)) ||
-              (!data.name && !filterName),
+              (!data.name && !filterName) ||
+              filterName === '',
           )
           .map(({ name }, index) => (
             <li

@@ -106,7 +106,6 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
               zIndex: Z_INDEX.top,
               position: 'fixed',
               right: 0,
-              top: 0,
               width: 600,
               height: '100vh',
               background: COLORS.primary,
@@ -117,7 +116,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
                 ? {
                   bottom: 0,
                   width: "100%",
-                  height: "40%"
+                  height: '40vh'
                 }
                 : {
                   top: 0,
@@ -135,6 +134,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
             <DevToolStateTree
               {...{
                 setPanel,
+                panelPosition,
                 closePanel,
                 config,
                 actions,
