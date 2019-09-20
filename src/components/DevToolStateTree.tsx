@@ -138,6 +138,15 @@ export default ({
         >
           {isCollapse ? 'Expand' : 'Collapse'}
         </button>
+        <button
+          style={buttonStyle}
+          onClick={() => {
+            // @ts-ignore
+            window.STATE_MACHINE_RESET()
+          }}
+        >
+          Reset
+        </button>
       </section>
       <button
         style={{
