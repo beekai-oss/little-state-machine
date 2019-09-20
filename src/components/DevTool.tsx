@@ -97,7 +97,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
       />
       <Animate
         play={isClose}
-        end={{ transform: 'translateX(800px)' }}
+        end={{ transform: 'translateX(102%)' }}
         easeType="ease-out"
         duration={0.3}
         render={({ style }) => (
