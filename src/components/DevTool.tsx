@@ -106,7 +106,6 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
               zIndex: Z_INDEX.top,
               position: 'fixed',
               right: 0,
-              top: 0,
               width: 600,
               height: '100vh',
               background: COLORS.primary,
