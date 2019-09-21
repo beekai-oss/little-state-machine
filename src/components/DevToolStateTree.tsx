@@ -71,9 +71,10 @@ export default ({
     saveSetting({ isCollapse: expandValue });
   };
   const [filterValue, setFilterValue] = useState(config.searchTerm);
-  let data = (stateIndex === -1
-    ? actions[actions.length - 1]
-    : actions[stateIndex]
+
+  let data = (
+    (stateIndex === -1 ? actions[actions.length - 1] : actions[stateIndex]) ||
+    {}
   ).state;
 
   if (filterValue) data = search(clone(data), filterValue);

@@ -5,6 +5,7 @@ import DevToolStateTree from './DevToolStateTree';
 import { Animate } from 'react-simple-animate';
 import { STATE_MACHINE_DEV_TOOL_CONFIG, COLORS, Z_INDEX } from '../constants';
 import saveSetting from '../logic/saveSetting';
+import { useRef } from 'react';
 const cloneDeep = require('lodash.clonedeep');
 
 const { useState } = React;
@@ -24,8 +25,10 @@ const config =
         searchTerm: '',
         filterAction: '',
         panelPosition: 'right',
+        mouseMoveDiff: 0,
       };
 
+let previousMouseMoveDiff = config.mouseMoveDiff;
 let previousIsCollapse = config.isCollapse;
 let previousIsClose = config.isClose;
 
@@ -36,6 +39,9 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
   const [isCollapse, setExpand] = useState(config.isCollapse);
   const [stateIndex, setStateIndex] = useState(-1);
   const [panelPosition, setPanel] = useState(config.panelPosition);
+  const rootRef = useRef<HTMLInputElement>(null);
+  const mouseDownOriginalX = useRef(0);
+  const [mouseMoveDiff, setMouseMoveDiff] = useState(config.mouseMoveDiff);
 
   const closePanel = () => {
     const closeValue = !isClose;
@@ -47,7 +53,8 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
     previousStateIndex === stateIndex &&
     previousIsClose === isClose &&
     previousIsLoadPanelShow === isLoadPanelShow &&
-    previousIsCollapse === isCollapse
+    previousIsCollapse === isCollapse &&
+    previousMouseMoveDiff === mouseMoveDiff
   ) {
     actions.push({
       name: (middleWare() || {}).debugName,
@@ -59,12 +66,46 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
   previousIsClose = isClose;
   previousIsLoadPanelShow = isLoadPanelShow;
   previousIsCollapse = isCollapse;
+  previousMouseMoveDiff = mouseMoveDiff;
+
+  const move = (e: MouseEvent) => {
+    setMouseMoveDiff(e.clientX - mouseDownOriginalX.current);
+  };
+
+  const mouseup = (e: any) => {
+    if (rootRef && rootRef.current) {
+      rootRef.current.style.userSelect = 'auto';
+    }
+
+    saveSetting({ mouseMoveDiff: e.clientX - mouseDownOriginalX.current });
+
+    document.removeEventListener('mousemove', move);
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (rootRef && rootRef.current) {
+      rootRef.current.style.userSelect = 'none';
+    }
+    mouseDownOriginalX.current = e.clientX;
+
+    document.addEventListener('mouseup', mouseup);
+    document.addEventListener('mousemove', move);
+  };
+
+  React.useEffect(() => {
+    return () => {
+      document.removeEventListener('mouseup', mouseup);
+      document.removeEventListener('mousemove', move);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div
       style={{
         fontFamily: `BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif`,
       }}
+      ref={rootRef}
     >
       <Animate
         play={!isClose}
@@ -110,7 +151,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
               height: '100vh',
               background: COLORS.primary,
               display: 'grid',
-              gridTemplateColumns: '150px auto',
+              gridTemplateColumns: '3px 150px auto',
               boxShadow: '0 0 8px 3px #080808',
               ...(panelPosition === 'bottom'
                 ? {
@@ -120,11 +161,17 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
                   }
                 : {
                     top: 0,
-                    width: 600,
+                    width: 600 - mouseMoveDiff,
                   }),
               ...style,
             }}
           >
+            <div
+              style={{
+                cursor: 'ew-resize',
+              }}
+              onMouseDown={onMouseDown}
+            />
             <DevToolActionPanel
               config={config}
               stateIndex={stateIndex}
