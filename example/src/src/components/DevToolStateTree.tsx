@@ -210,7 +210,10 @@ export default ({
           style={{
             fontSize: 12,
             overflow: 'auto',
-            height: panelPosition === 'right' ? 'calc(100vh - 90px)' : '30vh',
+            height:
+              !panelPosition || panelPosition === 'right'
+                ? `calc(${window.screen.height - 275}px)`
+                : `calc(${window.innerHeight * 0.4 - 140}px)`,
           }}
         />
       </section>

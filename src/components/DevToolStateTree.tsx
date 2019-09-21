@@ -42,6 +42,7 @@ export default ({
   stateIndex,
   actions,
   config,
+  panelPosition,
 }: {
   isLoadPanelShow: boolean;
   setLoadPanel: (payload: boolean) => void;
@@ -62,6 +63,7 @@ export default ({
     name: string;
     state: Object;
   }[];
+  panelPosition: string;
 }) => {
   const collapse = () => {
     const expandValue = !isCollapse;
@@ -142,7 +144,7 @@ export default ({
           style={buttonStyle}
           onClick={() => {
             // @ts-ignore
-            window.STATE_MACHINE_RESET()
+            window.STATE_MACHINE_RESET();
           }}
         >
           Reset
@@ -208,7 +210,10 @@ export default ({
           style={{
             fontSize: 12,
             overflow: 'auto',
-            height: 'calc(100vh - 90px)',
+            height:
+              !panelPosition || panelPosition === 'right'
+                ? `calc(${window.screen.height - 275}px)`
+                : `calc(${window.innerHeight * 0.4 - 140}px)`,
           }}
         />
       </section>

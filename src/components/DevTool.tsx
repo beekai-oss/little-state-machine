@@ -14,17 +14,17 @@ let previousIsLoadPanelShow = false;
 const config =
   typeof window !== 'undefined'
     ? // @ts-ignore
-    JSON.parse(
-      window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) ||
-      '{"isCollapse": false, "isClose": true}',
-    )
+      JSON.parse(
+        window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) ||
+          '{"isCollapse": false, "isClose": true}',
+      )
     : {
-      isCollapse: false,
-      isClose: true,
-      searchTerm: '',
-      filterAction: '',
-      panelPosition: 'right'
-    };
+        isCollapse: false,
+        isClose: true,
+        searchTerm: '',
+        filterAction: '',
+        panelPosition: 'right',
+      };
 
 let previousIsCollapse = config.isCollapse;
 let previousIsClose = config.isClose;
@@ -112,16 +112,16 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
               display: 'grid',
               gridTemplateColumns: '150px auto',
               boxShadow: '0 0 8px 3px #080808',
-              ...(panelPosition === "bottom"
+              ...(panelPosition === 'bottom'
                 ? {
-                  bottom: 0,
-                  width: "100%",
-                  height: "40%"
-                }
+                    bottom: 0,
+                    width: '100%',
+                    height: '40%',
+                  }
                 : {
-                  top: 0,
-                  width: 600
-                }),
+                    top: 0,
+                    width: 600,
+                  }),
               ...style,
             }}
           >
@@ -134,6 +134,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
             <DevToolStateTree
               {...{
                 setPanel,
+                panelPosition,
                 closePanel,
                 config,
                 actions,

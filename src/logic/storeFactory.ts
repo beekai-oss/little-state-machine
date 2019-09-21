@@ -1,15 +1,15 @@
 import { STORE_DEFAULT_NAME } from '../constants';
-import { GetStoreName, GetStore, SetStore, Store, SetStoreName } from '../types';
+import { GetStoreName, GetStore, SetStore, Store } from '../types';
 
 export default function storeFactory(
   storageType: Storage,
+  name: string | undefined,
 ): {
   set: SetStore;
   get: GetStore;
   getName: GetStoreName;
-  setName: SetStoreName;
 } {
-  let storeName = STORE_DEFAULT_NAME;
+  const storeName = name || STORE_DEFAULT_NAME;
   let store: Store = {};
   const sessionStorageData = storageType.getItem(storeName);
   try {
@@ -17,14 +17,6 @@ export default function storeFactory(
   } catch {}
 
   const getName = (): string => storeName;
-
-  const setName = (name: string): void => {
-    const data = storageType.getItem(name);
-    storeName = name;
-    try {
-      store = data ? JSON.parse(data) : {};
-    } catch {}
-  };
 
   const set = <T>(value: T): void => {
     store = value;
@@ -36,6 +28,5 @@ export default function storeFactory(
     set,
     get,
     getName,
-    setName,
   };
 }
