@@ -1,6 +1,6 @@
 import * as React from 'react';
 import storeFactory from './logic/storeFactory';
-import { STATE_MACHINE_DEBUG_NAME } from './constants';
+import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import { logEndAction, logStartAction } from './logic/devToolLogger';
@@ -48,11 +48,18 @@ export function setStorageType(type: Storage): void {
 export function createStore(
   data: Store,
   options: { name: string; middleWares: Function[] } = {
-    name: '',
+    name: STORE_DEFAULT_NAME,
     middleWares: [],
   },
 ) {
-  const methods = storeFactory(storageType, options ? options.name : '');
+  const storeName = options ? options.name : STORE_DEFAULT_NAME;
+  const methods = storeFactory(storageType, storeName);
+
+  if (isDevMode) {
+    // @ts-ignore
+    window['STATE_MACHINE_NAME'] = storeName;
+  }
+
   getName = methods.getName;
   getStore = methods.get;
   setStore = methods.set;

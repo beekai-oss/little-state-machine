@@ -161,7 +161,7 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
                   }
                 : {
                     top: 0,
-                    width: 600 - mouseMoveDiff,
+                    width: 600 - (mouseMoveDiff || 0),
                   }),
               ...style,
             }}

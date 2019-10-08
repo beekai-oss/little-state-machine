@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { STORE_DEFAULT_NAME, COLORS, Z_INDEX } from '../constants';
+import { COLORS, Z_INDEX } from '../constants';
 
 export default function DevToolStorage({ setLoadPanel }: any) {
   return (
@@ -45,7 +45,11 @@ export default function DevToolStorage({ setLoadPanel }: any) {
               }}
               onClick={() => {
                 if (window.confirm('Are you sure to load state?')) {
-                  window.sessionStorage.setItem(STORE_DEFAULT_NAME, value);
+                  window.sessionStorage.setItem(
+                    // @ts-ignore
+                    window['STATE_MACHINE_NAME'],
+                    value,
+                  );
                 }
               }}
             >

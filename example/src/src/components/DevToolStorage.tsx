@@ -45,7 +45,8 @@ export default function DevToolStorage({ setLoadPanel }: any) {
               }}
               onClick={() => {
                 if (window.confirm('Are you sure to load state?')) {
-                  window.sessionStorage.setItem(STORE_DEFAULT_NAME, value);
+                  // @ts-ignore
+                  window.sessionStorage.setItem(window['STATE_MACHINE_NAME'], value);
                 }
               }}
             >
