@@ -1,4 +1,4 @@
-<div align="center"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png" alt="Little State Machine - React Hooks for state management" width="140px" />
+<div align="center"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png?raw=true" alt="Little State Machine - React Hooks for state management" width="140px" />
     <h1>♆ Little State Machine</h2>
     
 State management made super simple
