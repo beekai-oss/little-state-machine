@@ -29,3 +29,9 @@ export type Options = {
 export type Action = (payload: any) => void
 
 export type Actions = { [key: string]: Action };
+
+export type StateMachineOptions = {
+  name: string;
+  middleWares?: Function[];
+  syncStores?: Record<string, string[]> | Function | undefined;
+}

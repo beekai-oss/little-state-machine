@@ -17,6 +17,7 @@ import {
   Actions,
   UpdateStoreFunction,
   StoreUpdateFunction,
+  StateMachineOptions,
 } from './types';
 
 let action: ActionName;
@@ -48,11 +49,7 @@ export function setStorageType(type: Storage): void {
 
 export function createStore(
   data: Store,
-  options: {
-    name: string;
-    middleWares?: Function[];
-    syncStores?: Record<string, string[]> | Function | undefined;
-  } = {
+  options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
     syncStores: undefined,

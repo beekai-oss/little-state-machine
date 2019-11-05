@@ -1,8 +1,9 @@
 import getBrowserStoreData from './getBrowserStoreData';
+import { StateMachineOptions } from '../types';
 
 export default function getSyncStoreData(
   data: any,
-  options: any,
+  options: StateMachineOptions,
   storageType: Storage,
 ) {
   let result = data;
