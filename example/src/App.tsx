@@ -11,7 +11,7 @@ createStore(
   {
     name: 'test',
     syncStores: {
-      __fuck__: ['test'],
+      __fuck__: ['yourDetails'],
     },
   },
 );

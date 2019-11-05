@@ -56,11 +56,18 @@ function syncStoreData(data: any, options: any) {
       Object.entries(syncStore).forEach(([key, values]) => {
         try {
           const browserStore = getStoreData(storageType, key);
+          console.log(values);
           (values as any).forEach((value: string) => {
             result = {
               ...result,
-              ...{ ...result[key], [value]: browserStore[value] },
+              ...{
+                [value]: {
+                  ...result[value],
+                  ...browserStore[value],
+                },
+              },
             };
+            console.log(result);
           });
         } catch (e) {}
       });
