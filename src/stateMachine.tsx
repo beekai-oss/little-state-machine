@@ -17,6 +17,7 @@ import {
   UpdateStoreFunction,
   StoreUpdateFunction,
 } from './types';
+import getStoreData from './logic/getStoreData';
 
 let action: ActionName;
 let storageType: Storage =
@@ -79,6 +80,11 @@ export function createStore(
       if (typeof syncStore === 'function') {
         // pam your work will be here
       } else {
+        Object.entries(syncStore).forEach(([key]) => {
+          try {
+            getStoreData(storageType, key);
+          } catch (e) {}
+        });
       }
     }
     return;
