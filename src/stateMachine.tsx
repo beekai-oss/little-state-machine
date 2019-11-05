@@ -59,11 +59,12 @@ function syncStoreData(data: any, options: any) {
           (values as any).forEach((value: string) => {
             result = {
               ...result,
-              ...browserStore[value],
+              ...{ ...result[key], [value]: browserStore[value] },
             };
           });
         } catch (e) {}
       });
+      return result;
     }
   }
 }
@@ -103,7 +104,7 @@ export function createStore(
 
     return;
   }
-  setStore(data);
+  setStore(syncStoreData(data, options));
 }
 
 export function StateMachineProvider<T>(props: T) {

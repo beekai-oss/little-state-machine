@@ -10,9 +10,9 @@ createStore(
   },
   {
     name: 'test',
-    // syncStores: {
-    //   __fuck__: ['test'],
-    // },
+    syncStores: {
+      __fuck__: ['test'],
+    },
   },
 );
 
