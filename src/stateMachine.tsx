@@ -17,6 +17,7 @@ import {
   UpdateStoreFunction,
   StoreUpdateFunction,
 } from './types';
+const merge = require('lodash.merge');
 
 let action: ActionName;
 let storageType: Storage =
@@ -68,8 +69,16 @@ export function createStore(
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
-  if (result && Object.keys(result).length) return;
-  setStore(data);
+  if (result && Object.keys(result).length) {
+    Object.keys(result).forEach(key => {
+      if (Object.keys(data).includes(key)) {
+        const merged = merge(result, data);
+        setStore(merged);
+      }
+    });
+  } else {
+    setStore(data);
+  }
 }
 
 export function StateMachineProvider<T>(props: T) {
