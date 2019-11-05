@@ -56,7 +56,6 @@ function syncStoreData(data: any, options: any) {
       Object.entries(syncStore).forEach(([key, values]) => {
         try {
           const browserStore = getStoreData(storageType, key);
-          console.log(values);
           (values as any).forEach((value: string) => {
             result = {
               ...result,
@@ -67,7 +66,6 @@ function syncStoreData(data: any, options: any) {
                 },
               },
             };
-            console.log(result);
           });
         } catch (e) {}
       });
