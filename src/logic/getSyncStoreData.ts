@@ -11,6 +11,8 @@ export default function getSyncStoreData(
   if (syncStore) {
     if (typeof syncStore === 'function') {
       // pam your work will be here
+      // you should get store name in here syncStore.name and a syncStore.transform function
+      // use store name to pull the session/local data and run through the function
     } else {
       Object.entries(syncStore).forEach(([key, values]) => {
         try {
