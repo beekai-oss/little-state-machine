@@ -28,7 +28,7 @@ export default function getSyncStoreData(
           });
         } catch {}
       });
-      return result;
     }
   }
+  return result;
 }
