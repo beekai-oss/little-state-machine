@@ -47,9 +47,14 @@ export function setStorageType(type: Storage): void {
 
 export function createStore(
   data: Store,
-  options: { name: string; middleWares: Function[] } = {
+  options: {
+    name: string;
+    middleWares: Function[];
+    syncStores: Record<string, string[]> | Function | undefined;
+  } = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
+    syncStores: undefined,
   },
 ) {
   const storeName = options ? options.name : STORE_DEFAULT_NAME;
@@ -68,7 +73,16 @@ export function createStore(
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
-  if (result && Object.keys(result).length) return;
+  if (result && Object.keys(result).length) {
+    const syncStore = options.syncStores;
+    if (syncStore) {
+      if (typeof syncStore === 'function') {
+        // pam your work will be here
+      } else {
+      }
+    }
+    return;
+  }
   setStore(data);
 }
 
