@@ -67,7 +67,7 @@ function syncStoreData(data: any, options: any) {
               },
             };
           });
-        } catch (e) {}
+        } catch {}
       });
       return result;
     }
