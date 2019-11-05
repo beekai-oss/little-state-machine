@@ -17,7 +17,7 @@ import {
   UpdateStoreFunction,
   StoreUpdateFunction,
 } from './types';
-import getStoreData from './logic/getStoreData';
+import getStoreData from './logic/getBrowserStoreData';
 
 let action: ActionName;
 let storageType: Storage =

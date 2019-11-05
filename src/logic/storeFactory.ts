@@ -1,6 +1,6 @@
 import { STORE_DEFAULT_NAME } from '../constants';
 import { GetStoreName, GetStore, SetStore, Store } from '../types';
-import getStoreData from './getStoreData';
+import getStoreData from './getBrowserStoreData';
 
 export default function storeFactory(
   storageType: Storage,
