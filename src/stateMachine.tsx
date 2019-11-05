@@ -70,7 +70,7 @@ export function createStore(
   getStore = methods.get;
   setStore = methods.set;
   middleWaresBucket = options.middleWares;
-  const result = getStore();
+  let result = getStore();
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
@@ -80,9 +80,15 @@ export function createStore(
       if (typeof syncStore === 'function') {
         // pam your work will be here
       } else {
-        Object.entries(syncStore).forEach(([key]) => {
+        Object.entries(syncStore).forEach(([key, values]) => {
           try {
-            getStoreData(storageType, key);
+            const browserStore = getStoreData(storageType, key);
+            values.forEach(value => {
+              result = {
+                ...result,
+                ...browserStore[value],
+              };
+            });
           } catch (e) {}
         });
       }
