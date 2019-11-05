@@ -67,16 +67,8 @@ export function createStore(
   getStore = methods.get;
   setStore = methods.set;
   middleWaresBucket = options.middleWares;
-  let result = getStore();
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
-
-  if (result && Object.keys(result).length) {
-    if (options.syncStores) {
-      setStore(getSyncStoreData(result, options, storageType));
-    }
-    return;
-  }
 
   setStore(getSyncStoreData(data, options, storageType));
 }

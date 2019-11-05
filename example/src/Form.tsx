@@ -25,16 +25,16 @@ const Form: React.FC = () => {
           name="firstname"
           placeholder="First name"
           ref={register}
-            // @ts-ignore
-          defaultValue={state.yourDetails.firstname}
+          // @ts-ignore
+          defaultValue={state && state.yourDetails.firstname}
         />
         <label>Last name:</label>
         <input
           name="lastname"
           placeholder="Last name"
           ref={register}
-            // @ts-ignore
-          defaultValue={state.yourDetails.lastname}
+          // @ts-ignore
+          defaultValue={state && state.yourDetails.lastname}
         />
         <input type="submit" />
       </form>

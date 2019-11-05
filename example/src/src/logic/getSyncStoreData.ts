@@ -6,21 +6,28 @@ export default function getSyncStoreData(
   options: StateMachineOptions,
   storageType: Storage,
 ) {
-  let result = data;
+  let syncedStoreData = data;
   const syncStore = options.syncStores;
   if (syncStore) {
-    if (typeof syncStore === 'function') {
-      // pam your work will be here
+    if (syncStore.name && typeof syncStore.transform === 'function') {
+      try {
+        const sessionData = window.sessionStorage.getItem(options.name);
+        const parsedSessionStorage = sessionData && JSON.parse(sessionData);
+        syncedStoreData = syncStore.transform(
+          parsedSessionStorage,
+          syncedStoreData,
+        );
+      } catch {}
     } else {
       Object.entries(syncStore).forEach(([key, values]) => {
         try {
           const browserStore = getBrowserStoreData(storageType, key);
           values.forEach((value: string) => {
-            result = {
-              ...result,
+            syncedStoreData = {
+              ...syncedStoreData,
               ...{
                 [value]: {
-                  ...result[value],
+                  ...syncedStoreData[value],
                   ...browserStore[value],
                 },
               },
@@ -30,5 +37,5 @@ export default function getSyncStoreData(
       });
     }
   }
-  return result;
+  return syncedStoreData;
 }
