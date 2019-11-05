@@ -23,13 +23,13 @@ let action: ActionName;
 let storageType: Storage =
   typeof window === 'undefined'
     ? {
-      getItem: payload => payload,
-      setItem: (payload: string) => payload,
-      clear: () => {},
-      length: 0,
-      key: (payload: number) => payload.toString(),
-      removeItem: () => {},
-    }
+        getItem: payload => payload,
+        setItem: (payload: string) => payload,
+        clear: () => {},
+        length: 0,
+        key: (payload: number) => payload.toString(),
+        removeItem: () => {},
+      }
     : window.sessionStorage;
 let getStore: GetStore;
 let setStore: SetStore;
@@ -103,7 +103,7 @@ export function createStore(
 
     return;
   }
-  setStore(syncStoreData(data, options));
+  setStore(data);
 }
 
 export function StateMachineProvider<T>(props: T) {
@@ -120,11 +120,11 @@ export function StateMachineProvider<T>(props: T) {
 }
 
 const actionTemplate = ({
-                          options,
-                          callback,
-                          key,
-                          updateStore,
-                        }: {
+  options,
+  callback,
+  key,
+  updateStore,
+}: {
   callback?: StoreUpdateFunction;
   options?: Options;
   key?: string;
@@ -135,8 +135,8 @@ const actionTemplate = ({
   const debugName: string | undefined =
     options && (options.debugName || options.debugNames)
       ? key && options.debugNames
-      ? options.debugNames[key]
-      : options.debugName
+        ? options.debugNames[key]
+        : options.debugName
       : '';
 
   if (isDevMode) {
@@ -157,8 +157,8 @@ const actionTemplate = ({
     updateStore(
       middleWaresBucket && middleWaresBucket.length
         ? middleWaresBucket.forEach(callback => {
-          callback(getStore());
-        })
+            callback(getStore());
+          })
         : getStore(),
     );
   }
@@ -187,17 +187,17 @@ export function useStateMachine(
     return {
       actions: updateStoreFunction
         ? Object.entries(updateStoreFunction).reduce(
-          (previous, [key, callback]) => ({
-            ...previous,
-            [key]: actionTemplate({
-              options,
-              callback,
-              updateStore,
-              key,
+            (previous, [key, callback]) => ({
+              ...previous,
+              [key]: actionTemplate({
+                options,
+                callback,
+                updateStore,
+                key,
+              }),
             }),
-          }),
-          {},
-        )
+            {},
+          )
         : {},
       action: () => {},
       state: globalState,
@@ -208,10 +208,10 @@ export function useStateMachine(
     actions: {},
     action: updateStoreFunction
       ? actionTemplate({
-        options,
-        callback: updateStoreFunction as StoreUpdateFunction,
-        updateStore,
-      })
+          options,
+          callback: updateStoreFunction as StoreUpdateFunction,
+          updateStore,
+        })
       : () => {},
     state: globalState,
   };

@@ -103,7 +103,7 @@ export function createStore(
 
     return;
   }
-  setStore(syncStoreData(data, options));
+  setStore(data);
 }
 
 export function StateMachineProvider<T>(props: T) {
