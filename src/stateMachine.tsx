@@ -4,7 +4,7 @@ import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import { logEndAction, logStartAction } from './logic/devToolLogger';
-import getStoreData from './logic/getBrowserStoreData';
+import getBrowserStoreData from './logic/getBrowserStoreData';
 import {
   UpdateStore,
   ActionName,
@@ -55,7 +55,7 @@ function syncStoreData(data: any, options: any) {
     } else {
       Object.entries(syncStore).forEach(([key, values]) => {
         try {
-          const browserStore = getStoreData(storageType, key);
+          const browserStore = getBrowserStoreData(storageType, key);
           (values as any).forEach((value: string) => {
             result = {
               ...result,
