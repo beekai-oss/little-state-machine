@@ -4,7 +4,7 @@ import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import { logEndAction, logStartAction } from './logic/devToolLogger';
-import getBrowserStoreData from './logic/getBrowserStoreData';
+import getSyncStoreData from './logic/getSyncStoreData';
 import {
   UpdateStore,
   ActionName,
@@ -46,34 +46,6 @@ export function setStorageType(type: Storage): void {
   storageType = type;
 }
 
-function syncStoreData(data: any, options: any) {
-  let result = data;
-  const syncStore = options.syncStores;
-  if (syncStore) {
-    if (typeof syncStore === 'function') {
-      // pam your work will be here
-    } else {
-      Object.entries(syncStore).forEach(([key, values]) => {
-        try {
-          const browserStore = getBrowserStoreData(storageType, key);
-          (values as any).forEach((value: string) => {
-            result = {
-              ...result,
-              ...{
-                [value]: {
-                  ...result[value],
-                  ...browserStore[value],
-                },
-              },
-            };
-          });
-        } catch {}
-      });
-      return result;
-    }
-  }
-}
-
 export function createStore(
   data: Store,
   options: {
@@ -104,12 +76,12 @@ export function createStore(
 
   if (result && Object.keys(result).length) {
     if (options.syncStores) {
-      setStore(syncStoreData(result, options));
+      setStore(getSyncStoreData(result, options, storageType));
     }
-
     return;
   }
-  setStore(syncStoreData(data, options));
+
+  setStore(getSyncStoreData(data, options, storageType));
 }
 
 export function StateMachineProvider<T>(props: T) {
