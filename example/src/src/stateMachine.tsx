@@ -4,6 +4,7 @@ import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import { logEndAction, logStartAction } from './logic/devToolLogger';
+import getStoreData from './logic/getBrowserStoreData';
 import {
   UpdateStore,
   ActionName,
@@ -33,7 +34,7 @@ let storageType: Storage =
 let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
-let middleWaresBucket: Function[] = [];
+let middleWaresBucket: Function[] | undefined = [];
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
 export const middleWare = (data?: ActionName): ActionName => {
@@ -45,11 +46,38 @@ export function setStorageType(type: Storage): void {
   storageType = type;
 }
 
+function syncStoreData(data: any, options: any) {
+  let result = data;
+  const syncStore = options.syncStores;
+  if (syncStore) {
+    if (typeof syncStore === 'function') {
+      // pam your work will be here
+    } else {
+      Object.entries(syncStore).forEach(([key, values]) => {
+        try {
+          const browserStore = getStoreData(storageType, key);
+          (values as any).forEach((value: string) => {
+            result = {
+              ...result,
+              ...browserStore[value],
+            };
+          });
+        } catch (e) {}
+      });
+    }
+  }
+}
+
 export function createStore(
   data: Store,
-  options: { name: string; middleWares: Function[] } = {
+  options: {
+    name: string;
+    middleWares?: Function[];
+    syncStores?: Record<string, string[]> | Function | undefined;
+  } = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
+    syncStores: undefined,
   },
 ) {
   const storeName = options ? options.name : STORE_DEFAULT_NAME;
@@ -64,12 +92,18 @@ export function createStore(
   getStore = methods.get;
   setStore = methods.set;
   middleWaresBucket = options.middleWares;
-  const result = getStore();
+  let result = getStore();
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
-  if (result && Object.keys(result).length) return;
-  setStore(data);
+  if (result && Object.keys(result).length) {
+    if (options.syncStores) {
+      setStore(syncStoreData(result, options));
+    }
+
+    return;
+  }
+  setStore(syncStoreData(data, options));
 }
 
 export function StateMachineProvider<T>(props: T) {
@@ -121,7 +155,7 @@ const actionTemplate = ({
     (options && options.shouldReRenderApp !== false)
   ) {
     updateStore(
-      middleWaresBucket.length
+      middleWaresBucket && middleWaresBucket.length
         ? middleWaresBucket.forEach(callback => {
             callback(getStore());
           })

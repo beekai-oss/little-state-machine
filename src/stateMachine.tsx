@@ -4,6 +4,7 @@ import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import { logEndAction, logStartAction } from './logic/devToolLogger';
+import getStoreData from './logic/getBrowserStoreData';
 import {
   UpdateStore,
   ActionName,
@@ -17,24 +18,23 @@ import {
   UpdateStoreFunction,
   StoreUpdateFunction,
 } from './types';
-import getStoreData from './logic/getBrowserStoreData';
 
 let action: ActionName;
 let storageType: Storage =
   typeof window === 'undefined'
     ? {
-        getItem: payload => payload,
-        setItem: (payload: string) => payload,
-        clear: () => {},
-        length: 0,
-        key: (payload: number) => payload.toString(),
-        removeItem: () => {},
-      }
+      getItem: payload => payload,
+      setItem: (payload: string) => payload,
+      clear: () => {},
+      length: 0,
+      key: (payload: number) => payload.toString(),
+      removeItem: () => {},
+    }
     : window.sessionStorage;
 let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
-let middleWaresBucket: Function[] = [];
+let middleWaresBucket: Function[] | undefined = [];
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
 export const middleWare = (data?: ActionName): ActionName => {
@@ -46,12 +46,34 @@ export function setStorageType(type: Storage): void {
   storageType = type;
 }
 
+function syncStoreData(data: any, options: any) {
+  let result = data;
+  const syncStore = options.syncStores;
+  if (syncStore) {
+    if (typeof syncStore === 'function') {
+      // pam your work will be here
+    } else {
+      Object.entries(syncStore).forEach(([key, values]) => {
+        try {
+          const browserStore = getStoreData(storageType, key);
+          (values as any).forEach((value: string) => {
+            result = {
+              ...result,
+              ...browserStore[value],
+            };
+          });
+        } catch (e) {}
+      });
+    }
+  }
+}
+
 export function createStore(
   data: Store,
   options: {
     name: string;
-    middleWares: Function[];
-    syncStores: Record<string, string[]> | Function | undefined;
+    middleWares?: Function[];
+    syncStores?: Record<string, string[]> | Function | undefined;
   } = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
@@ -75,27 +97,13 @@ export function createStore(
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
   if (result && Object.keys(result).length) {
-    const syncStore = options.syncStores;
-    if (syncStore) {
-      if (typeof syncStore === 'function') {
-        // pam your work will be here
-      } else {
-        Object.entries(syncStore).forEach(([key, values]) => {
-          try {
-            const browserStore = getStoreData(storageType, key);
-            values.forEach(value => {
-              result = {
-                ...result,
-                ...browserStore[value],
-              };
-            });
-          } catch (e) {}
-        });
-      }
+    if (options.syncStores) {
+      setStore(syncStoreData(result, options));
     }
+
     return;
   }
-  setStore(data);
+  setStore(syncStoreData(data, options));
 }
 
 export function StateMachineProvider<T>(props: T) {
@@ -112,11 +120,11 @@ export function StateMachineProvider<T>(props: T) {
 }
 
 const actionTemplate = ({
-  options,
-  callback,
-  key,
-  updateStore,
-}: {
+                          options,
+                          callback,
+                          key,
+                          updateStore,
+                        }: {
   callback?: StoreUpdateFunction;
   options?: Options;
   key?: string;
@@ -127,8 +135,8 @@ const actionTemplate = ({
   const debugName: string | undefined =
     options && (options.debugName || options.debugNames)
       ? key && options.debugNames
-        ? options.debugNames[key]
-        : options.debugName
+      ? options.debugNames[key]
+      : options.debugName
       : '';
 
   if (isDevMode) {
@@ -147,10 +155,10 @@ const actionTemplate = ({
     (options && options.shouldReRenderApp !== false)
   ) {
     updateStore(
-      middleWaresBucket.length
+      middleWaresBucket && middleWaresBucket.length
         ? middleWaresBucket.forEach(callback => {
-            callback(getStore());
-          })
+          callback(getStore());
+        })
         : getStore(),
     );
   }
@@ -179,17 +187,17 @@ export function useStateMachine(
     return {
       actions: updateStoreFunction
         ? Object.entries(updateStoreFunction).reduce(
-            (previous, [key, callback]) => ({
-              ...previous,
-              [key]: actionTemplate({
-                options,
-                callback,
-                updateStore,
-                key,
-              }),
+          (previous, [key, callback]) => ({
+            ...previous,
+            [key]: actionTemplate({
+              options,
+              callback,
+              updateStore,
+              key,
             }),
-            {},
-          )
+          }),
+          {},
+        )
         : {},
       action: () => {},
       state: globalState,
@@ -200,10 +208,10 @@ export function useStateMachine(
     actions: {},
     action: updateStoreFunction
       ? actionTemplate({
-          options,
-          callback: updateStoreFunction as StoreUpdateFunction,
-          updateStore,
-        })
+        options,
+        callback: updateStoreFunction as StoreUpdateFunction,
+        updateStore,
+      })
       : () => {},
     state: globalState,
   };

@@ -10,7 +10,9 @@ createStore(
   },
   {
     name: 'test',
-    middleWares: [],
+    syncStores: {
+      __fuck__: ['test'],
+    },
   },
 );
 
