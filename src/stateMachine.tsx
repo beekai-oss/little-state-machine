@@ -48,7 +48,7 @@ export function setStorageType(type: Storage): void {
 }
 
 export function createStore(
-  data: Store,
+  defaultStoreData: Store,
   options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
@@ -70,7 +70,7 @@ export function createStore(
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
-  setStore(getSyncStoreData(data, options, storageType));
+  setStore(getSyncStoreData(defaultStoreData || getStore(), options, storageType));
 }
 
 export function StateMachineProvider<T>(props: T) {
