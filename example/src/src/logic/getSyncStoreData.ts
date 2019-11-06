@@ -2,40 +2,43 @@ import getBrowserStoreData from './getBrowserStoreData';
 import { StateMachineOptions } from '../types';
 
 export default function getSyncStoreData(
-  data: any,
+  defaultStoreData: any,
   options: StateMachineOptions,
   storageType: Storage,
 ) {
-  let syncedStoreData = data;
-  const syncStore = options.syncStores;
-  if (syncStore) {
-    if (syncStore.name && typeof syncStore.transform === 'function') {
-      try {
-        const sessionData = window.sessionStorage.getItem(options.name);
-        const parsedSessionStorage = sessionData && JSON.parse(sessionData);
-        syncedStoreData = syncStore.transform(
-          parsedSessionStorage,
-          syncedStoreData,
-        );
-      } catch {}
+  let store = defaultStoreData;
+  const syncStoreOption = options.syncStores;
+
+  if (!syncStoreOption) return store;
+
+  try {
+    if (
+      syncStoreOption.name &&
+      typeof syncStoreOption.transform === 'function'
+    ) {
+      return syncStoreOption.transform(
+        getBrowserStoreData(storageType, options.name),
+        store,
+      );
     } else {
-      Object.entries(syncStore).forEach(([key, values]) => {
-        try {
-          const browserStore = getBrowserStoreData(storageType, key);
-          values.forEach((value: string) => {
-            syncedStoreData = {
-              ...syncedStoreData,
-              ...{
-                [value]: {
-                  ...syncedStoreData[value],
-                  ...browserStore[value],
-                },
+      Object.entries(syncStoreOption).forEach(([key, values]) => {
+        const browserStore = getBrowserStoreData(storageType, key);
+        values.forEach((value: string) => {
+          store = {
+            ...store,
+            ...{
+              [value]: {
+                ...store[value],
+                ...browserStore[value],
               },
-            };
-          });
-        } catch {}
+            },
+          };
+        });
       });
     }
+  } catch {
+    return store;
   }
-  return syncedStoreData;
+
+  return store;
 }
