@@ -151,3 +151,10 @@ export function updateName(state, payload) {
   }
 }
 ```
+
+## Contributors 
+Thanks goes to these wonderful people:
+
+<p float="left">
+    <a href="https://github.com/flomocommon"><img src="https://avatars2.githubusercontent.com/u/31602074?s=460&v=4" width="50" height="50" /></a>
+</p>
