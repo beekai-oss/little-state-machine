@@ -34,12 +34,31 @@ This is a Provider Component to wrapper around your entire app in order to creat
 ##### 🔗 `createStore`
 Function to initial the global store, call at app root where `StateMachineProvider` is.
 
+```typescript
+import yourDetail from './state/yourDetail';
+
+function log(store) {
+  console.log(store);
+}
+
+createStore({
+  yourDetail, // it's an object of your state { firstName: '', lastName: '' }
+}, {
+  middleWares: [log], // an array of middleWares, which gets run each actions
+  syncStores: { // you can sync with external store and transform the data
+    name: 'externalStoreName',
+    transform: (externalStore, currentStore) => {
+      return { ...externalStore, ...currentStore };
+    },
+  }
+})
+```
+
 ##### 🔗 `useStateMachine(Action | Actions, Options?) =>`
 This hook function will return action/actions and state of the app. 
 
 ```typescript
-// individual action
-import { updateUserNameAction, removeNameAction } from './actions/yourDetails'
+import { updateUserNameAction, removeNameAction } from './actions/yourDetails';
 
 const { action, state } = useStateMachine(updateUserNameAction);
 const { actions, state } = useStateMachine({
@@ -47,6 +66,7 @@ const { actions, state } = useStateMachine({
   updateUserNameAction
 });
 
+// The following examples are for optional argument
 const { action, state } = useStateMachine(updateUserNameAction, {
   debugName: 'updateUserName' // This will be log in the devTool
 });
@@ -57,7 +77,6 @@ const { actions, state } = useStateMachine({
   removeNameAction: 'removeName',
   updateUserNameAction: 'updateUserName',
 });
-
 const { action, state } = useStateMachine(updateUserNameAction, {
   shouldReRenderApp: false // This will prevent App from re-render and only update the store 
 });
