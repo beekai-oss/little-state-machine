@@ -39,15 +39,28 @@ This hook function will return action/actions and state of the app.
 
 ```typescript
 // individual action
-Action: (store: Object, payload: any) => void;
-// multiple actions
-Actions: { [key: string] : Action }
-// options to name action in debug, and weather trigger global state update to re-render entire app 
-Options?: {
-  debugName?: string, // unique debug name can really help you :)
-  debugNames?: {[key:string]: string},
-  shouldReRenderApp?: boolean, 
-}
+import { updateUserNameAction, removeNameAction } from './actions/yourDetails'
+
+const { action, state } = useStateMachine(updateUserNameAction);
+const { actions, state } = useStateMachine({
+  removeNameAction,
+  updateUserNameAction
+});
+
+const { action, state } = useStateMachine(updateUserNameAction, {
+  debugName: 'updateUserName' // This will be log in the devTool
+});
+const { actions, state } = useStateMachine({
+  removeNameAction,
+  updateUserNameAction
+}, {
+  removeNameAction: 'removeName',
+  updateUserNameAction: 'updateUserName',
+});
+
+const { action, state } = useStateMachine(updateUserNameAction, {
+  shouldReRenderApp: false // This will prevent App from re-render and only update the store 
+});
 ```
 
 <h2>⚒ DevTool</h2>
