@@ -32,6 +32,17 @@ Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
 This is a Provider Component to wrapper around your entire app in order to create context.
 
 ##### 🔗 `createStore`
+```
+createStore(store, {
+ name: string; // rename the store
+ middleWares?: Function[]; // function to invoke each action
+ syncStores?:  // sync with external store in your session/local storage˚
+    | Record<string, string[]>
+    | { name: string; transform: Function }
+    | undefined;
+}})
+```
+
 Function to initial the global store, call at app root where `StateMachineProvider` is.
 
 ```typescript
