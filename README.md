@@ -11,6 +11,8 @@ State management made super simple
 
 </div>
 
+<h2>✨ Features</h2>
+
 - Follow flux application architecture
 - Tiny with 0 dependency and simple (less 1kb)
 - Persist state by default (`sessionStorage`)
@@ -30,22 +32,65 @@ Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
 This is a Provider Component to wrapper around your entire app in order to create context.
 
 ##### 🔗 `createStore`
+```
+createStore(store, {
+ name: string; // rename the store
+ middleWares?: Function[]; // function to invoke each action
+ syncStores?:  // sync with external store in your session/local storage˚
+    | Record<string, string[]>
+    | { name: string; transform: Function }
+    | undefined;
+}})
+```
+
 Function to initial the global store, call at app root where `StateMachineProvider` is.
+
+```typescript
+import yourDetail from './state/yourDetail';
+
+function log(store) {
+  console.log(store);
+}
+
+createStore({
+  yourDetail, // it's an object of your state { firstName: '', lastName: '' }
+}, {
+  middleWares: [log], // an array of middleWares, which gets run each actions
+  syncStores: { // you can sync with external store and transform the data
+    name: 'externalStoreName',
+    transform: (externalStore, currentStore) => {
+      return { ...externalStore, ...currentStore };
+    },
+  }
+})
+```
 
 ##### 🔗 `useStateMachine(Action | Actions, Options?) =>`
 This hook function will return action/actions and state of the app. 
 
 ```typescript
-// individual action
-Action: (store: Object, payload: any) => void;
-// multiple actions
-Actions: { [key: string] : Action }
-// options to name action in debug, and weather trigger global state update to re-render entire app 
-Options?: {
-  debugName?: string, // unique debug name can really help you :)
-  debugNames?: {[key:string]: string},
-  shouldReRenderApp?: boolean, 
-}
+import { updateUserNameAction, removeNameAction } from './actions/yourDetails';
+
+const { action, state } = useStateMachine(updateUserNameAction);
+const { actions, state } = useStateMachine({
+  removeNameAction,
+  updateUserNameAction
+});
+
+// The following examples are for optional argument
+const { action, state } = useStateMachine(updateUserNameAction, {
+  debugName: 'updateUserName' // This will be log in the devTool
+});
+const { actions, state } = useStateMachine({
+  removeNameAction,
+  updateUserNameAction
+}, {
+  removeNameAction: 'removeName',
+  updateUserNameAction: 'updateUserName',
+});
+const { action, state } = useStateMachine(updateUserNameAction, {
+  shouldReRenderApp: false // This will prevent App from re-render and only update the store 
+});
 ```
 
 <h2>⚒ DevTool</h2>
@@ -56,42 +101,9 @@ Built-in DevTool component to track your state change and action.
  {process.env.NODE_ENV !== 'production' && <DevTool />}
 </StateMachineProvider>
 ```
-<img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png?raw=true" />
-
-<h2>🛠 Window Object</h2>
-
-##### 🔗 `window.STATE_MACHINE_DEBUG`
-This will toggle the console output in dev tool.
-
-`window.STATE_MACHINE_DEBUG(true)` to turn debug on in console
-
-`window.STATE_MACHINE_DEBUG(false)` to turn off debug on in console
-
-<img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/devtool.png?raw=true" />
-
-##### 🔗 `window.STATE_MACHINE_RESET`
-This will reset the entire store.
-
-`window.STATE_MACHINE_RESET()` to reset the localStorage or sessionStorage
-
-##### 🔗 `window.STATE_MACHINE_GET_STORE`
-This will return the entire store.
-
-`window.STATE_MACHINE_GET_STORE()`
-
-##### 🔗 `window.STATE_MACHINE_SAVE_TO`
-Save into another session/local storage
-
-`window.STATE_MACHINE_GET_STORE(name: string)`
-
-##### 🔗 `window.STATE_MACHINE_LOAD`
-Load saved state into your app, you can either supply a name of your session/local storage, or supply a string of data.
-
-`window.STATE_MACHINE_GET_STORE({ storeName?: string, data?: Object })`
-
-`storeName`: external session/local storage name
-
-`data`: string of data
+<div align="center">
+    <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png?raw=true" />
+</div>
 
 <h2>📖 Example</h2>
 

@@ -1,5 +1,6 @@
 import { STORE_DEFAULT_NAME } from '../constants';
 import { GetStoreName, GetStore, SetStore, Store } from '../types';
+import getStoreData from './getBrowserStoreData';
 
 export default function storeFactory(
   storageType: Storage,
@@ -10,11 +11,7 @@ export default function storeFactory(
   getName: GetStoreName;
 } {
   const storeName = name || STORE_DEFAULT_NAME;
-  let store: Store = {};
-  const sessionStorageData = storageType.getItem(storeName);
-  try {
-    store = sessionStorageData ? JSON.parse(sessionStorageData) : {};
-  } catch {}
+  let store: Store = getStoreData(storageType, storeName);
 
   const getName = (): string => storeName;
 

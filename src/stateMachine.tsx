@@ -4,6 +4,7 @@ import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import { logEndAction, logStartAction } from './logic/devToolLogger';
+import getSyncStoreData from './logic/getSyncStoreData';
 import {
   UpdateStore,
   ActionName,
@@ -16,6 +17,7 @@ import {
   Actions,
   UpdateStoreFunction,
   StoreUpdateFunction,
+  StateMachineOptions,
 } from './types';
 
 let action: ActionName;
@@ -33,7 +35,7 @@ let storageType: Storage =
 let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
-let middleWaresBucket: Function[] = [];
+let middleWaresBucket: Function[] | undefined = [];
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
 export const middleWare = (data?: ActionName): ActionName => {
@@ -46,10 +48,11 @@ export function setStorageType(type: Storage): void {
 }
 
 export function createStore(
-  data: Store,
-  options: { name: string; middleWares: Function[] } = {
+  defaultStoreData: Store,
+  options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
+    syncStores: undefined,
   },
 ) {
   const storeName = options ? options.name : STORE_DEFAULT_NAME;
@@ -64,12 +67,10 @@ export function createStore(
   getStore = methods.get;
   setStore = methods.set;
   middleWaresBucket = options.middleWares;
-  const result = getStore();
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
-  if (result && Object.keys(result).length) return;
-  setStore(data);
+  setStore(getSyncStoreData(defaultStoreData || getStore(), options, storageType));
 }
 
 export function StateMachineProvider<T>(props: T) {
@@ -121,7 +122,7 @@ const actionTemplate = ({
     (options && options.shouldReRenderApp !== false)
   ) {
     updateStore(
-      middleWaresBucket.length
+      middleWaresBucket && middleWaresBucket.length
         ? middleWaresBucket.forEach(callback => {
             callback(getStore());
           })

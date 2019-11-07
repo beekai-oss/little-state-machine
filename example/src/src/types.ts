@@ -24,8 +24,17 @@ export type Options = {
   debugName?: DebugName;
   debugNames?: DebugNames;
   shouldReRenderApp?: boolean;
-}
+};
 
-export type Action = (payload: any) => void
+export type Action = (payload: any) => void;
 
 export type Actions = { [key: string]: Action };
+
+export type StateMachineOptions = {
+  name: string;
+  middleWares?: Function[];
+  syncStores?:
+    | Record<string, string[]>
+    | { name: string; transform: Function }
+    | undefined;
+};
