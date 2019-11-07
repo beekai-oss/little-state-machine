@@ -56,7 +56,9 @@ Built-in DevTool component to track your state change and action.
  {process.env.NODE_ENV !== 'production' && <DevTool />}
 </StateMachineProvider>
 ```
-<img width="700" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png?raw=true" />
+<div align="center">
+    <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png?raw=true" />
+</div>
 
 <h2>🛠 Window Object</h2>
 
