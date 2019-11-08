@@ -35,6 +35,14 @@ export type StateMachineOptions = {
   middleWares?: Function[];
   syncStores?:
     | Record<string, string[]>
-    | { name: string; transform: Function }
-    | undefined;
+    | {
+        externalStoreName: string;
+        transform: ({
+          externalStoreData,
+          currentStoreData,
+        }: {
+          externalStoreData: any;
+          currentStoreData: any;
+        }) => any;
+      };
 };
