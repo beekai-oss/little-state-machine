@@ -38,7 +38,7 @@ createStore(store, {
  middleWares?: Function[]; // function to invoke each action
  syncStores?:  // sync with external store in your session/local storage˚
     | Record<string, string[]>
-    | { name: string; transform: Function } // name of the external store, and state to sync
+    | { externalStoreName: string; transform: Function } // name of the external store, and state to sync
     | undefined;
 }})
 ```
@@ -57,9 +57,9 @@ createStore({
 }, {
   middleWares: [log], // an array of middleWares, which gets run each actions
   syncStores: { // you can sync with external store and transform the data
-    name: 'externalStoreName',
-    transform: (externalStore, currentStore) => {
-      return { ...externalStore, ...currentStore };
+    externalStoreName: 'externalStoreName',
+    transform: ({ externalStoreData, currentStoreData }) => {
+      return { ...externalStoreData, ...currentStoreData };
     },
   }
 })

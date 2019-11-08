@@ -13,13 +13,13 @@ export default function getSyncStoreData(
 
   try {
     if (
-      syncStoreOption.name &&
+      syncStoreOption.externalStoreName &&
       typeof syncStoreOption.transform === 'function'
     ) {
-      return syncStoreOption.transform(
-        getBrowserStoreData(storageType, options.name),
-        store,
-      );
+      return syncStoreOption.transform({
+        externalStoreData: getBrowserStoreData(storageType, options.name),
+        currentStoreData: store,
+      });
     } else {
       Object.entries(syncStoreOption).forEach(([key, values]) => {
         const browserStore = getBrowserStoreData(storageType, key);
