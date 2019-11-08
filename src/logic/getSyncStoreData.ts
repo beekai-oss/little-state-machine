@@ -14,10 +14,14 @@ export default function getSyncStoreData(
   try {
     if (
       syncStoreOption.externalStoreName &&
-      typeof syncStoreOption.transform === 'function'
+      typeof syncStoreOption.transform === 'function' &&
+      typeof syncStoreOption.externalStoreName === 'string'
     ) {
       return syncStoreOption.transform({
-        externalStoreData: getBrowserStoreData(storageType, options.name),
+        externalStoreData: getBrowserStoreData(
+          storageType,
+          syncStoreOption.externalStoreName,
+        ),
         currentStoreData: store,
       });
     } else {
