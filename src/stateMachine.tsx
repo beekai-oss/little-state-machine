@@ -70,7 +70,9 @@ export function createStore(
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
-  setStore(getSyncStoreData(defaultStoreData || getStore(), options, storageType));
+  setStore(
+    getSyncStoreData(getStore() || defaultStoreData, options, storageType),
+  );
 }
 
 export function StateMachineProvider<T>(props: T) {
