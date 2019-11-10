@@ -36,14 +36,14 @@ This is a Provider Component to wrapper around your entire app in order to creat
 createStore(store, options?: {
  name: string; // rename the store
  middleWares?: Function[]; // function to invoke each action
- syncStores?:  // sync with external store in your session/local storage˚
+ syncStores?:  // sync with external store in your session/local storage
     | Record<string, string[]>
     | { externalStoreName: string; transform: Function } // name of the external store, and state to sync
     | undefined;
 }})
 ```
 
-Function to initial the global store, call at app root where `StateMachineProvider` is.
+Function to initial the global store, invoked at your app root (where `<StateMachineProvider />` lives).
 
 ```typescript
 import yourDetail from './state/yourDetail';
