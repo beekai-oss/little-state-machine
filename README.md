@@ -33,7 +33,7 @@ This is a Provider Component to wrapper around your entire app in order to creat
 
 ##### 🔗 `createStore`
 ```
-createStore(store, {
+createStore(store, options?: {
  name: string; // rename the store
  middleWares?: Function[]; // function to invoke each action
  syncStores?:  // sync with external store in your session/local storage˚
@@ -65,7 +65,7 @@ createStore({
 })
 ```
 
-##### 🔗 `useStateMachine(Action | Actions, Options?) =>`
+##### 🔗 `useStateMachine`
 This hook function will return action/actions and state of the app. 
 
 ```typescript
