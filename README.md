@@ -1,4 +1,4 @@
-<div align="center"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png?raw=true" alt="Little State Machine - React Hooks for state management" width="140px" />
+<div align="center"><a href="https://lrz5wloklm.csb.app/"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png?raw=true" alt="Little State Machine - React Hooks for state management" width="140px" /></a>
     <h1>♆ Little State Machine</h2>
     
 State management made super simple
@@ -102,7 +102,9 @@ Built-in DevTool component to track your state change and action.
 </StateMachineProvider>
 ```
 <div align="center">
+  <a href="https://lrz5wloklm.csb.app/">
     <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png?raw=true" />
+  </a>
 </div>
 
 <h2>📖 Example</h2>
