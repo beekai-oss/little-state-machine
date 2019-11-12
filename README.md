@@ -14,7 +14,7 @@ State management made super simple
 <h2>✨ Features</h2>
 
 - Follow flux application architecture
-- Tiny with 0 dependency and simple (less 1kb)
+- Tiny with 0 dependency and simple (less than 1kb)
 - Persist state by default (`sessionStorage`)
 - Build with React Hooks
 
