@@ -124,7 +124,7 @@ const actionTemplate = ({
     (options && options.shouldReRenderApp !== false)
   ) {
     updateStore(
-      Array.isArray(middleWaresBucket)
+      Array.isArray(middleWaresBucket) && middleWaresBucket.length
         ? middleWaresBucket.forEach(callback => {
             callback(getStore());
           })
