@@ -160,7 +160,8 @@ export function updateName(state, payload) {
   return {
     ...state,
     yourDetail: {
-      name: payload
+      ...state.yourDetail,
+      ...payload,
     },
   }
 }
