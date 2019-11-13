@@ -19,6 +19,7 @@ import {
   StoreUpdateFunction,
   StateMachineOptions,
 } from './types';
+import { useCallback } from 'react';
 
 let action: ActionName;
 let storageType: Storage =
@@ -158,12 +159,15 @@ export function useStateMachine(
         ? Object.entries(updateStoreFunction).reduce(
             (previous, [key, callback]) => ({
               ...previous,
-              [key]: actionTemplate({
-                options,
-                callback,
-                updateStore,
-                key,
-              }),
+              [key]: useCallback(
+                actionTemplate({
+                  options,
+                  callback,
+                  updateStore,
+                  key,
+                }),
+                [],
+              ),
             }),
             {},
           )
@@ -175,13 +179,16 @@ export function useStateMachine(
 
   return {
     actions: {},
-    action: updateStoreFunction
-      ? actionTemplate({
-          options,
-          callback: updateStoreFunction as StoreUpdateFunction,
-          updateStore,
-        })
-      : () => {},
+    action: useCallback(
+      updateStoreFunction
+        ? actionTemplate({
+            options,
+            callback: updateStoreFunction as StoreUpdateFunction,
+            updateStore,
+          })
+        : () => {},
+      [],
+    ),
     state: globalState,
   };
 }
