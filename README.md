@@ -72,7 +72,7 @@ createStore({
   //     externalStoreName: 'externalStoreName',
   //     transform: ({ externalStoreData, currentStoreData }) => {
   //       return { ...externalStoreData, ...currentStoreData };
-  //      },
+  //     },
   //   }
   // ]
 })
