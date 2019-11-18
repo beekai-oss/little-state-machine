@@ -62,9 +62,9 @@ createStore({
       return { ...externalStoreData, ...currentStoreData };
     },
   }
-  // alternative you can just specify the store name and state name
+  // alternative you can just specify the store name and root state name { yourDetails: { firstName: '' } }
   // {
-  //  externalStoreName: ['yourDetail'],
+  //   externalStoreName: ['yourDetail'],
   // }
 })
 ```
