@@ -63,7 +63,7 @@ createStore({
     },
   }
   // alternative you can just specify the store name and root state name { yourDetails: { firstName: '' } }
-  // {
+  // syncStores : {
   //   externalStoreName: ['yourDetail'],
   // }
 })
