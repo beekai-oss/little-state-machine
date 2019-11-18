@@ -66,6 +66,15 @@ createStore({
   // syncStores : {
   //   externalStoreName: ['yourDetail'],
   // }
+  // or you can pass in an array of transform function
+  // syncStores : [
+  //   { 
+  //     externalStoreName: 'externalStoreName',
+  //     transform: ({ externalStoreData, currentStoreData }) => {
+  //       return { ...externalStoreData, ...currentStoreData };
+  //      },
+  //   }
+  // ]
 })
 ```
 
