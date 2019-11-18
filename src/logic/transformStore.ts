@@ -1,5 +1,5 @@
-import { TransformFunc } from '../types';
 import getBrowserStoreData from './getBrowserStoreData';
+import { TransformFunc } from '../types';
 
 export default ({
   transform,
