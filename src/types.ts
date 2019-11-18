@@ -30,19 +30,21 @@ export type Action = (payload: any) => void;
 
 export type Actions = { [key: string]: Action };
 
+export type TransformFunc = ({
+  externalStoreData,
+  currentStoreData,
+}: {
+  externalStoreData: any;
+  currentStoreData: any;
+}) => any;
+
+type TransformOptions = {
+  externalStoreName: string;
+  transform: TransformFunc;
+};
+
 export type StateMachineOptions = {
   name: string;
   middleWares?: Function[];
-  syncStores?:
-    | Record<string, string[]>
-    | {
-        externalStoreName: string;
-        transform: ({
-          externalStoreData,
-          currentStoreData,
-        }: {
-          externalStoreData: any;
-          currentStoreData: any;
-        }) => any;
-      };
+  syncStores?: Record<string, string[]> | TransformOptions | TransformOptions[];
 };
