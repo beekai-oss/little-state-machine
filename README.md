@@ -147,7 +147,7 @@ export default function YourComponent() {
     state: { yourDetail: { name } },
   } = useStateMachine(updateName);
 
-  return <div onClick={() => action('bill')}>{name}</div>
+  return <div onClick={() => action({ name: 'bill' })}>{name}</div>
 }
 ```
 
