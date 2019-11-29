@@ -155,23 +155,21 @@ export function useStateMachine(
 
   if (updateStoreFunction && Object.keys(updateStoreFunction).length) {
     return {
-      actions: updateStoreFunction
-        ? Object.entries(updateStoreFunction).reduce(
-            (previous, [key, callback]) => ({
-              ...previous,
-              [key]: useCallback(
-                actionTemplate({
-                  options,
-                  callback,
-                  updateStore,
-                  key,
-                }),
-                [],
-              ),
+      actions: Object.entries(updateStoreFunction).reduce(
+        (previous, [key, callback]) => ({
+          ...previous,
+          [key]: useCallback(
+            actionTemplate({
+              options,
+              callback,
+              updateStore,
+              key,
             }),
-            {},
-          )
-        : {},
+            [],
+          ),
+        }),
+        {},
+      ),
       action: () => {},
       state: globalState,
     };
