@@ -48,8 +48,8 @@ export function setStorageType(type: Storage): void {
   storageType = type;
 }
 
-export function createStore(
-  defaultStoreData: Store,
+export function createStore<T extends Store = Store>(
+  defaultStoreData: T,
   options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
@@ -57,7 +57,7 @@ export function createStore(
   },
 ) {
   const storeName = options ? options.name : STORE_DEFAULT_NAME;
-  const methods = storeFactory(storageType, storeName);
+  const methods = storeFactory<T>(storageType, storeName);
 
   if (isDevMode) {
     // @ts-ignore
@@ -141,13 +141,13 @@ const actionTemplate = ({
   }
 };
 
-export function useStateMachine(
+export function useStateMachine<T>(
   updateStoreFunction?: UpdateStore,
   options?: Options,
 ): {
   action: Action;
   actions: Actions;
-  state: Store;
+  state: T;
 } {
   const { store: globalState, updateStore } = React.useContext(
     StateMachineContext,
@@ -171,7 +171,7 @@ export function useStateMachine(
         {},
       ),
       action: () => {},
-      state: globalState,
+      state: globalState as T,
     };
   }
 
@@ -187,6 +187,6 @@ export function useStateMachine(
         : () => {},
       [],
     ),
-    state: globalState,
+    state: globalState as T,
   };
 }
