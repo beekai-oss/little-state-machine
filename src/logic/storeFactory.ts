@@ -1,7 +1,7 @@
 import { STORE_DEFAULT_NAME } from '../constants';
-import { GetStoreName, GetStore, SetStore, Store } from '../types';
+import { GetStoreName, GetStore, SetStore } from '../types';
 
-export default function storeFactory(
+export default function storeFactory<T>(
   storageType: Storage,
   name: string | undefined,
 ): {
@@ -10,7 +10,7 @@ export default function storeFactory(
   getName: GetStoreName;
 } {
   const storeName = name || STORE_DEFAULT_NAME;
-  let store: Store = {};
+  let store: T = {} as T;
   const sessionStorageData = storageType.getItem(storeName);
   try {
     store = sessionStorageData ? JSON.parse(sessionStorageData) : {};
@@ -18,11 +18,13 @@ export default function storeFactory(
 
   const getName = (): string => storeName;
 
-  const set = <T>(value: T): void => {
+  const set = <K>(value: K): void => {
+    // @ts-ignore
     store = value;
   };
 
-  const get = (): Store => store;
+  // @ts-ignore
+  const get = <T>(): T => store;
 
   return {
     set,

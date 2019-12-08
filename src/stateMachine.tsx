@@ -45,15 +45,15 @@ export function setStorageType(type: Storage): void {
   storageType = type;
 }
 
-export function createStore(
-  data: Store,
+export function createStore<T extends Store = Store>(
+  data: T,
   options: { name: string; middleWares: Function[] } = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
   },
 ) {
   const storeName = options ? options.name : STORE_DEFAULT_NAME;
-  const methods = storeFactory(storageType, storeName);
+  const methods = storeFactory<T>(storageType, storeName);
 
   if (isDevMode) {
     // @ts-ignore
@@ -64,7 +64,7 @@ export function createStore(
   getStore = methods.get;
   setStore = methods.set;
   middleWaresBucket = options.middleWares;
-  const result = getStore();
+  const result: T = getStore();
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
@@ -137,13 +137,13 @@ const actionTemplate = ({
   }
 };
 
-export function useStateMachine(
+export function useStateMachine<T>(
   updateStoreFunction?: UpdateStore,
   options?: Options,
 ): {
   action: Action;
   actions: Actions;
-  state: Store;
+  state: T;
 } {
   const { store: globalState, updateStore } = React.useContext(
     StateMachineContext,
@@ -166,7 +166,7 @@ export function useStateMachine(
           )
         : {},
       action: () => {},
-      state: globalState,
+      state: globalState as T,
     };
   }
 
@@ -179,6 +179,6 @@ export function useStateMachine(
           updateStore,
         })
       : () => {},
-    state: globalState,
+    state: globalState as T,
   };
 }

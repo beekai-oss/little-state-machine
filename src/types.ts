@@ -1,6 +1,6 @@
 export type Store = Record<string, any>;
 
-export type StoreUpdateFunction = <T, Q>(store: T, payload: Q) => Store;
+export type StoreUpdateFunction = <T>(store: T, payload: any) => Partial<Store>;
 
 export type UpdateStore =
   | StoreUpdateFunction
@@ -12,7 +12,7 @@ export type ActionName = { debugName: string };
 
 export type SetStore = <T>(value: T) => void;
 
-export type GetStore = () => Store;
+export type GetStore = <T>() => T;
 
 export type GetStoreName = () => string;
 
