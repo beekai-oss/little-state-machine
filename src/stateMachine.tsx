@@ -141,7 +141,7 @@ const actionTemplate = ({
   }
 };
 
-export function useStateMachine<T>(
+export function useStateMachine<T extends Store = Store>(
   updateStoreFunction?: UpdateStore,
   options?: Options,
 ): {

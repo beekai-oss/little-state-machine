@@ -1,6 +1,6 @@
 export type Store = Record<string, any>;
 
-export type StoreUpdateFunction = <T, Q>(store: T, payload: Q) => Store;
+export type StoreUpdateFunction = (store: any, payload: any) => Store;
 
 export type UpdateStore =
   | StoreUpdateFunction
@@ -26,7 +26,7 @@ export type Options = {
   shouldReRenderApp?: boolean;
 };
 
-export type Action = (payload: any) => void;
+export type Action = (store: any, payload: any) => any;
 
 export type Actions = { [key: string]: Action };
 
