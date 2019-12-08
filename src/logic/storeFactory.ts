@@ -2,7 +2,7 @@ import { STORE_DEFAULT_NAME } from '../constants';
 import { GetStoreName, GetStore, SetStore, Store } from '../types';
 import getStoreData from './getBrowserStoreData';
 
-export default function storeFactory(
+export default function storeFactory<T>(
   storageType: Storage,
   name: string | undefined,
 ): {
@@ -15,11 +15,11 @@ export default function storeFactory(
 
   const getName = (): string => storeName;
 
-  const set = <T>(value: T): void => {
+  const set = <K>(value: K): void => {
     store = value;
   };
 
-  const get = (): Store => store;
+  const get = (): T => store as T;
 
   return {
     set,
