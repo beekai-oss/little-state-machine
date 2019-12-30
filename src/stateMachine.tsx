@@ -22,17 +22,17 @@ import {
 import { useCallback } from 'react';
 
 let action: ActionName;
-let storageType: Storage =
-  typeof window === 'undefined'
-    ? {
-        getItem: payload => payload,
-        setItem: (payload: string) => payload,
-        clear: () => {},
-        length: 0,
-        key: (payload: number) => payload.toString(),
-        removeItem: () => {},
-      }
-    : window.sessionStorage;
+const isClient = typeof window !== 'undefined';
+let storageType: Storage = isClient
+  ? window.sessionStorage
+  : {
+      getItem: payload => payload,
+      setItem: (payload: string) => payload,
+      clear: () => {},
+      length: 0,
+      key: (payload: number) => payload.toString(),
+      removeItem: () => {},
+    };
 let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
@@ -59,7 +59,7 @@ export function createStore<T extends Store = Store>(
   const storeName = options ? options.name : STORE_DEFAULT_NAME;
   const methods = storeFactory<T>(storageType, storeName);
 
-  if (isDevMode) {
+  if (isDevMode && isClient) {
     // @ts-ignore
     window['STATE_MACHINE_NAME'] = storeName;
   }
