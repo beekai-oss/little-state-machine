@@ -36,7 +36,7 @@ let storageType: Storage = isClient
 let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
-let middleWaresBucket: Function[] | undefined = [];
+let middleWaresArray: Function[] | undefined = [];
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
 export const middleWare = (data?: ActionName): ActionName => {
@@ -67,7 +67,7 @@ export function createStore<T extends Store = Store>(
   getName = methods.getName;
   getStore = methods.get;
   setStore = methods.set;
-  middleWaresBucket = options.middleWares;
+  middleWaresArray = options.middleWares;
 
   setUpDevTools(isDevMode, storageType, getName, getStore);
 
@@ -102,6 +102,7 @@ const actionTemplate = ({
 }) => (payload: any) => {
   let isDebugOn;
   let storeCopy;
+  let result;
   const debugName: string | undefined =
     options && (options.debugName || options.debugNames)
       ? key && options.debugNames
@@ -117,20 +118,24 @@ const actionTemplate = ({
     middleWare({ debugName: debugName || '' });
   }
 
-  setStore(callback && callback(getStore(), payload));
+  if (callback) {
+    result = callback(getStore(), payload);
+  }
+
+  setStore(result === undefined ? getStore() : result);
   storageType.setItem(getName(), JSON.stringify(getStore()));
 
   if (
     options === undefined ||
     (options && options.shouldReRenderApp !== false)
   ) {
-    updateStore(
-      Array.isArray(middleWaresBucket) && middleWaresBucket.length
-        ? middleWaresBucket.forEach(callback => {
-            callback(getStore());
-          })
-        : getStore(),
-    );
+    const storeData = getStore();
+    if (Array.isArray(middleWaresArray) && middleWaresArray.length) {
+      middleWaresArray.forEach(callback => {
+        callback(storeData);
+      });
+    }
+    updateStore(storeData);
   }
 
   if (isDevMode && isDebugOn) {
