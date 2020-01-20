@@ -1,5 +1,6 @@
 import * as React from 'react';
 import storeFactory from './logic/storeFactory';
+import isUndefined from './utils/isUndefined';
 import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
@@ -92,7 +93,6 @@ export function StateMachineProvider<T>(props: T) {
 const actionTemplate = ({
   options,
   callback,
-  key,
   updateStore,
 }: {
   callback?: StoreUpdateFunction;
@@ -103,30 +103,25 @@ const actionTemplate = ({
   let isDebugOn;
   let storeCopy;
   let result;
-  const debugName: string | undefined =
-    options && (options.debugName || options.debugNames)
-      ? key && options.debugNames
-        ? options.debugNames[key]
-        : options.debugName
-      : '';
+  const debugName = callback ? callback.name : '';
 
   if (isDevMode) {
     isDebugOn = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
     if (isDebugOn) {
-      storeCopy = logStartAction({ debugName: debugName || '', getStore });
+      storeCopy = logStartAction({ debugName, getStore });
     }
-    middleWare({ debugName: debugName || '' });
+    middleWare({ debugName });
   }
 
   if (callback) {
     result = callback(getStore(), payload);
   }
 
-  setStore(result === undefined ? getStore() : result);
+  setStore(isUndefined(result) ? getStore() : result);
   storageType.setItem(getName(), JSON.stringify(getStore()));
 
   if (
-    options === undefined ||
+    isUndefined(options) ||
     (options && options.shouldReRenderApp !== false)
   ) {
     const storeData = getStore();
