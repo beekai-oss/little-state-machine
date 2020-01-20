@@ -32,7 +32,15 @@ let previousMouseMoveDiff = config.mouseMoveDiff;
 let previousIsCollapse = config.isCollapse;
 let previousIsClose = config.isClose;
 
-const DevTool = ({ iconSize }: { iconSize?: number }) => {
+const DevTool = ({
+  buttonBottom,
+  buttonTop,
+  iconSize
+}: {
+  buttonBottom?: string | number;
+  buttonTop?: string | number;
+  iconSize?: number;
+}) => {
   const { state } = useStateMachine();
   const [isClose, setClose] = useState(config.isClose);
   const [isLoadPanelShow, setLoadPanel] = useState(false);
@@ -110,8 +118,9 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
       <button
         style={{
           position: 'fixed',
+          top: buttonTop || 0,
           right: 0,
-          bottom: 60,
+          bottom: buttonBottom || 0,
           width: iconSize || 40,
           height: iconSize || 40,
           margin: 0,
