@@ -8,6 +8,6 @@ export const COLORS = {
 };
 
 export const Z_INDEX = {
-  top: 100000000,
+  top: 99999998,
   second: 99999999,
 };
