@@ -120,7 +120,7 @@ const DevTool = ({
           position: 'fixed',
           top: buttonTop || 0,
           right: 0,
-          bottom: buttonBottom || 0,
+          bottom: buttonBottom || 'auto',
           width: iconSize || 40,
           height: iconSize || 40,
           margin: 0,
