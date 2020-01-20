@@ -7,7 +7,6 @@ export function setUpDevTools(
   getName: Function,
   getStore: GetStore,
 ) {
-  console.log('wtf');
   if (typeof window === 'undefined' || !isDevMode) return;
 
   // @ts-ignore
