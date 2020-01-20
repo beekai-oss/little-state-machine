@@ -20,10 +20,11 @@ import {
   StoreUpdateFunction,
   StateMachineOptions,
 } from './types';
-import { useCallback } from 'react';
 
-let action: ActionName;
+const { useCallback } = React;
 const isClient = typeof window !== 'undefined';
+const isDevMode: boolean = process.env.NODE_ENV !== 'production';
+let action: ActionName;
 let storageType: Storage = isClient
   ? window.sessionStorage
   : {
@@ -38,7 +39,6 @@ let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
 let middleWaresArray: Function[] | undefined = [];
-const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 
 export const middleWare = (data?: ActionName): ActionName => {
   if (data) action = data;

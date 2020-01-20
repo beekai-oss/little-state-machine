@@ -7,24 +7,25 @@ export function setUpDevTools(
   getName: Function,
   getStore: GetStore,
 ) {
+  console.log('wtf');
   if (typeof window === 'undefined' || !isDevMode) return;
 
   // @ts-ignore
-  window['STATE_MACHINE_DEBUG'] = (value: string) =>
+  window.STATE_MACHINE_DEBUG = (value: string) =>
     storageType.setItem(STATE_MACHINE_DEBUG_NAME, value);
 
   // @ts-ignore
-  window['STATE_MACHINE_RESET'] = () => storageType.clear();
+  window.STATE_MACHINE_RESET = () => storageType.clear();
 
   // @ts-ignore
-  window['STATE_MACHINE_GET_STORE'] = () => storageType.getItem(getName());
+  window.STATE_MACHINE_GET_STORE = () => storageType.getItem(getName());
 
   // @ts-ignore
-  window['STATE_MACHINE_SAVE_TO'] = name =>
+  window.STATE_MACHINE_SAVE_TO = name =>
     window.localStorage.setItem(name, JSON.stringify(getStore()));
 
   // @ts-ignore
-  window['STATE_MACHINE_LOAD'] = ({
+  window.STATE_MACHINE_LOAD = ({
     storeName,
     data,
   }: {
