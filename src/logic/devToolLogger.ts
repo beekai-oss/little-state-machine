@@ -10,7 +10,7 @@ export function logStartAction({
   getStore: GetStore;
 }) {
   const storeCopy = cloneDeep(getStore());
-  console.log('┌───────────────────────────────────────>');
+  console.group();
   console.log(`├─%c${debugName}`, 'color: #bada55');
   console.log('├─before:', storeCopy);
   return storeCopy;
@@ -37,4 +37,5 @@ export function logEndAction({
       difference(getStore(), storeCopy),
     );
   }
+  console.groupEnd();
 }
