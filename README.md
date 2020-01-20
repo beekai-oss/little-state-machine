@@ -82,9 +82,6 @@ const { actions, state } = useStateMachine({
 });
 
 // The following examples are for optional argument
-const { action, state } = useStateMachine(updateUserNameAction, {
-  debugName: 'updateUserName' // This will be log in the devTool
-});
 const { actions, state } = useStateMachine({
   removeNameAction,
   updateUserNameAction
