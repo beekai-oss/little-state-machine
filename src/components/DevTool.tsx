@@ -32,7 +32,15 @@ let previousMouseMoveDiff = config.mouseMoveDiff;
 let previousIsCollapse = config.isCollapse;
 let previousIsClose = config.isClose;
 
-const DevTool = ({ iconSize }: { iconSize?: number }) => {
+const DevTool = ({
+  buttonBottom,
+  buttonTop,
+  iconSize
+}: {
+  buttonBottom?: string | number;
+  buttonTop?: string | number;
+  iconSize?: number;
+}) => {
   const { state } = useStateMachine();
   const [isClose, setClose] = useState(config.isClose);
   const [isLoadPanelShow, setLoadPanel] = useState(false);
@@ -107,35 +115,28 @@ const DevTool = ({ iconSize }: { iconSize?: number }) => {
       }}
       ref={rootRef}
     >
-      <Animate
-        play={!isClose}
-        end={{ transform: 'translateY(-50px)' }}
-        delay={0.3}
-        render={({ style }) => (
-          <button
-            style={{
-              position: 'fixed',
-              right: 0,
-              top: -1,
-              width: iconSize || 40,
-              height: iconSize || 40,
-              margin: 0,
-              padding: 10,
-              background: COLORS.primary,
-              color: 'white',
-              zIndex: Z_INDEX.top,
-              fontSize: 15,
-              lineHeight: '15px',
-              border: 0,
-              borderRadius: 0,
-              ...style,
-            }}
-            onClick={() => closePanel()}
-          >
-            ♆
-          </button>
-        )}
-      />
+      <button
+        style={{
+          position: 'fixed',
+          top: buttonTop || 0,
+          right: 0,
+          bottom: buttonBottom || 'auto',
+          width: iconSize || 40,
+          height: iconSize || 40,
+          margin: 0,
+          padding: 10,
+          background: COLORS.primary,
+          color: 'white',
+          zIndex: Z_INDEX.top,
+          fontSize: 15,
+          lineHeight: '15px',
+          border: 0,
+          borderRadius: 0
+        }}
+        onClick={() => closePanel()}
+      >
+        ♆
+      </button>
       <Animate
         play={isClose}
         end={{ transform: 'translateX(102%)' }}
