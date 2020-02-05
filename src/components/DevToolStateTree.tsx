@@ -43,8 +43,10 @@ export default ({
   actions,
   config,
   panelPosition,
+  isBrowser,
 }: {
   isLoadPanelShow: boolean;
+  isBrowser: boolean;
   setLoadPanel: (payload: boolean) => void;
   state: Object;
   setExpand: (payload: boolean) => void;
@@ -81,7 +83,9 @@ export default ({
 
   return (
     <section>
-      {isLoadPanelShow && <DevToolStorage setLoadPanel={setLoadPanel} />}
+      {isLoadPanelShow && (
+        <DevToolStorage setLoadPanel={setLoadPanel} isBrowser={isBrowser} />
+      )}
       <h3
         style={{
           fontWeight: 'lighter',
@@ -199,24 +203,30 @@ export default ({
             saveSetting({ searchTerm: e.target.value });
           }}
         />
-        <ReactJson
-          src={data}
-          theme="harmonic"
-          iconStyle="square"
-          enableClipboard={false}
-          collapsed={isCollapse}
-          displayObjectSize={false}
-          displayDataTypes={false}
-          indentWidth={2}
-          style={{
-            fontSize: 12,
-            overflow: 'auto',
-            height:
-              !panelPosition || panelPosition === 'right'
-                ? `calc(${window.screen.height - 275}px)`
-                : `calc(${window.innerHeight * 0.4 - 140}px)`,
-          }}
-        />
+        {isBrowser && (
+          <ReactJson
+            src={data}
+            theme="harmonic"
+            iconStyle="square"
+            enableClipboard={false}
+            collapsed={isCollapse}
+            displayObjectSize={false}
+            displayDataTypes={false}
+            indentWidth={2}
+            style={{
+              fontSize: 12,
+              overflow: 'auto',
+              ...(isBrowser
+                ? {
+                    height:
+                      !panelPosition || panelPosition === 'right'
+                        ? `calc(${window.screen.height - 275}px)`
+                        : `calc(${window.innerHeight * 0.4 - 140}px)`,
+                  }
+                : {}),
+            }}
+          />
+        )}
       </section>
     </section>
   );

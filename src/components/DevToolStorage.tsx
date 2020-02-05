@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { COLORS, Z_INDEX } from '../constants';
 
-export default function DevToolStorage({ setLoadPanel }: any) {
+export default function DevToolStorage({ setLoadPanel, isBrowser }: any) {
   return (
     <div
       style={{
@@ -30,7 +30,7 @@ export default function DevToolStorage({ setLoadPanel }: any) {
           lineHeight: 1.5,
         }}
       >
-        {Object.entries(window.localStorage).map(([key, value], index) => (
+        {isBrowser && Object.entries(window.localStorage).map(([key, value], index) => (
           <li key={`${key}${index}`}>
             <button
               style={{

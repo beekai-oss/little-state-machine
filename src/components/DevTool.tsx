@@ -49,6 +49,7 @@ const DevTool = ({
   const [panelPosition, setPanel] = useState(config.panelPosition);
   const rootRef = useRef<HTMLInputElement>(null);
   const mouseDownOriginalX = useRef(0);
+  const isBrowser = typeof window !== 'undefined';
   const [mouseMoveDiff, setMouseMoveDiff] = useState(config.mouseMoveDiff);
 
   const closePanel = () => {
@@ -181,6 +182,7 @@ const DevTool = ({
             />
             <DevToolStateTree
               {...{
+                isBrowser,
                 setPanel,
                 panelPosition,
                 closePanel,
