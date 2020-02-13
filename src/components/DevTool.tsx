@@ -153,7 +153,7 @@ const DevTool = ({
               height: '100vh',
               background: COLORS.primary,
               display: 'grid',
-              gridTemplateColumns: '3px 150px auto',
+              gridTemplateColumns: '3px 150px minmax(100px, 1fr)',
               boxShadow: '0 0 8px 3px #080808',
               ...(panelPosition === 'bottom'
                 ? {
