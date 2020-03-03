@@ -43,7 +43,7 @@ createStore(store, options?: {
 }})
 ```
 
-Function to initial the global store, invoked at your app root (where `<StateMachineProvider />` lives).
+Function to initialize the global store, invoked at your app root (where `<StateMachineProvider />` lives).
 
 ```typescript
 import yourDetail from './state/yourDetail';
