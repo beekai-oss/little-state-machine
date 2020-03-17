@@ -17,6 +17,7 @@ State management made super simple
 - Tiny with 0 dependency and simple (less than 1kb)
 - Persist state by default (`sessionStorage`)
 - Build with React Hooks
+- Compatible with React Native
 
 <h2>📦 Installation</h2>
 
@@ -116,6 +117,10 @@ import React from 'react'
 import yourDetail from './yourDetail'
 import YourComponent from './yourComponent'
 import { StateMachineProvider, createStore, DevTool } from 'little-state-machine'
+
+// The following code is for React Native usage
+// import { AsyncStorage } from "react-native";
+// setStorageType(AsyncStorage);
 
 // create your store
 createStore({
