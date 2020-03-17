@@ -6,7 +6,7 @@ import { useState } from 'react';
 import search from '../logic/filterObject';
 const clone = require('lodash.clonedeep');
 let ReactJson = (props: any) => <div {...props} />;
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
   ReactJson = require('react-json-view').default;
 }
 

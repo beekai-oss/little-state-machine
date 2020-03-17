@@ -13,7 +13,7 @@ export let actions: { name: string; state: Object }[] = [];
 let previousStateIndex = -1;
 let previousIsLoadPanelShow = false;
 const config =
-  typeof window !== 'undefined'
+  typeof window !== 'undefined' && typeof document !== 'undefined'
     ? // @ts-ignore
       JSON.parse(
         window.localStorage.getItem(STATE_MACHINE_DEV_TOOL_CONFIG) ||
@@ -35,7 +35,7 @@ let previousIsClose = config.isClose;
 const DevTool = ({
   buttonBottom,
   buttonTop,
-  iconSize
+  iconSize,
 }: {
   buttonBottom?: string | number;
   buttonTop?: string | number;
@@ -132,7 +132,7 @@ const DevTool = ({
           fontSize: 15,
           lineHeight: '15px',
           border: 0,
-          borderRadius: 0
+          borderRadius: 0,
         }}
         onClick={() => closePanel()}
       >
