@@ -40,7 +40,7 @@ createStore(store, options?: {
  syncStores?:  // sync with external store in your session/local storage
     | Record<string, string[]>
     | { externalStoreName: string; transform: Function } // name of the external store, and state to sync
-    | undefined;
+    | { externalStoreName: string; transform: Function }[];
 }})
 ```
 
@@ -67,6 +67,15 @@ createStore({
   // syncStores : {
   //   externalStoreName: ['yourDetail'],
   // }
+  // or you can pass in an array of transform function
+  // syncStores : [
+  //   { 
+  //     externalStoreName: 'externalStoreName',
+  //     transform: ({ externalStoreData, currentStoreData }) => {
+  //       return { ...externalStoreData, ...currentStoreData };
+  //     },
+  //   }
+  // ]
 })
 ```
 
