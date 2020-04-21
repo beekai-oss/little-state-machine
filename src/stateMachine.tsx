@@ -16,9 +16,9 @@ import {
   Options,
   Action,
   Actions,
-  UpdateStoreFunction,
   StoreUpdateFunction,
   StateMachineOptions,
+  UpdateStoreFunction
 } from './types';
 
 const { useCallback } = React;
@@ -171,7 +171,7 @@ export function useStateMachine<T extends Store = Store>(
         }),
         {},
       ),
-      action: () => {},
+      action: p => p,
       state: globalState as T,
     };
   }
