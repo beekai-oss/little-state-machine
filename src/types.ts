@@ -20,7 +20,7 @@ export type Options = {
   shouldReRenderApp?: boolean;
 };
 
-export type Action = <T>(payload: T) => T;
+export type Action = <T>(store: any, payload: T) => T;
 
 export type Actions = { [key: string]: Action };
 
