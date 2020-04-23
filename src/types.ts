@@ -20,17 +20,17 @@ export type Options = {
   shouldReRenderApp?: boolean;
 };
 
-export type Action = <T>(store: any, payload: T) => T;
+export type Action = <T extends object>(payload: T) => void;
 
 export type Actions = { [key: string]: Action };
 
-export type TransformFunc = ({
+export type TransformFunc = <Store extends object, T extends object>({
   externalStoreData,
   currentStoreData,
 }: {
-  externalStoreData: any;
-  currentStoreData: any;
-}) => any;
+  externalStoreData: Store;
+  currentStoreData: T;
+}) => Store;
 
 type TransformOptions = {
   externalStoreName: string;

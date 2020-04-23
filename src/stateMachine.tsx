@@ -1,11 +1,11 @@
 import * as React from 'react';
 import storeFactory from './logic/storeFactory';
 import isUndefined from './utils/isUndefined';
-import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import { logEndAction, logStartAction } from './logic/devToolLogger';
 import getSyncStoreData from './logic/getSyncStoreData';
+import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import {
   UpdateStore,
   ActionName,
@@ -18,7 +18,7 @@ import {
   Actions,
   StoreUpdateFunction,
   StateMachineOptions,
-  UpdateStoreFunction
+  UpdateStoreFunction,
 } from './types';
 
 const { useCallback } = React;
@@ -97,9 +97,8 @@ const actionTemplate = ({
 }: {
   callback?: StoreUpdateFunction;
   options?: Options;
-  key?: string;
   updateStore: UpdateStoreFunction;
-}) => (payload: any) => {
+}) => <T extends object>(payload: T): void => {
   let isDebugOn;
   let storeCopy;
   let result;
@@ -164,7 +163,6 @@ export function useStateMachine<T extends Store = Store>(
               options,
               callback,
               updateStore,
-              key,
             }),
             [],
           ),
