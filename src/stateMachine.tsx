@@ -123,13 +123,15 @@ const actionTemplate = ({
     isUndefined(options) ||
     (options && options.shouldReRenderApp !== false)
   ) {
-    const storeData = getStore();
-    let pipeData;
+    let pipeData = getStore();
+
     if (Array.isArray(middleWaresArray) && middleWaresArray.length) {
-      pipeData = middleWaresArray.reduce((currentValue, currentFunction) => {
-        return currentFunction(currentValue);
-      }, storeData);
+      pipeData = middleWaresArray.reduce(
+        (currentValue, currentFunction) => currentFunction(currentValue),
+        pipeData,
+      );
     }
+
     updateStore(pipeData);
   }
 
