@@ -4,7 +4,6 @@ import {
   StateMachineProvider,
   useStateMachine,
 } from './stateMachine';
-import DevTool from './components/DevTool';
 import StateMachineContext from './StateMachineContext';
 
 export {
@@ -13,6 +12,4 @@ export {
   StateMachineProvider,
   useStateMachine,
   StateMachineContext,
-  DevTool,
 };
-
