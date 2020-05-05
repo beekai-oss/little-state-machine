@@ -108,6 +108,8 @@ const { action, state } = useStateMachine(updateUserNameAction, {
 
 Built-in DevTool component to track your state change and action.
 ```jsx
+import { DevTool } from 'little-state-machine-devtools'
+
 <StateMachineProvider>
  {process.env.NODE_ENV !== 'production' && <DevTool />}
 </StateMachineProvider>
@@ -125,7 +127,8 @@ Built-in DevTool component to track your state change and action.
 import React from 'react'
 import yourDetail from './yourDetail'
 import YourComponent from './yourComponent'
-import { StateMachineProvider, createStore, DevTool } from 'little-state-machine'
+import { StateMachineProvider, createStore } from 'little-state-machine'
+import { DevTool } from 'little-state-machine-devtools'
 
 // The following code is for React Native usage
 // import { AsyncStorage } from "react-native";
