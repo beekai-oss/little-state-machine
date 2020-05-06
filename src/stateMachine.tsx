@@ -3,12 +3,13 @@ import storeFactory from './logic/storeFactory';
 import isUndefined from './utils/isUndefined';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
-import { logEndAction, logStartAction } from './logic/devToolLogger';
 import getSyncStoreData from './logic/getSyncStoreData';
-import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
+import {
+  STORE_ACTION_NAME,
+  STORE_DEFAULT_NAME,
+} from './constants';
 import {
   UpdateStore,
-  ActionName,
   GetStore,
   SetStore,
   GetStoreName,
@@ -24,7 +25,6 @@ import {
 const { useCallback } = React;
 const isClient = typeof window !== 'undefined';
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
-let action: ActionName;
 let storageType: Storage = isClient
   ? window.sessionStorage
   : {
@@ -40,9 +40,12 @@ let setStore: SetStore;
 let getName: GetStoreName;
 let middleWaresArray: Function[] | undefined = [];
 
-export const middleWare = (data?: ActionName): ActionName => {
-  if (data) action = data;
-  return action;
+export const middleWare = (data: string = '') => {
+  if (data) {
+    // @ts-ignore
+    window[STORE_ACTION_NAME] = data;
+  }
+  return data;
 };
 
 export function setStorageType(type: Storage): void {
@@ -99,17 +102,11 @@ const actionTemplate = ({
   options?: Options;
   updateStore: UpdateStoreFunction;
 }) => <T extends object>(payload: T): void => {
-  let isDebugOn;
-  let storeCopy;
   let result;
   const debugName = callback ? callback.name : '';
 
   if (isDevMode) {
-    isDebugOn = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
-    if (isDebugOn) {
-      storeCopy = logStartAction({ debugName, getStore });
-    }
-    middleWare({ debugName });
+    middleWare(debugName);
   }
 
   if (callback) {
@@ -133,13 +130,6 @@ const actionTemplate = ({
     }
 
     updateStore(pipeData);
-  }
-
-  if (isDevMode && isDebugOn) {
-    logEndAction({
-      getStore,
-      storeCopy,
-    });
   }
 };
 
