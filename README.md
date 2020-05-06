@@ -1,5 +1,5 @@
 <div align="center"><a href="https://lrz5wloklm.csb.app/"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png?raw=true" alt="Little State Machine - React Hooks for state management" width="140px" /></a>
-    <h1>♆ Little State Machine</h2>
+    <h1>Little State Machine</h2>
     
 State management made super simple
 </div>
@@ -14,8 +14,7 @@ State management made super simple
 
 <h2>✨ Features</h2>
 
-- Follow flux application architecture
-- Tiny with 0 dependency and simple (less than 1kb)
+- Tiny with 0 dependency and simple (less than 1.5kb)
 - Persist state by default (`sessionStorage`)
 - Build with React Hooks
 - Compatible with React Native
