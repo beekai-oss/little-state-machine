@@ -8,7 +8,6 @@ import getSyncStoreData from './logic/getSyncStoreData';
 import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
 import {
   UpdateStore,
-  ActionName,
   GetStore,
   SetStore,
   GetStoreName,
@@ -24,7 +23,6 @@ import {
 const { useCallback } = React;
 const isClient = typeof window !== 'undefined';
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
-let action: ActionName;
 let storageType: Storage = isClient
   ? window.sessionStorage
   : {
@@ -39,11 +37,6 @@ let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
 let middleWaresArray: Function[] | undefined = [];
-
-export const middleWare = (data?: ActionName): ActionName => {
-  if (data) action = data;
-  return action;
-};
 
 export function setStorageType(type: Storage): void {
   storageType = type;
@@ -109,7 +102,6 @@ const actionTemplate = ({
     if (isDebugOn) {
       storeCopy = logStartAction({ debugName, getStore });
     }
-    middleWare({ debugName });
   }
 
   if (callback) {

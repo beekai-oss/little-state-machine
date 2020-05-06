@@ -8,8 +8,6 @@ export type UpdateStore =
 
 export type UpdateStoreFunction = <T>(payload: T) => T;
 
-export type ActionName = { debugName: string };
-
 export type SetStore = <T>(value: T) => void;
 
 export type GetStore = () => Store;
