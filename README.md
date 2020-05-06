@@ -114,15 +114,15 @@ const { action, state } = useStateMachine(updateUserNameAction, {
 });
 ```
 
-<h2>⚒ DevTool</h2>
+<h2>⚒ Little State Machine DevTool</h2>
 
-Built-in DevTool component to track your state change and action.
+[DevTool](https://github.com/bluebill1049/little-state-machine-dev-tools) component to track your state change and action. 
 
 ```jsx
 import { DevTool } from 'little-state-machine-devtools';
 
 <StateMachineProvider>
-  {process.env.NODE_ENV !== 'production' && <DevTool />}
+  <DevTool />
 </StateMachineProvider>;
 ```
 
