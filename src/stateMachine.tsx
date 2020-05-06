@@ -5,7 +5,11 @@ import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import { logEndAction, logStartAction } from './logic/devToolLogger';
 import getSyncStoreData from './logic/getSyncStoreData';
-import { STATE_MACHINE_DEBUG_NAME, STORE_DEFAULT_NAME } from './constants';
+import {
+  STATE_MACHINE_DEBUG_NAME,
+  STORE_ACTION_NAME,
+  STORE_DEFAULT_NAME,
+} from './constants';
 import {
   UpdateStore,
   GetStore,
@@ -37,6 +41,14 @@ let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
 let middleWaresArray: Function[] | undefined = [];
+
+export const middleWare = (data: string = '') => {
+  if (data) {
+    // @ts-ignore
+    window[STORE_ACTION_NAME] = data;
+  }
+  return data;
+};
 
 export function setStorageType(type: Storage): void {
   storageType = type;
@@ -102,6 +114,7 @@ const actionTemplate = ({
     if (isDebugOn) {
       storeCopy = logStartAction({ debugName, getStore });
     }
+    middleWare(debugName);
   }
 
   if (callback) {

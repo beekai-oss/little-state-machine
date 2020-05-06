@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useStateMachine, middleWare } from '../stateMachine';
+import { useStateMachine } from '../stateMachine';
 import DevToolActionPanel from './DevToolActionPanel';
 import DevToolStateTree from './DevToolStateTree';
 import { Animate } from 'react-simple-animate';
@@ -66,7 +66,8 @@ const DevTool = ({
     previousMouseMoveDiff === mouseMoveDiff
   ) {
     actions.push({
-      name: (middleWare() || {}).debugName,
+      // @ts-ignore
+      name: window['__STATE_MACHINE_ACTION_NAME__'],
       state: cloneDeep(state),
     });
   }
