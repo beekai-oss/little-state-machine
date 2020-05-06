@@ -3,10 +3,8 @@ import storeFactory from './logic/storeFactory';
 import isUndefined from './utils/isUndefined';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
-import { logEndAction, logStartAction } from './logic/devToolLogger';
 import getSyncStoreData from './logic/getSyncStoreData';
 import {
-  STATE_MACHINE_DEBUG_NAME,
   STORE_ACTION_NAME,
   STORE_DEFAULT_NAME,
 } from './constants';
@@ -104,16 +102,10 @@ const actionTemplate = ({
   options?: Options;
   updateStore: UpdateStoreFunction;
 }) => <T extends object>(payload: T): void => {
-  let isDebugOn;
-  let storeCopy;
   let result;
   const debugName = callback ? callback.name : '';
 
   if (isDevMode) {
-    isDebugOn = storageType.getItem(STATE_MACHINE_DEBUG_NAME) === 'true';
-    if (isDebugOn) {
-      storeCopy = logStartAction({ debugName, getStore });
-    }
     middleWare(debugName);
   }
 
@@ -138,13 +130,6 @@ const actionTemplate = ({
     }
 
     updateStore(pipeData);
-  }
-
-  if (isDevMode && isDebugOn) {
-    logEndAction({
-      getStore,
-      storeCopy,
-    });
   }
 };
 
