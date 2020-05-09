@@ -15,7 +15,7 @@ State management made super simple
 <h2>✨ Features</h2>
 
 - Tiny with 0 dependency and simple (less than 1.5kb)
-- Persist state by default (`sessionStorage`)
+- Persist state by default (`sessionStorage` or `localStorage`)
 - Build with React Hooks
 - Compatible with React Native
 
@@ -137,7 +137,7 @@ createStore({
 export default () => {
   return (
     <StateMachineProvider>
-      {process.env.NODE_ENV !== 'production' && <DevTool />}
+      <DevTool />
       <YourComponent />
     </StateMachineProvider>
   );
