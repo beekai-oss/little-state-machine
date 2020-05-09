@@ -4,10 +4,7 @@ import isUndefined from './utils/isUndefined';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import getSyncStoreData from './logic/getSyncStoreData';
-import {
-  STORE_ACTION_NAME,
-  STORE_DEFAULT_NAME,
-} from './constants';
+import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 import {
   UpdateStore,
   GetStore,
@@ -22,7 +19,6 @@ import {
   UpdateStoreFunction,
 } from './types';
 
-const { useCallback } = React;
 const isClient = typeof window !== 'undefined';
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
 let storageType: Storage = isClient
@@ -150,7 +146,7 @@ export function useStateMachine<T extends Store = Store>(
       actions: Object.entries(updateStoreFunction).reduce(
         (previous, [key, callback]) => ({
           ...previous,
-          [key]: useCallback(
+          [key]: React.useCallback(
             actionTemplate({
               options,
               callback,
@@ -168,7 +164,7 @@ export function useStateMachine<T extends Store = Store>(
 
   return {
     actions: {},
-    action: useCallback(
+    action: React.useCallback(
       updateStoreFunction
         ? actionTemplate({
             options,
