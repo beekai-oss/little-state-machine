@@ -120,7 +120,8 @@ const actionTemplate = ({
 
     if (Array.isArray(middleWaresArray) && middleWaresArray.length) {
       pipeData = middleWaresArray.reduce(
-        (currentValue, currentFunction) => currentFunction(currentValue),
+        (currentValue, currentFunction) =>
+          currentFunction(currentValue) || currentValue,
         pipeData,
       );
     }
