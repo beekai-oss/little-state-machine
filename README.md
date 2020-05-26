@@ -203,13 +203,22 @@ import { DevTool } from 'little-state-machine-devtools';
   </a>
 </div>
 
+<h2>Browser Compatibility</h2>
+Little State Machine supports all major browsers
+
+For legacy IE11 support, you can import little-state-machine IE11 version.
+
+```js
+import { createStore } from 'little-state-machine/dist/little-state-machine.ie11'
+```
+
 
 <h2>Polyfill</h2>
 
 Consider adding `Object.entries()` polyfill if you're wondering to have support for old browsers.
-You can weather consider adding snippet below into your code:
+You can weather consider adding snippet below into your code, ideally before your App.js file:
 
-📋 `utils.js`
+📋 `utils.[js|ts]`
 ```js
 if (!Object.entries) {
   Object.entries = function( obj ){
