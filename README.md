@@ -202,3 +202,34 @@ import { DevTool } from 'little-state-machine-devtools';
     <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png?raw=true" />
   </a>
 </div>
+
+<h2>Browser Compatibility</h2>
+Little State Machine supports all major browsers
+
+For legacy IE11 support, you can import little-state-machine IE11 version.
+
+```js
+import { createStore } from 'little-state-machine/dist/little-state-machine.ie11'
+```
+
+
+<h2>Polyfill</h2>
+
+Consider adding `Object.entries()` polyfill if you're wondering to have support for old browsers.
+You can weather consider adding snippet below into your code, ideally before your App.js file:
+
+📋 `utils.[js|ts]`
+```js
+if (!Object.entries) {
+  Object.entries = function( obj ){
+    var ownProps = Object.keys( obj ),
+        i = ownProps.length,
+        resArray = new Array(i); // preallocate the Array
+    while (i--)
+      resArray[i] = [ownProps[i], obj[ownProps[i]]];    
+    return resArray;
+  };
+}
+```
+
+Or you can add [core-js](https://github.com/zloirock/core-js) polyfill into your project and add `core-js/es/object/entries` in your `polyfills.[js|ts]` file.
