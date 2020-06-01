@@ -209,7 +209,7 @@ import { createStore } from 'little-state-machine/dist/little-state-machine.ie11
 ```
 
 
-📋 <h2>Polyfill</h2>
+<h2>📋 Polyfill</h2>
 
 Consider adding `Object.entries()` polyfill if you're wondering to have support for old browsers.
 You can weather consider adding snippet below into your code, ideally before your App.js file:
