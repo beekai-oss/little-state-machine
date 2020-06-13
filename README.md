@@ -9,6 +9,7 @@ State management made super simple
 [![npm downloads](https://img.shields.io/npm/dm/little-state-machine.svg?style=for-the-badge)](https://www.npmjs.com/package/little-state-machine)
 [![npm](https://img.shields.io/npm/dt/little-state-machine.svg?style=for-the-badge)](https://www.npmjs.com/package/little-state-machine)
 [![npm](https://img.shields.io/bundlephobia/minzip/little-state-machine?style=for-the-badge)](https://bundlephobia.com/result?p=little-state-machine)
+[![Financial Contributors on Open Collective](https://opencollective.com/little-state-machine/all/badge.svg?label=financial+contributors&style=for-the-badge)](https://opencollective.com/little-state-machine) 
 
 </div>
 
@@ -229,3 +230,33 @@ if (!Object.entries) {
 ```
 
 Or you can add [core-js](https://github.com/zloirock/core-js) polyfill into your project and add `core-js/es/object/entries` in your `polyfills.[js|ts]` file.
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/bluebill1049/little-state-machine/graphs/contributors"><img src="https://opencollective.com/little-state-machine/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/little-state-machine/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/little-state-machine"><img src="https://opencollective.com/little-state-machine/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/little-state-machine/contribute)]
+
+<a href="https://opencollective.com/little-state-machine/organization/0/website"><img src="https://opencollective.com/little-state-machine/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/1/website"><img src="https://opencollective.com/little-state-machine/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/2/website"><img src="https://opencollective.com/little-state-machine/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/3/website"><img src="https://opencollective.com/little-state-machine/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/4/website"><img src="https://opencollective.com/little-state-machine/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/5/website"><img src="https://opencollective.com/little-state-machine/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/6/website"><img src="https://opencollective.com/little-state-machine/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/7/website"><img src="https://opencollective.com/little-state-machine/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/8/website"><img src="https://opencollective.com/little-state-machine/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/little-state-machine/organization/9/website"><img src="https://opencollective.com/little-state-machine/organization/9/avatar.svg"></a>
