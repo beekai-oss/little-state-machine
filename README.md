@@ -9,7 +9,6 @@ State management made super simple
 [![npm downloads](https://img.shields.io/npm/dm/little-state-machine.svg?style=for-the-badge)](https://www.npmjs.com/package/little-state-machine)
 [![npm](https://img.shields.io/npm/dt/little-state-machine.svg?style=for-the-badge)](https://www.npmjs.com/package/little-state-machine)
 [![npm](https://img.shields.io/bundlephobia/minzip/little-state-machine?style=for-the-badge)](https://bundlephobia.com/result?p=little-state-machine)
-[![Financial Contributors on Open Collective](https://opencollective.com/little-state-machine/all/badge.svg?label=financial+contributors&style=for-the-badge)](https://opencollective.com/little-state-machine) 
 
 </div>
 
