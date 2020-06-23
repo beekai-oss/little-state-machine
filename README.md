@@ -35,7 +35,7 @@ This is a Provider Component to wrapper around your entire app in order to creat
 
 ##### 🔗 `createStore`
 
-```
+```ts
 createStore(store, options?: {
  name: string; // rename the store
  middleWares?: Function[]; // function to invoke each action
@@ -48,7 +48,7 @@ createStore(store, options?: {
 
 Function to initialize the global store, invoked at your app root (where `<StateMachineProvider />` lives).
 
-```typescript
+```ts
 import yourDetail from './state/yourDetail';
 
 function log(store) {
