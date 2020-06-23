@@ -63,15 +63,13 @@ createStore(
     middleWares: [log], // an array of middleWares, which gets run each actions
     syncStores: {
       // you can sync with external store and transform the data
-      externalStoreName: 'externalStoreName',
+      externalStoreName: 'externalStoreName',    
+      // alternative you can just specify the store name and root state name { yourDetails: { firstName: '' } }
+      // externalStoreName: ['yourDetail'],
       transform: ({ externalStoreData, currentStoreData }) => {
         return { ...externalStoreData, ...currentStoreData };
       },
     },
-    // alternative you can just specify the store name and root state name { yourDetails: { firstName: '' } }
-    // syncStores : {
-    //   externalStoreName: ['yourDetail'],
-    // }
     // or you can pass in an array of transform function
     // syncStores : [
     //   {
