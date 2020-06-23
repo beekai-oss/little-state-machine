@@ -99,12 +99,6 @@ const { actions, state } = useStateMachine({
 });
 
 // The following examples are for optional argument
-const { actions, state } = useStateMachine(
-  {
-    removeNameAction,
-    updateUserNameAction,
-  }
-);
 const { action, state } = useStateMachine(updateUserNameAction, {
   shouldReRenderApp: false, // This will prevent App from re-render and only update the store
 });
