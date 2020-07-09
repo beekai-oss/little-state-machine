@@ -37,7 +37,7 @@ let getName: GetStoreName;
 let middleWaresArray: Function[] | undefined = [];
 
 export const middleWare = (data: string = '') => {
-  if (data) {
+  if (data && isClient) {
     // @ts-ignore
     window[STORE_ACTION_NAME] = data;
   }
