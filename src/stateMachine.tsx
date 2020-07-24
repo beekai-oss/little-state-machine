@@ -57,23 +57,23 @@ export function createStore<T extends Store = Store>(
   },
 ) {
   const storeName = options ? options.name : STORE_DEFAULT_NAME;
-  const methods = storeFactory<T>(storageType, storeName);
+  storeFactory<T>(storageType, storeName).then(methods => {
+    if (isDevMode && isClient) {
+      // @ts-ignore
+      window['STATE_MACHINE_NAME'] = storeName;
+    }
 
-  if (isDevMode && isClient) {
-    // @ts-ignore
-    window['STATE_MACHINE_NAME'] = storeName;
-  }
+    getName = methods.getName;
+    getStore = methods.get;
+    setStore = methods.set;
+    middleWaresArray = options.middleWares;
 
-  getName = methods.getName;
-  getStore = methods.get;
-  setStore = methods.set;
-  middleWaresArray = options.middleWares;
+    setUpDevTools(isDevMode, storageType, getName, getStore);
 
-  setUpDevTools(isDevMode, storageType, getName, getStore);
-
-  setStore(
-    getSyncStoreData(getStore() || defaultStoreData, options, storageType),
-  );
+    setStore(
+      getSyncStoreData(getStore() || defaultStoreData, options, storageType),
+    );
+  });
 }
 
 export function StateMachineProvider<T>(props: T) {

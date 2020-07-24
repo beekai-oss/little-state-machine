@@ -34,8 +34,8 @@ export default function getSyncStoreData(
         store,
       });
     } else {
-      Object.entries(syncStoreOption).forEach(([key, values]) => {
-        const browserStore = getBrowserStoreData(storageType, key);
+      Object.entries(syncStoreOption).forEach(async ([key, values]) => {
+        const browserStore = await getBrowserStoreData(storageType, key);
         values.forEach((value: string) => {
           store = {
             ...store,
