@@ -2,16 +2,16 @@ import { STORE_DEFAULT_NAME } from '../constants';
 import { GetStoreName, GetStore, SetStore, Store } from '../types';
 import getStoreData from './getBrowserStoreData';
 
-export default function storeFactory<T>(
+export default async function storeFactory<T>(
   storageType: Storage,
   name: string | undefined,
-): {
+): Promise<{
   set: SetStore;
   get: GetStore;
   getName: GetStoreName;
-} {
+}> {
   const storeName = name || STORE_DEFAULT_NAME;
-  let store: Store = getStoreData(storageType, storeName);
+  let store: Store = await getStoreData(storageType, storeName);
 
   const getName = (): string => storeName;
 
