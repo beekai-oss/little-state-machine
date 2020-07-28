@@ -31,9 +31,9 @@ let storageType: Storage = isClient
       key: (payload: number) => payload.toString(),
       removeItem: () => {},
     };
-let getStore: GetStore;
-let setStore: SetStore;
-let getName: GetStoreName;
+let getStore: GetStore = () => ({} as Store);
+let setStore: SetStore = () => {};
+let getName: GetStoreName = () => '';
 let middleWaresArray: Function[] | undefined = [];
 
 export const middleWare = (data: string = '') => {
