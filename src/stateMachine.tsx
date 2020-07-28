@@ -18,6 +18,7 @@ import {
   StateMachineOptions,
   UpdateStoreFunction,
 } from './types';
+import { useEffect } from 'react';
 
 const isClient = typeof window !== 'undefined';
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
@@ -78,6 +79,11 @@ export function createStore<T extends Store = Store>(
 
 export function StateMachineProvider<T>(props: T) {
   const [globalState, updateStore] = React.useState<Store>(getStore());
+
+  useEffect(() => {
+    updateStore(getStore());
+  }, [getStore]);
+
   const value = React.useMemo(
     () => ({
       store: globalState,
