@@ -113,10 +113,6 @@ import YourComponent from './yourComponent';
 import { StateMachineProvider, createStore } from 'little-state-machine';
 import { DevTool } from 'little-state-machine-devtools';
 
-// The following code is for React Native usage
-// import { AsyncStorage } from "react-native";
-// setStorageType(AsyncStorage);
-
 // create your store
 createStore({
   yourDetail,
