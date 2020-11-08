@@ -1,7 +1,6 @@
 import * as React from 'react';
 import storeFactory from './logic/storeFactory';
 import isUndefined from './utils/isUndefined';
-import isSessionStorageAllowed from './utils/isSessionStorageAllowed';
 import { setUpDevTools } from './logic/devTool';
 import StateMachineContext from './StateMachineContext';
 import getSyncStoreData from './logic/getSyncStoreData';
@@ -22,7 +21,7 @@ import {
 
 const isClient = typeof window !== 'undefined';
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
-let storageType: Storage = isClient && isSessionStorageAllowed()
+let storageType: Storage = isClient && typeof(sessionStorage) !== 'undefined'
   ? window.sessionStorage
   : {
       getItem: payload => payload,
