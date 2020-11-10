@@ -1,29 +1,30 @@
 import { STORE_DEFAULT_NAME } from '../constants';
-import { GetStoreName, GetStore, SetStore, Store } from '../types';
 import getStoreData from './getBrowserStoreData';
 
-export default function storeFactory<T>(
-  storageType: Storage,
-  name: string | undefined,
-): {
-  set: SetStore;
-  get: GetStore;
-  getName: GetStoreName;
-} {
-  const storeName = name || STORE_DEFAULT_NAME;
-  let store: Store = getStoreData(storageType, storeName);
+export default class StoreFactory<T> {
+  private _name: string = STORE_DEFAULT_NAME;
+  private _store: T;
+  storageType: Storage;
 
-  const getName = (): string => storeName;
+  constructor(storageType: Storage, name:string) {
+    this.storageType = storageType;
+    this._name = name;
+    this._store = getStoreData(storageType, name);
+  }
 
-  const set = <K>(value: K): void => {
-    store = value;
-  };
+  get name(): string {
+    return this._name;
+  }
 
-  const get = (): T => store as T;
+  set name(value) {
+    this._name = value;
+  }
 
-  return {
-    set,
-    get,
-    getName,
-  };
+  get store(): T {
+    return getStoreData(this.storageType, name) || this._store;
+  }
+
+  set store(value: T) {
+    this._store = value;
+  }
 }

@@ -1,3 +1,2 @@
-export const STORE_DEFAULT_NAME = '__STATE_MACHINE__';
-export const STORE_ACTION_NAME = '__STATE_MACHINE_ACTION_NAME__';
-export const STATE_MACHINE_DEBUG_NAME = '___STATE_MACHINE_DEBUG__';
+export const STORE_DEFAULT_NAME = '__LSM__';
+export const STORE_ACTION_NAME = '__LSM_NAME__';

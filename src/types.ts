@@ -1,18 +1,10 @@
 export type Store = Record<string, any>;
 
-export type StoreUpdateFunction = (store: any, payload: any) => Store;
+export type StoreUpdateFunction<T> = (store: T, payload: any) => T;
 
-export type UpdateStore =
-  | StoreUpdateFunction
-  | { [key: string]: StoreUpdateFunction };
-
-export type UpdateStoreFunction = <T>(payload: T) => T;
-
-export type SetStore = <T>(value: T) => void;
-
-export type GetStore = () => Store;
-
-export type GetStoreName = () => string;
+export type UpdateStore<T> =
+  | StoreUpdateFunction<T>
+  | { [key: string]: StoreUpdateFunction<T> };
 
 export type Options = {
   shouldReRenderApp?: boolean;
@@ -22,21 +14,20 @@ export type Action = <T extends object>(payload: T) => void;
 
 export type Actions = { [key: string]: Action };
 
-export type TransformFunc = <Store extends object, T extends object>({
-  externalStoreData,
-  currentStoreData,
-}: {
-  externalStoreData: Store;
-  currentStoreData: T;
-}) => Store;
-
-type TransformOptions = {
-  externalStoreName: string;
-  transform: TransformFunc;
-};
-
 export type StateMachineOptions = {
   name: string;
   middleWares?: Function[];
-  syncStores?: Record<string, string[]> | TransformOptions | TransformOptions[];
 };
+
+declare global {
+  interface Window {
+    __LSM_NAME__: any;
+    __LSM__: any;
+    STATE_MACHINE_DEBUG: any;
+    STATE_MACHINE_RESET: any;
+    STATE_MACHINE_GET_STORE: any;
+    STATE_MACHINE_SAVE_TO: any;
+    STATE_MACHINE_LOAD: any;
+    STATE_MACHINE_DEBUG_NAME: any;
+  }
+}

@@ -1,44 +1,35 @@
 import * as React from 'react';
-import storeFactory from './logic/storeFactory';
+import StoreFactory from './logic/storeFactory';
 import isUndefined from './utils/isUndefined';
 import { setUpDevTools } from './logic/devTool';
-import StateMachineContext from './StateMachineContext';
-import getSyncStoreData from './logic/getSyncStoreData';
-import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 import {
   UpdateStore,
-  GetStore,
-  SetStore,
-  GetStoreName,
-  Store,
   Options,
   Action,
   Actions,
   StoreUpdateFunction,
   StateMachineOptions,
-  UpdateStoreFunction,
 } from './types';
+import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
 const isClient = typeof window !== 'undefined';
-const isDevMode: boolean = process.env.NODE_ENV !== 'production';
-let storageType: Storage = isClient && typeof(sessionStorage) !== 'undefined'
-  ? window.sessionStorage
-  : {
-      getItem: payload => payload,
-      setItem: (payload: string) => payload,
-      clear: () => {},
-      length: 0,
-      key: (payload: number) => payload.toString(),
-      removeItem: () => {},
-    };
-let getStore: GetStore;
-let setStore: SetStore;
-let getName: GetStoreName;
+let storageType: Storage =
+  isClient && typeof sessionStorage !== 'undefined'
+    ? window.sessionStorage
+    : {
+        getItem: (payload) => payload,
+        setItem: (payload: string) => payload,
+        clear: () => {},
+        length: 0,
+        key: (payload: number) => payload.toString(),
+        removeItem: () => {},
+      };
+
 let middleWaresArray: Function[] | undefined = [];
+const storeFactory = new StoreFactory(storageType, STORE_DEFAULT_NAME);
 
 export const middleWare = (data: string = '') => {
   if (data && isClient) {
-    // @ts-ignore
     window[STORE_ACTION_NAME] = data;
   }
   return data;
@@ -48,36 +39,35 @@ export function setStorageType(type: Storage): void {
   storageType = type;
 }
 
-export function createStore<T extends Store = Store>(
+export function createStore<T>(
   defaultStoreData: T,
   options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
-    syncStores: undefined,
   },
 ) {
-  const storeName = options ? options.name : STORE_DEFAULT_NAME;
-  const methods = storeFactory<T>(storageType, storeName);
+  options.name && (storeFactory.name = options.name);
 
-  if (isDevMode && isClient) {
-    // @ts-ignore
-    window['STATE_MACHINE_NAME'] = storeName;
+  if (process.env.NODE_ENV !== 'production' && isClient) {
+    window[STORE_DEFAULT_NAME] = storeFactory.name;
   }
 
-  getName = methods.getName;
-  getStore = methods.get;
-  setStore = methods.set;
   middleWaresArray = options.middleWares;
 
-  setUpDevTools(isDevMode, storageType, getName, getStore);
+  if (process.env.NODE_ENV !== 'production') {
+    setUpDevTools(storageType, storeFactory.name, storeFactory.store);
+  }
 
-  setStore(
-    getSyncStoreData(getStore() || defaultStoreData, options, storageType),
-  );
+  storeFactory.store = storeFactory.store || defaultStoreData;
 }
 
+const StateMachineContext = React.createContext({
+  store: storeFactory.store,
+  updateStore: (payload: any) => payload,
+});
+
 export function StateMachineProvider<T>(props: T) {
-  const [globalState, updateStore] = React.useState<Store>(getStore());
+  const [globalState, updateStore] = React.useState(storeFactory.store);
   const value = React.useMemo(
     () => ({
       store: globalState,
@@ -85,38 +75,38 @@ export function StateMachineProvider<T>(props: T) {
     }),
     [globalState],
   );
-  // @ts-ignore
+
   return <StateMachineContext.Provider value={value} {...props} />;
 }
 
-const actionTemplate = ({
+const actionTemplate = <G extends unknown>({
   options,
   callback,
   updateStore,
 }: {
-  callback?: StoreUpdateFunction;
+  callback?: StoreUpdateFunction<G>;
   options?: Options;
-  updateStore: UpdateStoreFunction;
-}) => <T extends object>(payload: T): void => {
+  updateStore: React.Dispatch<unknown>;
+}) => <K extends unknown>(payload: K): void => {
   let result;
   const debugName = callback ? callback.name : '';
 
-  if (isDevMode) {
+  if (process.env.NODE_ENV !== 'production') {
     middleWare(debugName);
   }
 
   if (callback) {
-    result = callback(getStore(), payload);
+    result = callback(storeFactory.store as G, payload);
   }
 
-  setStore(isUndefined(result) ? getStore() : result);
-  storageType.setItem(getName(), JSON.stringify(getStore()));
+  storeFactory.store = isUndefined(result) ? storeFactory.store : result;
+  storageType.setItem(storeFactory.name, JSON.stringify(storeFactory.store));
 
   if (
     isUndefined(options) ||
     (options && options.shouldReRenderApp !== false)
   ) {
-    let pipeData = getStore();
+    let pipeData = storeFactory.store;
 
     if (Array.isArray(middleWaresArray) && middleWaresArray.length) {
       pipeData = middleWaresArray.reduce(
@@ -130,8 +120,8 @@ const actionTemplate = ({
   }
 };
 
-export function useStateMachine<T extends Store = Store>(
-  updateStoreFunction?: UpdateStore,
+export function useStateMachine<T>(
+  updateStoreFunction?: UpdateStore<T>,
   options?: Options,
 ): {
   action: Action;
@@ -148,7 +138,7 @@ export function useStateMachine<T extends Store = Store>(
         (previous, [key, callback]) => ({
           ...previous,
           [key]: React.useCallback(
-            actionTemplate({
+            actionTemplate<T>({
               options,
               callback,
               updateStore,
@@ -158,7 +148,7 @@ export function useStateMachine<T extends Store = Store>(
         }),
         {},
       ),
-      action: p => p,
+      action: (p) => p,
       state: globalState as T,
     };
   }
@@ -167,9 +157,9 @@ export function useStateMachine<T extends Store = Store>(
     actions: {},
     action: React.useCallback(
       updateStoreFunction
-        ? actionTemplate({
+        ? actionTemplate<T>({
             options,
-            callback: updateStoreFunction as StoreUpdateFunction,
+            callback: updateStoreFunction as StoreUpdateFunction<T>,
             updateStore,
           })
         : () => {},

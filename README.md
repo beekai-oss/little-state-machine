@@ -39,10 +39,6 @@ This is a Provider Component to wrapper around your entire app in order to creat
 createStore(store, options?: {
  name: string; // rename the store
  middleWares?: Function[]; // function to invoke each action
- syncStores?:  // sync with external store in your session/local storage
-    | Record<string, string[]>
-    | { externalStoreName: string; transform: Function } // name of the external store, and state to sync
-    | { externalStoreName: string; transform: Function }[];
 }})
 ```
 
@@ -61,24 +57,6 @@ createStore(
   },
   {
     middleWares: [log], // an array of middleWares, which gets run each actions
-    syncStores: {
-      // you can sync with external store and transform the data
-      externalStoreName: 'externalStoreName',    
-      // alternative you can just specify the store name and root state name { yourDetails: { firstName: '' } }
-      // externalStoreName: ['yourDetail'],
-      transform: ({ externalStoreData, currentStoreData }) => {
-        return { ...externalStoreData, ...currentStoreData };
-      },
-    },
-    // or you can pass in an array of transform function
-    // syncStores : [
-    //   {
-    //     externalStoreName: 'externalStoreName',
-    //     transform: ({ externalStoreData, currentStoreData }) => {
-    //       return { ...externalStoreData, ...currentStoreData };
-    //     },
-    //   }
-    // ]
   },
 );
 ```
@@ -171,7 +149,7 @@ export function updateName(state, payload) {
 
 <h2>⚒ Little State Machine DevTool</h2>
 
-[DevTool](https://github.com/bluebill1049/little-state-machine-dev-tools) component to track your state change and action. 
+[DevTool](https://github.com/bluebill1049/little-state-machine-dev-tools) component to track your state change and action.
 
 ```jsx
 import { DevTool } from 'little-state-machine-devtools';
@@ -193,9 +171,8 @@ Little State Machine supports all major browsers
 For legacy IE11 support, you can import little-state-machine IE11 version.
 
 ```js
-import { createStore } from 'little-state-machine/dist/little-state-machine.ie11'
+import { createStore } from 'little-state-machine/dist/little-state-machine.ie11';
 ```
-
 
 <h2>📋 Polyfill</h2>
 
@@ -203,14 +180,14 @@ Consider adding `Object.entries()` polyfill if you're wondering to have support 
 You can weather consider adding snippet below into your code, ideally before your App.js file:
 
 `utils.[js|ts]`
+
 ```js
 if (!Object.entries) {
-  Object.entries = function( obj ){
-    var ownProps = Object.keys( obj ),
-        i = ownProps.length,
-        resArray = new Array(i); // preallocate the Array
-    while (i--)
-      resArray[i] = [ownProps[i], obj[ownProps[i]]];    
+  Object.entries = function (obj) {
+    var ownProps = Object.keys(obj),
+      i = ownProps.length,
+      resArray = new Array(i); // preallocate the Array
+    while (i--) resArray[i] = [ownProps[i], obj[ownProps[i]]];
     return resArray;
   };
 }
@@ -350,5 +327,3 @@ Thank you very much for those kind people with their sponsorship to this project
             alt="@mlukaszczyk"
     /></a>
 </p>
-
-
