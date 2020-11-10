@@ -68,14 +68,14 @@ This hook function will return action/actions and state of the app.
 ```typescript
 import { updateUserNameAction, removeNameAction } from './actions/yourDetails';
 
-const { action, state } = useStateMachine(updateUserNameAction);
-const { actions, state } = useStateMachine({
+const { action, state } = useStateMachine<T>(updateUserNameAction);
+const { actions, state } = useStateMachine<T>({
   removeNameAction,
   updateUserNameAction,
 });
 
 // The following examples are for optional argument
-const { action, state } = useStateMachine(updateUserNameAction, {
+const { action, state } = useStateMachine<T>(updateUserNameAction, {
   shouldReRenderApp: false, // This will prevent App from re-render and only update the store
 });
 ```

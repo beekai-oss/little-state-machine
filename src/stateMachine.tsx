@@ -13,40 +13,26 @@ import {
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
 const isClient = typeof window !== 'undefined';
-let storageType: Storage =
-  isClient && typeof sessionStorage !== 'undefined'
-    ? window.sessionStorage
-    : {
-        getItem: (payload) => payload,
-        setItem: (payload: string) => payload,
-        clear: () => {},
-        length: 0,
-        key: (payload: number) => payload.toString(),
-        removeItem: () => {},
-      };
 
 let middleWaresArray: Function[] | undefined = [];
-const storeFactory = new StoreFactory(storageType, STORE_DEFAULT_NAME);
 
-export const middleWare = (data: string = '') => {
+const storeFactory = new StoreFactory(STORE_DEFAULT_NAME, isClient);
+
+export const middleWare = (data: string) => {
   if (data && isClient) {
     window[STORE_ACTION_NAME] = data;
   }
   return data;
 };
 
-export function setStorageType(type: Storage): void {
-  storageType = type;
-}
-
 export function createStore<T>(
   defaultStoreData: T,
   options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
-    middleWares: [],
   },
 ) {
   options.name && (storeFactory.name = options.name);
+  options.storageType && (storeFactory.storageType = options.storageType);
 
   if (process.env.NODE_ENV !== 'production' && isClient) {
     window[STORE_DEFAULT_NAME] = storeFactory.name;
@@ -55,7 +41,11 @@ export function createStore<T>(
   middleWaresArray = options.middleWares;
 
   if (process.env.NODE_ENV !== 'production') {
-    setUpDevTools(storageType, storeFactory.name, storeFactory.store);
+    setUpDevTools(
+      storeFactory.storageType,
+      storeFactory.name,
+      storeFactory.store,
+    );
   }
 
   storeFactory.store = storeFactory.store || defaultStoreData;
@@ -63,7 +53,7 @@ export function createStore<T>(
 
 const StateMachineContext = React.createContext({
   store: storeFactory.store,
-  updateStore: (payload: any) => payload,
+  updateStore: (payload: unknown) => payload,
 });
 
 export function StateMachineProvider<T>(props: T) {
@@ -88,7 +78,7 @@ const actionTemplate = <G extends unknown>({
   options?: Options;
   updateStore: React.Dispatch<unknown>;
 }) => <K extends unknown>(payload: K): void => {
-  let result;
+  let storeResult = storeFactory.store;
   const debugName = callback ? callback.name : '';
 
   if (process.env.NODE_ENV !== 'production') {
@@ -96,11 +86,14 @@ const actionTemplate = <G extends unknown>({
   }
 
   if (callback) {
-    result = callback(storeFactory.store as G, payload);
+    storeResult = callback(storeFactory.store as G, payload);
   }
 
-  storeFactory.store = isUndefined(result) ? storeFactory.store : result;
-  storageType.setItem(storeFactory.name, JSON.stringify(storeFactory.store));
+  storeFactory.store = storeResult;
+  storeFactory.storageType.setItem(
+    storeFactory.name,
+    JSON.stringify(storeFactory.store),
+  );
 
   if (
     isUndefined(options) ||

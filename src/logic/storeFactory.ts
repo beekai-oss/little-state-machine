@@ -4,12 +4,22 @@ import getStoreData from './getBrowserStoreData';
 export default class StoreFactory<T> {
   private _name: string = STORE_DEFAULT_NAME;
   private _store: T;
-  storageType: Storage;
+  private _storageType: Storage;
 
-  constructor(storageType: Storage, name:string) {
-    this.storageType = storageType;
+  constructor(name: string, isClient: boolean) {
+    this._storageType =
+      isClient && typeof sessionStorage !== 'undefined'
+        ? window.sessionStorage
+        : {
+            getItem: (payload) => payload,
+            setItem: (payload: string) => payload,
+            clear: () => {},
+            length: 0,
+            key: (payload: number) => payload.toString(),
+            removeItem: () => {},
+          };
     this._name = name;
-    this._store = getStoreData(storageType, name);
+    this._store = getStoreData(this._storageType, name);
   }
 
   get name(): string {
@@ -21,10 +31,18 @@ export default class StoreFactory<T> {
   }
 
   get store(): T {
-    return getStoreData(this.storageType, name) || this._store;
+    return getStoreData(this._storageType, name) || this._store;
   }
 
   set store(value: T) {
     this._store = value;
+  }
+
+  set storageType(value: Storage) {
+    this._storageType = value;
+  }
+
+  get storageType() {
+    return this._storageType;
   }
 }
