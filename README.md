@@ -44,6 +44,7 @@ import yourDetail from './state/yourDetail';
 
 function log(store) {
   console.log(store);
+  return store;
 }
 
 createStore(
@@ -127,7 +128,7 @@ export default function YourComponent() {
 }
 ```
 
-<h2>⚒ Little State Machine DevTool</h2>
+<h2>⚒ DevTool</h2>
 
 [DevTool](https://github.com/bluebill1049/little-state-machine-dev-tools) component to track your state change and action.
 
