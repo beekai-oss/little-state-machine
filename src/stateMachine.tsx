@@ -7,6 +7,7 @@ import {
   Actions,
   StoreUpdateFunction,
   StateMachineOptions,
+  DeepPartial,
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
@@ -66,39 +67,35 @@ export function StateMachineProvider<T>(props: T) {
   return <StateMachineContext.Provider value={value} {...props} />;
 }
 
-const actionTemplate = <G extends unknown>({
-  options,
-  callback,
-  updateStore,
-}: {
-  callback?: StoreUpdateFunction<G>;
-  options?: Options;
-  updateStore: React.Dispatch<unknown>;
-}) => <K extends unknown>(payload: K): void => {
-  if (process.env.NODE_ENV !== 'production') {
-    const debugName = callback ? callback.name : '';
-    middleWare(debugName);
-  }
+function actionTemplate<G>(
+  updateStore: React.Dispatch<G>,
+  callback: StoreUpdateFunction<G>,
+  options?: Options,
+) {
+  return <K extends DeepPartial<G>>(payload: K) => {
+    if (process.env.NODE_ENV !== 'production') {
+      const debugName = callback ? callback.name : '';
+      middleWare(debugName);
+    }
 
-  if (callback) {
     storeFactory.store = callback(storeFactory.store as G, payload);
-  }
 
-  storeFactory.storageType.setItem(
-    storeFactory.name,
-    JSON.stringify(storeFactory.store),
-  );
-
-  if (storeFactory.middleWares.length) {
-    storeFactory.store = storeFactory.middleWares.reduce(
-      (currentValue, currentFunction) =>
-        currentFunction(currentValue) || currentValue,
-      storeFactory.store,
+    storeFactory.storageType.setItem(
+      storeFactory.name,
+      JSON.stringify(storeFactory.store),
     );
-  }
 
-  !options && updateStore(storeFactory.store);
-};
+    if (storeFactory.middleWares.length) {
+      storeFactory.store = storeFactory.middleWares.reduce(
+        (currentValue, currentFunction) =>
+          currentFunction(currentValue) || currentValue,
+        storeFactory.store,
+      );
+    }
+
+    !options && updateStore(storeFactory.store as G);
+  };
+}
 
 export function useStateMachine<T>(
   updateStoreFunction?: UpdateStore<T>,
@@ -107,27 +104,24 @@ export function useStateMachine<T>(
   actions: Actions;
   state: T;
 } {
-  const { store: globalState, updateStore } = React.useContext(
-    StateMachineContext,
-  );
+  const { store, updateStore } = React.useContext(StateMachineContext);
 
-  return {
-    actions: updateStoreFunction
-      ? Object.entries(updateStoreFunction).reduce(
-          (previous, [key, callback]) => ({
-            ...previous,
-            [key]: React.useCallback(
-              actionTemplate<T>({
-                options,
-                callback,
-                updateStore,
-              }),
-              [],
-            ),
-          }),
-          {},
-        )
-      : {},
-    state: globalState as T,
-  };
+  return React.useMemo(
+    () => ({
+      actions: updateStoreFunction
+        ? Object.entries(updateStoreFunction).reduce(
+            (previous, [key, callback]) => ({
+              ...previous,
+              [key]: React.useCallback(
+                actionTemplate<T>(updateStore, callback, options),
+                [],
+              ),
+            }),
+            {},
+          )
+        : {},
+      state: store as T,
+    }),
+    [store],
+  );
 }

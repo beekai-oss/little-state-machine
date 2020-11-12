@@ -75,7 +75,7 @@ const { actions, state } = useStateMachine<T>(
 
 <h2>📖 Example</h2>
 
-Check out the <a href="https://codesandbox.io/s/little-state-machine-demo-v4-u4njf">Demo</a>.
+Check out the <a href="https://codesandbox.io/s/icy-dew-by1wd">Demo</a>.
 
 📋 `app.js`
 

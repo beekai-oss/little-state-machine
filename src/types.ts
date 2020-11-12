@@ -1,6 +1,10 @@
 export type Store = Record<string, any>;
 
-export type StoreUpdateFunction<T> = (store: T, payload: any) => T;
+export type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};
+
+export type StoreUpdateFunction<T> = (store: T, payload: DeepPartial<T>) => T;
 
 export type UpdateStore<T> = { [key: string]: StoreUpdateFunction<T> };
 
