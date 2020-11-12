@@ -30,7 +30,7 @@ This is a Provider Component to wrapper around your entire app in order to creat
 
 ##### 🔗 `createStore`
 
-```ts
+```tsx
 createStore(store, options?: {
  name: string; // rename the store
  middleWares?: Function[]; // function to invoke each action
@@ -39,7 +39,7 @@ createStore(store, options?: {
 
 Function to initialize the global store, invoked at your app root (where `<StateMachineProvider />` lives).
 
-```ts
+```tsx
 import yourDetail from './state/yourDetail';
 
 function log(store) {
@@ -60,7 +60,7 @@ createStore(
 
 This hook function will return action/actions and state of the app.
 
-```typescript
+```tsx
 const { action, state } = useStateMachine<T>(updateUserNameAction, {
   shouldReRenderApp: false, // This will prevent App from re-render and only update the store
 });
@@ -76,7 +76,7 @@ Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
 
 📋 `app.js`
 
-```jsx
+```tsx
 import React from 'react';
 import YourComponent from './yourComponent';
 import { StateMachineProvider, createStore } from 'little-state-machine';
@@ -95,7 +95,7 @@ export default () => (
 
 📋 `action.js`
 
-```js
+```tsx
 export function updateName(state, payload) {
   return {
     ...state,
@@ -109,7 +109,7 @@ export function updateName(state, payload) {
 
 📋 `yourComponent.js`
 
-```jsx
+```tsx
 import React from 'react';
 import { updateName } from './action.js';
 import { useStateMachine } from 'little-state-machine';
@@ -125,7 +125,7 @@ export default function YourComponent() {
 
 [DevTool](https://github.com/bluebill1049/little-state-machine-dev-tools) component to track your state change and action.
 
-```jsx
+```tsx
 import { DevTool } from 'little-state-machine-devtools';
 
 <StateMachineProvider>
@@ -144,7 +144,7 @@ Little State Machine supports all major browsers
 
 For legacy IE11 support, you can import little-state-machine IE11 version.
 
-```js
+```tsx
 import { createStore } from 'little-state-machine/dist/little-state-machine.ie11';
 ```
 
@@ -155,7 +155,7 @@ You can weather consider adding snippet below into your code, ideally before you
 
 `utils.[js|ts]`
 
-```js
+```tsx
 if (!Object.entries) {
   Object.entries = function (obj) {
     var ownProps = Object.keys(obj),
