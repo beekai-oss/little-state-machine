@@ -14,10 +14,9 @@ State management made super simple
 
 <h2>✨ Features</h2>
 
-- Tiny with 0 dependency and simple (less than 1.5kb)
+- Tiny with 0 dependency and simple (less than 1kb)
 - Persist state by default (`sessionStorage` or `localStorage`)
 - Build with React Hooks
-- Compatible with React Native
 
 <h2>📦 Installation</h2>
 
@@ -66,17 +65,12 @@ createStore(
 This hook function will return action/actions and state of the app.
 
 ```typescript
-import { updateUserNameAction, removeNameAction } from './actions/yourDetails';
-
-const { action, state } = useStateMachine<T>(updateUserNameAction);
+const { action, state } = useStateMachine<T>(updateUserNameAction, {
+  shouldReRenderApp: false, // This will prevent App from re-render and only update the store
+});
 const { actions, state } = useStateMachine<T>({
   removeNameAction,
   updateUserNameAction,
-});
-
-// The following examples are for optional argument
-const { action, state } = useStateMachine<T>(updateUserNameAction, {
-  shouldReRenderApp: false, // This will prevent App from re-render and only update the store
 });
 ```
 
@@ -86,51 +80,19 @@ const { action, state } = useStateMachine<T>(updateUserNameAction, {
 
 ```jsx
 import React from 'react';
-import yourDetail from './yourDetail';
 import YourComponent from './yourComponent';
 import { StateMachineProvider, createStore } from 'little-state-machine';
-import { DevTool } from 'little-state-machine-devtools';
 
 // create your store
 createStore({
-  yourDetail,
+  yourDetail: {},
 });
 
-export default () => {
-  return (
-    <StateMachineProvider>
-      <DevTool />
-      <YourComponent />
-    </StateMachineProvider>
-  );
-};
-```
-
-📋 `yourComponent.js`
-
-```jsx
-import React from 'react';
-import { updateName } from './action.js';
-import { useStateMachine } from 'little-state-machine';
-
-export default function YourComponent() {
-  const {
-    action,
-    state: {
-      yourDetail: { name },
-    },
-  } = useStateMachine(updateName);
-
-  return <div onClick={() => action({ name: 'bill' })}>{name}</div>;
-}
-```
-
-📋 `yourDetail.js`
-
-```js
-export default {
-  name: 'test',
-};
+export default () => (
+  <StateMachineProvider>
+    <YourComponent />
+  </StateMachineProvider>
+);
 ```
 
 📋 `action.js`
@@ -144,6 +106,20 @@ export function updateName(state, payload) {
       ...payload,
     },
   };
+}
+```
+
+📋 `yourComponent.js`
+
+```jsx
+import React from 'react';
+import { updateName } from './action.js';
+import { useStateMachine } from 'little-state-machine';
+
+export default function YourComponent() {
+  const { action, state } = useStateMachine(updateName);
+
+  return <div onClick={() => action({ name: 'bill' })}>{state.yourDetail.name}</div>;
 }
 ```
 
