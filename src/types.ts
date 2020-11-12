@@ -12,10 +12,7 @@ export type Options = {
 
 export type Action<T> = (payload: DeepPartial<T>) => void;
 
-// export type Actions<T, K> = Record<keyof K, Action<T>>;
-export type Actions<T, K> = {
-  [k in keyof K]: Action<T>;
-};
+export type Actions<T, K> = Record<keyof K, Action<T>>;
 
 export type ActionArg<T> = (globalStore: T, payload: DeepPartial<T>) => T;
 
