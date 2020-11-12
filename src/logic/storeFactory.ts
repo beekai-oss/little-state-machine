@@ -24,7 +24,7 @@ export default class StoreFactory {
   }
 
   updateStore<T>(defaultValues: T) {
-    return getStoreData(this.storageType, this.name) || defaultValues;
+    this.store = getStoreData(this.storageType, this.name) || defaultValues;
   }
 
   updateMiddleWares(middleWares: MiddleWare[]) {

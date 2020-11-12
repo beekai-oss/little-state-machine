@@ -14,11 +14,11 @@ export type Actions = { [key: string]: Action };
 
 export type MiddleWare = <T>(arg: T) => T;
 
-export type StateMachineOptions = Partial<{
+export type StateMachineOptions = {
   name: string;
-  middleWares?: MiddleWare[];
-  storageType: Storage;
-}>;
+  middleWares: MiddleWare[];
+  storageType?: Storage;
+};
 
 declare global {
   interface Window {

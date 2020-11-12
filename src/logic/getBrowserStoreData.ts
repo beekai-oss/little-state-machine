@@ -1,7 +1,7 @@
 export default (storageType: Storage, storeName: string) => {
   try {
-    return storageType.getItem(storeName);
+    return JSON.parse(storageType.getItem(storeName) as string);
   } catch {
-    return undefined;
+    return '';
   }
 };

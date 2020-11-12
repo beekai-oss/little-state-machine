@@ -14,9 +14,10 @@ const isClient = typeof window !== 'undefined';
 const storeFactory = new StoreFactory(STORE_DEFAULT_NAME, isClient);
 
 export const middleWare = <T extends unknown>(data: T): T => {
-  if (data && isClient) {
+  if (data) {
     window[STORE_ACTION_NAME] = data;
   }
+
   return data;
 };
 
@@ -24,6 +25,7 @@ export function createStore<T>(
   defaultStoreData: T,
   options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
+    middleWares: [],
   },
 ) {
   options.name && (storeFactory.name = options.name);
@@ -33,9 +35,7 @@ export function createStore<T>(
     window[STORE_DEFAULT_NAME] = storeFactory.name;
   }
 
-  if (options.middleWares) {
-    storeFactory.middleWares = options.middleWares;
-  }
+  storeFactory.updateMiddleWares(options.middleWares);
 
   if (process.env.NODE_ENV !== 'production') {
     setUpDevTools(
