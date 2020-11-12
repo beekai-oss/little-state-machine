@@ -21,10 +21,6 @@ State management made super simple
 <h2>📦 Installation</h2>
 
     $ npm install little-state-machine
-
-<h2>🖥 <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a></h2>
-Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
-<br />
   
 <h2>🕹 API</h2>
 
@@ -75,6 +71,8 @@ const { actions, state } = useStateMachine<T>({
 ```
 
 <h2>📖 Example</h2>
+
+Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
 
 📋 `app.js`
 
