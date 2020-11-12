@@ -6,15 +6,20 @@ export type DeepPartial<T> = {
 
 export type StoreUpdateFunction<T> = (store: T, payload: DeepPartial<T>) => T;
 
-export type UpdateStore<T> = { [key: string]: StoreUpdateFunction<T> };
-
 export type Options = {
   shouldReRenderApp?: boolean;
 };
 
-export type Action = <T extends object>(payload: T) => void;
+export type Action<T> = (payload: DeepPartial<T>) => void;
 
-export type Actions = { [key: string]: Action };
+// export type Actions<T, K> = Record<keyof K, Action<T>>;
+export type Actions<T, K> = {
+  [k in keyof K]: Action<T>;
+};
+
+export type ActionArg<T> = (globalStore: T, payload: DeepPartial<T>) => T;
+
+export type ActionsArg<T> = Record<string, ActionArg<T>>;
 
 export type MiddleWare = <T>(arg: T) => T;
 

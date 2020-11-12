@@ -2,12 +2,12 @@ import * as React from 'react';
 import StoreFactory from './logic/storeFactory';
 import { setUpDevTools } from './logic/devTool';
 import {
-  UpdateStore,
   Options,
-  Actions,
   StoreUpdateFunction,
   StateMachineOptions,
   DeepPartial,
+  ActionsArg,
+  Actions,
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
@@ -67,18 +67,18 @@ export function StateMachineProvider<T>(props: T) {
   return <StateMachineContext.Provider value={value} {...props} />;
 }
 
-function actionTemplate<G>(
-  updateStore: React.Dispatch<G>,
-  callback: StoreUpdateFunction<G>,
+function actionTemplate<T>(
+  updateStore: React.Dispatch<T>,
+  callback: StoreUpdateFunction<T>,
   options?: Options,
 ) {
-  return <K extends DeepPartial<G>>(payload: K) => {
+  return <K extends DeepPartial<T>>(payload: K) => {
     if (process.env.NODE_ENV !== 'production') {
       const debugName = callback ? callback.name : '';
       middleWare(debugName);
     }
 
-    storeFactory.store = callback(storeFactory.store as G, payload);
+    storeFactory.store = callback(storeFactory.store as T, payload);
 
     storeFactory.storageType.setItem(
       storeFactory.name,
@@ -93,35 +93,35 @@ function actionTemplate<G>(
       );
     }
 
-    !options && updateStore(storeFactory.store as G);
+    !options && updateStore(storeFactory.store as T);
   };
 }
 
-export function useStateMachine<T>(
-  updateStoreFunction?: UpdateStore<T>,
+export function useStateMachine<
+  T,
+  TActions extends ActionsArg<T> = ActionsArg<T>
+>(
+  actions?: TActions,
   options?: Options,
 ): {
-  actions: Actions;
+  actions: Actions<T, TActions>;
   state: T;
 } {
   const { store, updateStore } = React.useContext(StateMachineContext);
 
   return React.useMemo(
     () => ({
-      actions: updateStoreFunction
-        ? Object.entries(updateStoreFunction).reduce(
+      actions: actions
+        ? Object.entries(actions).reduce(
             (previous, [key, callback]) => ({
               ...previous,
-              [key]: React.useCallback(
-                actionTemplate<T>(updateStore, callback, options),
-                [],
-              ),
+              [key]: actionTemplate<T>(updateStore, callback, options),
             }),
             {},
           )
-        : {},
+        : ({} as any),
       state: store as T,
     }),
-    [store],
+    [store, actions],
   );
 }
