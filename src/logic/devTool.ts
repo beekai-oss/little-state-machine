@@ -5,17 +5,17 @@ export function setUpDevTools<T>(
 ) {
   if (typeof window === 'undefined') return;
 
-  window.STATE_MACHINE_DEBUG = (value: string) =>
-    storageType.setItem('___STATE_MACHINE_DEBUG__', value);
+  window.__LSM_DEBUG__ = (value: string) =>
+    storageType.setItem('___LSM_DEBUG__', value);
 
-  window.STATE_MACHINE_RESET = () => storageType.clear();
+  window.__LSM_RESET__ = () => storageType.clear();
 
-  window.STATE_MACHINE_GET_STORE = () => storageType.getItem(name);
+  window.__LSM_GET_STORE__ = () => storageType.getItem(name);
 
-  window.STATE_MACHINE_SAVE_TO = (name: any) =>
+  window.__LSM_SAVE_TO__ = (name: any) =>
     window.localStorage.setItem(name, JSON.stringify(store));
 
-  window.STATE_MACHINE_LOAD = ({
+  window.__LSM_LOAD__ = ({
     storeName,
     data,
   }: {
@@ -23,7 +23,7 @@ export function setUpDevTools<T>(
     data?: string;
   }) =>
     storageType.setItem(
-      name || '___STATE_MACHINE_DEBUG__',
+      name || '___LSM_DEBUG__',
       data || window.localStorage.getItem(storeName) || '',
     );
 }

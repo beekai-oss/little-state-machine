@@ -21,7 +21,7 @@ State management made super simple
 <h2>📦 Installation</h2>
 
     $ npm install little-state-machine
-  
+
 <h2>🕹 API</h2>
 
 ##### 🔗 `StateMachineProvider`
@@ -61,18 +61,20 @@ createStore(
 This hook function will return action/actions and state of the app.
 
 ```tsx
-const { action, state } = useStateMachine<T>(updateUserNameAction, {
-  shouldReRenderApp: false, // This will prevent App from re-render and only update the store
-});
-const { actions, state } = useStateMachine<T>({
-  removeNameAction,
-  updateUserNameAction,
-});
+const { actions, state } = useStateMachine<T>(
+  {
+    removeNameAction,
+    updateUserNameAction,
+  },
+  {
+    shouldReRenderApp: false, // This will prevent App from re-render and only update the store
+  },
+);
 ```
 
 <h2>📖 Example</h2>
 
-Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
+Check out the <a href="https://codesandbox.io/s/little-state-machine-demo-v4-u4njf">Demo</a>.
 
 📋 `app.js`
 
@@ -115,9 +117,13 @@ import { updateName } from './action.js';
 import { useStateMachine } from 'little-state-machine';
 
 export default function YourComponent() {
-  const { action, state } = useStateMachine(updateName);
+  const { actions, state } = useStateMachine(updateName);
 
-  return <div onClick={() => action({ name: 'bill' })}>{state.yourDetail.name}</div>;
+  return (
+    <div onClick={() => actions.updateName({ name: 'bill' })}>
+      {state.yourDetail.name}
+    </div>
+  );
 }
 ```
 

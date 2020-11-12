@@ -2,9 +2,7 @@ export type Store = Record<string, any>;
 
 export type StoreUpdateFunction<T> = (store: T, payload: any) => T;
 
-export type UpdateStore<T> =
-  | StoreUpdateFunction<T>
-  | { [key: string]: StoreUpdateFunction<T> };
+export type UpdateStore<T> = { [key: string]: StoreUpdateFunction<T> };
 
 export type Options = {
   shouldReRenderApp?: boolean;
@@ -24,11 +22,11 @@ declare global {
   interface Window {
     __LSM_NAME__: any;
     __LSM__: any;
-    STATE_MACHINE_DEBUG: any;
-    STATE_MACHINE_RESET: any;
-    STATE_MACHINE_GET_STORE: any;
-    STATE_MACHINE_SAVE_TO: any;
-    STATE_MACHINE_LOAD: any;
-    STATE_MACHINE_DEBUG_NAME: any;
+    __LSM_DEBUG__: any;
+    __LSM_RESET__: any;
+    __LSM_GET_STORE__: any;
+    __LSM_SAVE_TO__: any;
+    __LSM_LOAD__: any;
+    __LSM_DEBUG_NAME__: any;
   }
 }

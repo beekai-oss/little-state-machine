@@ -1,10 +1,10 @@
 import { STORE_DEFAULT_NAME } from '../constants';
 import getStoreData from './getBrowserStoreData';
 
-export default class StoreFactory<T> {
+export default class StoreFactory {
   public name: string = STORE_DEFAULT_NAME;
-  public store: T;
   public storageType: Storage;
+  public store: unknown = undefined;
 
   constructor(name: string, isClient: boolean) {
     this.storageType =
@@ -19,6 +19,9 @@ export default class StoreFactory<T> {
             removeItem: () => {},
           };
     this.name = name;
-    this.store = getStoreData(this.storageType, name);
+  }
+
+  updateStore<T>(defaultValues: T) {
+    return getStoreData(this.storageType, this.name) || defaultValues;
   }
 }

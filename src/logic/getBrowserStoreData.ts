@@ -1,10 +1,7 @@
 export default (storageType: Storage, storeName: string) => {
-  const sessionStorageData = storageType.getItem(storeName);
-
   try {
-    return sessionStorageData ? JSON.parse(sessionStorageData) : undefined;
+    return storageType.getItem(storeName);
   } catch {
     return undefined;
   }
-
 };

@@ -1,21 +1,18 @@
 import * as React from 'react';
 import StoreFactory from './logic/storeFactory';
-import isUndefined from './utils/isUndefined';
 import { setUpDevTools } from './logic/devTool';
 import {
   UpdateStore,
   Options,
-  Action,
   Actions,
   StoreUpdateFunction,
   StateMachineOptions,
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
+const isUndefined = (val: unknown): val is undefined => val === undefined;
 const isClient = typeof window !== 'undefined';
-
 let middleWaresArray: Function[] | undefined = [];
-
 const storeFactory = new StoreFactory(STORE_DEFAULT_NAME, isClient);
 
 export const middleWare = (data: string) => {
@@ -48,7 +45,7 @@ export function createStore<T>(
     );
   }
 
-  storeFactory.store = storeFactory.store || defaultStoreData;
+  storeFactory.updateStore(defaultStoreData);
 }
 
 const StateMachineContext = React.createContext({
@@ -117,7 +114,6 @@ export function useStateMachine<T>(
   updateStoreFunction?: UpdateStore<T>,
   options?: Options,
 ): {
-  action: Action;
   actions: Actions;
   state: T;
 } {
@@ -125,39 +121,23 @@ export function useStateMachine<T>(
     StateMachineContext,
   );
 
-  if (updateStoreFunction && Object.keys(updateStoreFunction).length) {
-    return {
-      actions: Object.entries(updateStoreFunction).reduce(
-        (previous, [key, callback]) => ({
-          ...previous,
-          [key]: React.useCallback(
-            actionTemplate<T>({
-              options,
-              callback,
-              updateStore,
-            }),
-            [],
-          ),
-        }),
-        {},
-      ),
-      action: (p) => p,
-      state: globalState as T,
-    };
-  }
-
   return {
-    actions: {},
-    action: React.useCallback(
-      updateStoreFunction
-        ? actionTemplate<T>({
-            options,
-            callback: updateStoreFunction as StoreUpdateFunction<T>,
-            updateStore,
-          })
-        : () => {},
-      [],
-    ),
+    actions: updateStoreFunction
+      ? Object.entries(updateStoreFunction).reduce(
+          (previous, [key, callback]) => ({
+            ...previous,
+            [key]: React.useCallback(
+              actionTemplate<T>({
+                options,
+                callback,
+                updateStore,
+              }),
+              [],
+            ),
+          }),
+          {},
+        )
+      : {},
     state: globalState as T,
   };
 }
