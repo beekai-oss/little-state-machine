@@ -12,9 +12,11 @@ export type Action = <T extends object>(payload: T) => void;
 
 export type Actions = { [key: string]: Action };
 
+export type MiddleWare = <T>(arg: T) => T;
+
 export type StateMachineOptions = Partial<{
   name: string;
-  middleWares?: Function[];
+  middleWares?: MiddleWare[];
   storageType: Storage;
 }>;
 

@@ -10,12 +10,10 @@ import {
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
-const isUndefined = (val: unknown): val is undefined => val === undefined;
 const isClient = typeof window !== 'undefined';
-let middleWaresArray: Function[] | undefined = [];
 const storeFactory = new StoreFactory(STORE_DEFAULT_NAME, isClient);
 
-export const middleWare = (data: string) => {
+export const middleWare = <T extends unknown>(data: T): T => {
   if (data && isClient) {
     window[STORE_ACTION_NAME] = data;
   }
@@ -35,7 +33,9 @@ export function createStore<T>(
     window[STORE_DEFAULT_NAME] = storeFactory.name;
   }
 
-  middleWaresArray = options.middleWares;
+  if (options.middleWares) {
+    storeFactory.middleWares = options.middleWares;
+  }
 
   if (process.env.NODE_ENV !== 'production') {
     setUpDevTools(
@@ -75,39 +75,29 @@ const actionTemplate = <G extends unknown>({
   options?: Options;
   updateStore: React.Dispatch<unknown>;
 }) => <K extends unknown>(payload: K): void => {
-  let storeResult = storeFactory.store;
-  const debugName = callback ? callback.name : '';
-
   if (process.env.NODE_ENV !== 'production') {
+    const debugName = callback ? callback.name : '';
     middleWare(debugName);
   }
 
   if (callback) {
-    storeResult = callback(storeFactory.store as G, payload);
+    storeFactory.store = callback(storeFactory.store as G, payload);
   }
 
-  storeFactory.store = storeResult;
   storeFactory.storageType.setItem(
     storeFactory.name,
     JSON.stringify(storeFactory.store),
   );
 
-  if (
-    isUndefined(options) ||
-    (options && options.shouldReRenderApp !== false)
-  ) {
-    let pipeData = storeFactory.store;
-
-    if (Array.isArray(middleWaresArray) && middleWaresArray.length) {
-      pipeData = middleWaresArray.reduce(
-        (currentValue, currentFunction) =>
-          currentFunction(currentValue) || currentValue,
-        pipeData,
-      );
-    }
-
-    updateStore(pipeData);
+  if (storeFactory.middleWares.length) {
+    storeFactory.store = storeFactory.middleWares.reduce(
+      (currentValue, currentFunction) =>
+        currentFunction(currentValue) || currentValue,
+      storeFactory.store,
+    );
   }
+
+  !options && updateStore(storeFactory.store);
 };
 
 export function useStateMachine<T>(
