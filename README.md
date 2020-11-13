@@ -24,24 +24,21 @@ State management made super simple
 
 <h2>🕹 API</h2>
 
-##### 🔗 `StateMachineProvider`
+#### 🔗 `StateMachineProvider`
 
 This is a Provider Component to wrapper around your entire app in order to create context.
 
-##### 🔗 `createStore`
-
 ```tsx
-createStore(store, options?: {
- name: string; // rename the store
- middleWares?: Function[]; // function to invoke each action
-}})
+<StateMachineProvider>
+  <App />
+</StateMachineProvider>
 ```
+
+#### 🔗 `createStore`
 
 Function to initialize the global store, invoked at your app root (where `<StateMachineProvider />` lives).
 
 ```tsx
-import yourDetail from './state/yourDetail';
-
 function log(store) {
   console.log(store);
   return store;
@@ -49,22 +46,23 @@ function log(store) {
 
 createStore(
   {
-    yourDetail, // it's an object of your state { firstName: '', lastName: '' }
+    yourDetail: { firstName: '', lastName: '' } // it's an object of your state
   },
   {
-    middleWares: [log], // an array of middleWares, which gets run each actions
+     name: string; // rename the store
+     middleWares?: MiddleWare[]; // function to invoke each action
+     storageType?: [ log ]; // session/local or function to store in memory
   },
 );
 ```
 
-##### 🔗 `useStateMachine`
+#### 🔗 `useStateMachine`
 
 This hook function will return action/actions and state of the app.
 
 ```tsx
 const { actions, state } = useStateMachine<T>({
-  removeNameAction,
-  updateUserNameAction,
+  updateYourDetail,
 });
 ```
 
