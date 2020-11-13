@@ -70,29 +70,15 @@ const { actions, state } = useStateMachine<T>({
 
 Check out the <a href="https://codesandbox.io/s/icy-dew-by1wd">Demo</a>.
 
-📋 `app.js`
-
 ```tsx
 import React from 'react';
-import YourComponent from './yourComponent';
-import { StateMachineProvider, createStore } from 'little-state-machine';
+import { StateMachineProvider, createStore, useStateMachine } from 'little-state-machine';
 
-// create your store
 createStore({
   yourDetail: { name: '' },
 });
 
-export default () => (
-  <StateMachineProvider>
-    <YourComponent />
-  </StateMachineProvider>
-);
-```
-
-📋 `action.js`
-
-```tsx
-export function updateName(state, payload) {
+function updateName(state, payload) {
   return {
     ...state,
     yourDetail: {
@@ -101,16 +87,8 @@ export function updateName(state, payload) {
     },
   };
 }
-```
 
-📋 `yourComponent.js`
-
-```tsx
-import React from 'react';
-import { updateName } from './action.js';
-import { useStateMachine } from 'little-state-machine';
-
-export default function YourComponent() {
+function YourComponent() {
   const { actions, state } = useStateMachine(updateName);
 
   return (
@@ -119,6 +97,12 @@ export default function YourComponent() {
     </div>
   );
 }
+
+export default () => (
+  <StateMachineProvider>
+    <YourComponent />
+  </StateMachineProvider>
+);
 ```
 
 <h2>⚒ DevTool</h2>
