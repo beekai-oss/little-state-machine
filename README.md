@@ -62,15 +62,10 @@ createStore(
 This hook function will return action/actions and state of the app.
 
 ```tsx
-const { actions, state } = useStateMachine<T>(
-  {
-    removeNameAction,
-    updateUserNameAction,
-  },
-  {
-    shouldReRenderApp: false, // This will prevent App from re-render and only update the store
-  },
-);
+const { actions, state } = useStateMachine<T>({
+  removeNameAction,
+  updateUserNameAction,
+});
 ```
 
 <h2>📖 Example</h2>

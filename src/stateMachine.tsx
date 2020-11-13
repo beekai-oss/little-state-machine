@@ -2,7 +2,6 @@ import * as React from 'react';
 import StoreFactory from './logic/storeFactory';
 import { setUpDevTools } from './logic/devTool';
 import {
-  Options,
   StoreUpdateFunction,
   StateMachineOptions,
   DeepPartial,
@@ -31,12 +30,13 @@ export function createStore<T>(
 ) {
   options.name && (storeFactory.name = options.name);
   options.storageType && (storeFactory.storageType = options.storageType);
-
-  if (process.env.NODE_ENV !== 'production' && isClient) {
-    window[STORE_DEFAULT_NAME] = storeFactory.name;
-  }
-
   storeFactory.updateMiddleWares(options.middleWares);
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (isClient) {
+      window['__LSM_NAME__'] = storeFactory.name;
+    }
+  }
 
   if (process.env.NODE_ENV !== 'production') {
     setUpDevTools(
@@ -56,21 +56,24 @@ const StateMachineContext = React.createContext({
 
 export function StateMachineProvider<T>(props: T) {
   const [globalState, updateStore] = React.useState(storeFactory.store);
-  const value = React.useMemo(
-    () => ({
-      store: globalState,
-      updateStore,
-    }),
-    [globalState],
-  );
 
-  return <StateMachineContext.Provider value={value} {...props} />;
+  return (
+    <StateMachineContext.Provider
+      value={React.useMemo(
+        () => ({
+          store: globalState,
+          updateStore,
+        }),
+        [globalState],
+      )}
+      {...props}
+    />
+  );
 }
 
 function actionTemplate<T>(
   updateStore: React.Dispatch<T>,
   callback: StoreUpdateFunction<T>,
-  options?: Options,
 ) {
   return <K extends DeepPartial<T>>(payload: K) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -93,7 +96,7 @@ function actionTemplate<T>(
       );
     }
 
-    !options && updateStore(storeFactory.store as T);
+    updateStore(storeFactory.store as T);
   };
 }
 
@@ -102,7 +105,6 @@ export function useStateMachine<
   TActions extends ActionsArg<T> = ActionsArg<T>
 >(
   actions?: TActions,
-  options?: Options,
 ): {
   actions: Actions<T, TActions>;
   state: T;
@@ -115,7 +117,7 @@ export function useStateMachine<
         ? Object.entries(actions).reduce(
             (previous, [key, callback]) => ({
               ...previous,
-              [key]: actionTemplate<T>(updateStore, callback, options),
+              [key]: actionTemplate<T>(updateStore, callback),
             }),
             {},
           )
