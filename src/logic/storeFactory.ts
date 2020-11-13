@@ -12,14 +12,7 @@ export default class StoreFactory {
     this.storageType =
       isClient && typeof sessionStorage !== 'undefined'
         ? window.sessionStorage
-        : {
-            getItem: (payload) => payload,
-            setItem: (payload: string) => payload,
-            clear: () => {},
-            length: 0,
-            key: (payload: number) => payload.toString(),
-            removeItem: () => {},
-          };
+        : ({} as Storage);
     this.name = name;
   }
 
