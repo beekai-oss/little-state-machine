@@ -13,14 +13,6 @@ import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 const isClient = typeof window !== 'undefined';
 const storeFactory = new StoreFactory(STORE_DEFAULT_NAME, isClient);
 
-export const middleWare = <T extends unknown>(data: T): T => {
-  if (data) {
-    window[STORE_ACTION_NAME] = data;
-  }
-
-  return data;
-};
-
 export function createStore<T>(
   defaultStoreData: T,
   options: StateMachineOptions = {
@@ -77,8 +69,7 @@ function actionTemplate<T>(
 ) {
   return <K extends DeepPartial<T>>(payload: K) => {
     if (process.env.NODE_ENV !== 'production') {
-      const debugName = callback ? callback.name : '';
-      middleWare(debugName);
+      window[STORE_ACTION_NAME] = callback ? callback.name : '';
     }
 
     storeFactory.store = callback(storeFactory.store as T, payload);
