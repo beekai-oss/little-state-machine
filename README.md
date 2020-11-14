@@ -49,7 +49,7 @@ createStore(
     yourDetail: { firstName: '', lastName: '' } // it's an object of your state
   },
   {
-     name: string; // rename the store
+     name?: string; // rename the store
      middleWares?: [ log ]; // function to invoke each action
      storageType?: Storage; // session/local storage (default to session)
   },
