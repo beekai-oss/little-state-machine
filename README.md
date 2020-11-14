@@ -68,7 +68,7 @@ const { actions, state } = useStateMachine<T>({
 
 <h2>💁‍♂️ Tutorial</h2>
 
-Quick video tutorial with little state machine. 
+Quick video tutorial on little state machine. 
 
 <a href="https://scrimba.com/scrim/ceqRebca">
 <img src="https://raw.githubusercontent.com/bluebill1049/little-state-machine/master/docs/tutorial.png" />
@@ -125,12 +125,6 @@ import { DevTool } from 'little-state-machine-devtools';
   <DevTool />
 </StateMachineProvider>;
 ```
-
-<div align="center">
-  <a href="https://lrz5wloklm.csb.app/">
-    <img width="500" src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/DevToolScreen.png?raw=true" />
-  </a>
-</div>
 
 <h2>🖥 Browser Compatibility</h2>
 Little State Machine supports all major browsers
