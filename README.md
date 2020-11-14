@@ -1,5 +1,5 @@
 <div align="center"><a href="https://lrz5wloklm.csb.app/"><img src="https://github.com/bluebill1049/little-state-machine/blob/master/docs/logo.png?raw=true" alt="Little State Machine - React Hooks for state management" width="140px" /></a>
-    <h1>Little State Machine</h2>
+    <h1>Little State Machine</h1>
     
 State management made super simple
 </div>
@@ -14,151 +14,71 @@ State management made super simple
 
 <h2>✨ Features</h2>
 
-- Tiny with 0 dependency and simple (less than 1.5kb)
+- Tiny with 0 dependency and simple (less than 767KB)
 - Persist state by default (`sessionStorage` or `localStorage`)
 - Build with React Hooks
-- Compatible with React Native
 
 <h2>📦 Installation</h2>
 
     $ npm install little-state-machine
 
-<h2>🖥 <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a></h2>
-Check out the <a href="https://codesandbox.io/s/lrz5wloklm">Demo</a>.
-<br />
-  
 <h2>🕹 API</h2>
 
-##### 🔗 `StateMachineProvider`
+#### 🔗 `StateMachineProvider`
 
 This is a Provider Component to wrapper around your entire app in order to create context.
 
-##### 🔗 `createStore`
-
-```ts
-createStore(store, options?: {
- name: string; // rename the store
- middleWares?: Function[]; // function to invoke each action
- syncStores?:  // sync with external store in your session/local storage
-    | Record<string, string[]>
-    | { externalStoreName: string; transform: Function } // name of the external store, and state to sync
-    | { externalStoreName: string; transform: Function }[];
-}})
+```tsx
+<StateMachineProvider>
+  <App />
+</StateMachineProvider>
 ```
+
+#### 🔗 `createStore`
 
 Function to initialize the global store, invoked at your app root (where `<StateMachineProvider />` lives).
 
-```ts
-import yourDetail from './state/yourDetail';
-
+```tsx
 function log(store) {
   console.log(store);
+  return store;
 }
 
 createStore(
   {
-    yourDetail, // it's an object of your state { firstName: '', lastName: '' }
+    yourDetail: { firstName: '', lastName: '' } // it's an object of your state
   },
   {
-    middleWares: [log], // an array of middleWares, which gets run each actions
-    syncStores: {
-      // you can sync with external store and transform the data
-      externalStoreName: 'externalStoreName',    
-      // alternative you can just specify the store name and root state name { yourDetails: { firstName: '' } }
-      // externalStoreName: ['yourDetail'],
-      transform: ({ externalStoreData, currentStoreData }) => {
-        return { ...externalStoreData, ...currentStoreData };
-      },
-    },
-    // or you can pass in an array of transform function
-    // syncStores : [
-    //   {
-    //     externalStoreName: 'externalStoreName',
-    //     transform: ({ externalStoreData, currentStoreData }) => {
-    //       return { ...externalStoreData, ...currentStoreData };
-    //     },
-    //   }
-    // ]
+     name: string; // rename the store
+     middleWares?: MiddleWare[]; // function to invoke each action
+     storageType?: [ log ]; // session/local or function to store in memory
   },
 );
 ```
 
-##### 🔗 `useStateMachine`
+#### 🔗 `useStateMachine`
 
 This hook function will return action/actions and state of the app.
 
-```typescript
-import { updateUserNameAction, removeNameAction } from './actions/yourDetails';
-
-const { action, state } = useStateMachine(updateUserNameAction);
-const { actions, state } = useStateMachine({
-  removeNameAction,
-  updateUserNameAction,
-});
-
-// The following examples are for optional argument
-const { action, state } = useStateMachine(updateUserNameAction, {
-  shouldReRenderApp: false, // This will prevent App from re-render and only update the store
+```tsx
+const { actions, state } = useStateMachine<T>({
+  updateYourDetail,
 });
 ```
 
 <h2>📖 Example</h2>
 
-📋 `app.js`
+Check out the <a href="https://codesandbox.io/s/icy-dew-by1wd">Demo</a>.
 
-```jsx
+```tsx
 import React from 'react';
-import yourDetail from './yourDetail';
-import YourComponent from './yourComponent';
-import { StateMachineProvider, createStore } from 'little-state-machine';
-import { DevTool } from 'little-state-machine-devtools';
+import { StateMachineProvider, createStore, useStateMachine } from 'little-state-machine';
 
-// create your store
 createStore({
-  yourDetail,
+  yourDetail: { name: '' },
 });
 
-export default () => {
-  return (
-    <StateMachineProvider>
-      <DevTool />
-      <YourComponent />
-    </StateMachineProvider>
-  );
-};
-```
-
-📋 `yourComponent.js`
-
-```jsx
-import React from 'react';
-import { updateName } from './action.js';
-import { useStateMachine } from 'little-state-machine';
-
-export default function YourComponent() {
-  const {
-    action,
-    state: {
-      yourDetail: { name },
-    },
-  } = useStateMachine(updateName);
-
-  return <div onClick={() => action({ name: 'bill' })}>{name}</div>;
-}
-```
-
-📋 `yourDetail.js`
-
-```js
-export default {
-  name: 'test',
-};
-```
-
-📋 `action.js`
-
-```js
-export function updateName(state, payload) {
+function updateName(state, payload) {
   return {
     ...state,
     yourDetail: {
@@ -167,13 +87,29 @@ export function updateName(state, payload) {
     },
   };
 }
+
+function YourComponent() {
+  const { actions, state } = useStateMachine(updateName);
+
+  return (
+    <div onClick={() => actions.updateName({ name: 'bill' })}>
+      {state.yourDetail.name}
+    </div>
+  );
+}
+
+export default () => (
+  <StateMachineProvider>
+    <YourComponent />
+  </StateMachineProvider>
+);
 ```
 
-<h2>⚒ Little State Machine DevTool</h2>
+<h2>⚒ DevTool</h2>
 
-[DevTool](https://github.com/bluebill1049/little-state-machine-dev-tools) component to track your state change and action. 
+[DevTool](https://github.com/bluebill1049/little-state-machine-dev-tools) component to track your state change and action.
 
-```jsx
+```tsx
 import { DevTool } from 'little-state-machine-devtools';
 
 <StateMachineProvider>
@@ -192,10 +128,9 @@ Little State Machine supports all major browsers
 
 For legacy IE11 support, you can import little-state-machine IE11 version.
 
-```js
-import { createStore } from 'little-state-machine/dist/little-state-machine.ie11'
+```tsx
+import { createStore } from 'little-state-machine/dist/little-state-machine.ie11';
 ```
-
 
 <h2>📋 Polyfill</h2>
 
@@ -203,14 +138,14 @@ Consider adding `Object.entries()` polyfill if you're wondering to have support 
 You can weather consider adding snippet below into your code, ideally before your App.js file:
 
 `utils.[js|ts]`
-```js
+
+```tsx
 if (!Object.entries) {
-  Object.entries = function( obj ){
-    var ownProps = Object.keys( obj ),
-        i = ownProps.length,
-        resArray = new Array(i); // preallocate the Array
-    while (i--)
-      resArray[i] = [ownProps[i], obj[ownProps[i]]];    
+  Object.entries = function (obj) {
+    var ownProps = Object.keys(obj),
+      i = ownProps.length,
+      resArray = new Array(i); // preallocate the Array
+    while (i--) resArray[i] = [ownProps[i], obj[ownProps[i]]];
     return resArray;
   };
 }
@@ -350,5 +285,3 @@ Thank you very much for those kind people with their sponsorship to this project
             alt="@mlukaszczyk"
     /></a>
 </p>
-
-

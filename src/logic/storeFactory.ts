@@ -1,29 +1,26 @@
 import { STORE_DEFAULT_NAME } from '../constants';
-import { GetStoreName, GetStore, SetStore, Store } from '../types';
 import getStoreData from './getBrowserStoreData';
+import { MiddleWare } from '../types';
 
-export default function storeFactory<T>(
-  storageType: Storage,
-  name: string | undefined,
-): {
-  set: SetStore;
-  get: GetStore;
-  getName: GetStoreName;
-} {
-  const storeName = name || STORE_DEFAULT_NAME;
-  let store: Store = getStoreData(storageType, storeName);
+export default class StoreFactory {
+  public name: string = STORE_DEFAULT_NAME;
+  public storageType: Storage;
+  public store: unknown = undefined;
+  public middleWares: MiddleWare[] = [];
 
-  const getName = (): string => storeName;
+  constructor(name: string, isClient: boolean) {
+    this.storageType =
+      isClient && typeof sessionStorage !== 'undefined'
+        ? window.sessionStorage
+        : ({} as Storage);
+    this.name = name;
+  }
 
-  const set = <K>(value: K): void => {
-    store = value;
-  };
+  updateStore<T>(defaultValues: T) {
+    this.store = getStoreData(this.storageType, this.name) || defaultValues;
+  }
 
-  const get = (): T => store as T;
-
-  return {
-    set,
-    get,
-    getName,
-  };
+  updateMiddleWares(middleWares: MiddleWare[]) {
+    return (this.middleWares = middleWares);
+  }
 }

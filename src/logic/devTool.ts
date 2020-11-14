@@ -1,30 +1,21 @@
-import { STATE_MACHINE_DEBUG_NAME } from '../constants';
-import { GetStore } from '../types';
-
-export function setUpDevTools(
-  isDevMode: boolean,
+export function setUpDevTools<T>(
   storageType: Storage,
-  getName: Function,
-  getStore: GetStore,
+  name: string,
+  store: T,
 ) {
-  if (typeof window === 'undefined' || !isDevMode) return;
+  if (typeof window === 'undefined') return;
 
-  // @ts-ignore
-  window.STATE_MACHINE_DEBUG = (value: string) =>
-    storageType.setItem(STATE_MACHINE_DEBUG_NAME, value);
+  window.__LSM_DEBUG__ = (value: string) =>
+    storageType.setItem('___LSM_DEBUG__', value);
 
-  // @ts-ignore
-  window.STATE_MACHINE_RESET = () => storageType.clear();
+  window.__LSM_RESET__ = () => storageType.clear();
 
-  // @ts-ignore
-  window.STATE_MACHINE_GET_STORE = () => storageType.getItem(getName());
+  window.__LSM_GET_STORE__ = () => storageType.getItem(name);
 
-  // @ts-ignore
-  window.STATE_MACHINE_SAVE_TO = name =>
-    window.localStorage.setItem(name, JSON.stringify(getStore()));
+  window.__LSM_SAVE_TO__ = (name: any) =>
+    window.localStorage.setItem(name, JSON.stringify(store));
 
-  // @ts-ignore
-  window.STATE_MACHINE_LOAD = ({
+  window.__LSM_LOAD__ = ({
     storeName,
     data,
   }: {
@@ -32,7 +23,7 @@ export function setUpDevTools(
     data?: string;
   }) =>
     storageType.setItem(
-      getName() || STATE_MACHINE_DEBUG_NAME,
+      name || '___LSM_DEBUG__',
       data || window.localStorage.getItem(storeName) || '',
     );
 }
