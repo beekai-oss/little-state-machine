@@ -66,6 +66,10 @@ const { actions, state } = useStateMachine<T>({
 });
 ```
 
+<h2>💁‍♂️ Tutorial</h2>
+
+https://scrimba.com/scrim/ceqRebca
+
 <h2>📖 Example</h2>
 
 Check out the <a href="https://codesandbox.io/s/icy-dew-by1wd">Demo</a>.
