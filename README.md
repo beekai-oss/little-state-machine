@@ -51,7 +51,7 @@ createStore(
   {
      name: string; // rename the store
      middleWares?: MiddleWare[]; // function to invoke each action
-     storageType?: [ log ]; // session/local or function to store in memory
+     storageType?: Storage; // session/local storage (default to session)
   },
 );
 ```
