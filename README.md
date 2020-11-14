@@ -68,7 +68,12 @@ const { actions, state } = useStateMachine<T>({
 
 <h2>💁‍♂️ Tutorial</h2>
 
-https://scrimba.com/scrim/ceqRebca
+Quick video tutorial with little state machine. 
+
+<a href="https://scrimba.com/scrim/ceqRebca">
+<img src="https://raw.githubusercontent.com/bluebill1049/little-state-machine/master/docs/tutorial.png" />
+</a>
+
 
 <h2>📖 Example</h2>
 
