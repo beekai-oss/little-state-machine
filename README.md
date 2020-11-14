@@ -77,7 +77,7 @@ Quick video tutorial on little state machine.
 
 <h2>📖 Example</h2>
 
-Check out the <a href="https://codesandbox.io/s/icy-dew-by1wd">Demo</a>.
+Check out the <a href="https://codesandbox.io/s/wild-dawn-ud8bq">Demo</a>.
 
 ```tsx
 import React from 'react';
