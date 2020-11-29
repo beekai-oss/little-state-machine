@@ -8,9 +8,9 @@ export default class StoreFactory {
   public store: unknown = undefined;
   public middleWares: MiddleWare[] = [];
 
-  constructor(name: string, isClient: boolean) {
+  constructor(name: string) {
     this.storageType =
-      isClient && typeof sessionStorage !== 'undefined'
+      typeof sessionStorage !== 'undefined'
         ? window.sessionStorage
         : ({} as Storage);
     this.name = name;
