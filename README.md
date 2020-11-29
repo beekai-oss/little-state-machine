@@ -14,7 +14,7 @@ State management made super simple
 
 <h2>✨ Features</h2>
 
-- Tiny with 0 dependency and simple (699B)
+- Tiny with 0 dependency and simple (639B _gzip_)
 - Persist state by default (`sessionStorage` or `localStorage`)
 - Build with React Hooks
 
@@ -68,12 +68,11 @@ const { actions, state } = useStateMachine<T>({
 
 <h2>💁‍♂️ Tutorial</h2>
 
-Quick video tutorial on little state machine. 
+Quick video tutorial on little state machine.
 
 <a href="https://scrimba.com/scrim/ceqRebca">
 <img src="https://raw.githubusercontent.com/bluebill1049/little-state-machine/master/docs/tutorial.png" />
 </a>
-
 
 <h2>📖 Example</h2>
 
@@ -81,7 +80,11 @@ Check out the <a href="https://codesandbox.io/s/wild-dawn-ud8bq">Demo</a>.
 
 ```tsx
 import React from 'react';
-import { StateMachineProvider, createStore, useStateMachine } from 'little-state-machine';
+import {
+  StateMachineProvider,
+  createStore,
+  useStateMachine,
+} from 'little-state-machine';
 
 createStore({
   yourDetail: { name: '' },
@@ -127,13 +130,9 @@ import { DevTool } from 'little-state-machine-devtools';
 ```
 
 <h2>🖥 Browser Compatibility</h2>
-Little State Machine supports all major browsers
+Little State Machine supports all major browsers IE11 include !
 
-For legacy IE11 support, you can import little-state-machine IE11 version.
-
-```tsx
-import { createStore } from 'little-state-machine/dist/little-state-machine.ie11';
-```
+If you run into issues, feel free to open an [issue](https://github.com/bluebill1049/little-state-machine/issues).
 
 <h2>📋 Polyfill</h2>
 
