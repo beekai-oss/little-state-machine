@@ -10,8 +10,7 @@ import {
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
-const isClient = typeof window !== 'undefined';
-const storeFactory = new StoreFactory(STORE_DEFAULT_NAME, isClient);
+const storeFactory = new StoreFactory(STORE_DEFAULT_NAME);
 
 export function createStore<T>(
   defaultStoreData: T,
@@ -25,7 +24,7 @@ export function createStore<T>(
   storeFactory.updateMiddleWares(options.middleWares);
 
   if (process.env.NODE_ENV !== 'production') {
-    if (isClient) {
+    if (typeof window !== 'undefined') {
       window['__LSM_NAME__'] = storeFactory.name;
     }
   }
@@ -106,10 +105,10 @@ export function useStateMachine<
     () => ({
       actions: actions
         ? Object.entries(actions).reduce(
-            (previous, [key, callback]) => ({
-              ...previous,
-              [key]: actionTemplate<T>(updateStore, callback),
-            }),
+            (previous, [key, callback]) =>
+              Object.assign({}, previous, {
+                [key]: actionTemplate<T>(updateStore, callback),
+              }),
             {},
           )
         : ({} as any),
