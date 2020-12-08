@@ -21,16 +21,17 @@ import {
 
 const isClient = typeof window !== 'undefined';
 const isDevMode: boolean = process.env.NODE_ENV !== 'production';
-let storageType: Storage = isClient && typeof(sessionStorage) !== 'undefined'
-  ? window.sessionStorage
-  : {
-      getItem: payload => payload,
-      setItem: (payload: string) => payload,
-      clear: () => {},
-      length: 0,
-      key: (payload: number) => payload.toString(),
-      removeItem: () => {},
-    };
+let storageType: Storage =
+  isClient && typeof sessionStorage !== 'undefined'
+    ? window.sessionStorage
+    : {
+        getItem: (payload) => payload,
+        setItem: (payload: string) => payload,
+        clear: () => {},
+        length: 0,
+        key: (payload: number) => payload.toString(),
+        removeItem: () => {},
+      };
 let getStore: GetStore;
 let setStore: SetStore;
 let getName: GetStoreName;
@@ -143,24 +144,27 @@ export function useStateMachine<T extends Store = Store>(
   );
 
   if (updateStoreFunction && Object.keys(updateStoreFunction).length) {
-    return {
-      actions: Object.entries(updateStoreFunction).reduce(
-        (previous, [key, callback]) => ({
-          ...previous,
-          [key]: React.useCallback(
-            actionTemplate({
-              options,
-              callback,
-              updateStore,
-            }),
-            [],
-          ),
-        }),
-        {},
-      ),
-      action: p => p,
-      state: globalState as T,
-    };
+    return React.useMemo(
+      () => ({
+        actions: Object.entries(updateStoreFunction).reduce(
+          (previous, [key, callback]) => ({
+            ...previous,
+            [key]: React.useCallback(
+              actionTemplate({
+                options,
+                callback,
+                updateStore,
+              }),
+              [],
+            ),
+          }),
+          {},
+        ),
+        action: (p) => p,
+        state: globalState as T,
+      }),
+      [updateStoreFunction, globalState],
+    );
   }
 
   return {
