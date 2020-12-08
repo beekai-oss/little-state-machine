@@ -1,7 +1,7 @@
 {
   "name": "little-state-machine",
   "sideEffects": false,
-  "version": "3.1.3",
+  "version": "3.1.4",
   "main": "dist/little-state-machine.js",
   "module": "dist/little-state-machine.es.js",
   "types": "dist/index.d.ts",
