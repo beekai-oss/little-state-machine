@@ -5,5 +5,6 @@ import {
   createStore,
   useStateMachine,
 } from './stateMachine';
+import { GlobalState } from './types';
 
-export { createStore, StateMachineProvider, useStateMachine };
+export { createStore, StateMachineProvider, useStateMachine, GlobalState };

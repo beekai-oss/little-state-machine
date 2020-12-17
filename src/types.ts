@@ -1,11 +1,5 @@
 export interface GlobalState {};
 
-export type Store = Record<string, any>;
-
-export type DeepPartial<T> = {
-  [P in keyof T]?: DeepPartial<T[P]>;
-};
-
 export type AnyCallback = (state: GlobalState, payload: any) => GlobalState
 
 export type AnyActions<TCallback> = Record<string, TCallback>;

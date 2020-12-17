@@ -4,7 +4,6 @@ import storeFactory from './logic/storeFactory';
 import { setUpDevTools } from './logic/devTool';
 import {
   StateMachineOptions,
-  DeepPartial,
   GlobalState,
   AnyCallback,
   AnyActions,
@@ -44,12 +43,12 @@ function actionTemplate<TCallback extends AnyCallback>(
   updateStore: React.Dispatch<GlobalState>,
   callback: TCallback,
 ) {
-  return <K extends DeepPartial<GlobalState>>(payload: K) => {
+  return (payload: Parameters<TCallback>[1]) => {
     if (process.env.NODE_ENV !== 'production') {
       window[STORE_ACTION_NAME] = callback ? callback.name : '';
     }
 
-    storeFactory.store = callback(storeFactory.store as GlobalState, payload);
+    storeFactory.store = callback(storeFactory.store as any, payload);
 
     storeFactory.storageType.setItem(
       storeFactory.name,
@@ -64,7 +63,7 @@ function actionTemplate<TCallback extends AnyCallback>(
       );
     }
 
-    updateStore(storeFactory.store as GlobalState);
+    updateStore(storeFactory.store);
   };
 }
 
@@ -87,7 +86,7 @@ export function useStateMachine<TCallback extends AnyCallback, TActions extends 
             {},
           )
         : ({} as any),
-      state: store as GlobalState,
+      state: store,
     }),
     [store, actions],
   );
