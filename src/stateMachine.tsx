@@ -42,7 +42,7 @@ function actionTemplate<TCallback extends AnyCallback>(
       window[STORE_ACTION_NAME] = callback ? callback.name : '';
     }
 
-    storeFactory.store = callback(storeFactory.store as any, payload);
+    storeFactory.store = callback(storeFactory.store, payload);
 
     storeFactory.storageType.setItem(
       storeFactory.name,

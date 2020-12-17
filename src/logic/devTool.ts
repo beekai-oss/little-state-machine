@@ -3,9 +3,9 @@ import { GlobalState } from "../types";
 export function setUpDevTools(
   storageType: Storage,
   name: string,
-  store?: GlobalState,
+  store: GlobalState,
 ) {
-  if (typeof window === 'undefined' || typeof store === 'undefined') return;
+  if (typeof window === 'undefined') return;
 
   window.__LSM_NAME__ = name;
 

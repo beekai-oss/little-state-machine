@@ -4,7 +4,7 @@ import { MiddleWare, GlobalState } from '../types';
 
 class StoreFactory {
   public storageType: Storage;
-  public store: GlobalState | undefined = undefined;
+  public store: GlobalState = {};
   public middleWares: MiddleWare[] = [];
 
   constructor(public name = STORE_DEFAULT_NAME) {
