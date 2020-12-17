@@ -12,7 +12,7 @@ import {
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
 export function createStore(
-  defaultStoreData: GlobalState,
+  defaultGlobalState: GlobalState,
   options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
@@ -26,11 +26,11 @@ export function createStore(
     setUpDevTools(
       storeFactory.storageType,
       storeFactory.name,
-      storeFactory.store,
+      storeFactory.state,
     );
   }
 
-  storeFactory.updateStore(defaultStoreData);
+  storeFactory.updateStore(defaultGlobalState);
 }
 
 function actionTemplate<TCallback extends AnyCallback>(
@@ -42,22 +42,22 @@ function actionTemplate<TCallback extends AnyCallback>(
       window[STORE_ACTION_NAME] = callback ? callback.name : '';
     }
 
-    storeFactory.store = callback(storeFactory.store, payload);
+    storeFactory.state = callback(storeFactory.state, payload);
 
     storeFactory.storageType.setItem(
       storeFactory.name,
-      JSON.stringify(storeFactory.store),
+      JSON.stringify(storeFactory.state),
     );
 
     if (storeFactory.middleWares.length) {
-      storeFactory.store = storeFactory.middleWares.reduce(
+      storeFactory.state = storeFactory.middleWares.reduce(
         (currentValue, currentFunction) =>
           currentFunction(currentValue) || currentValue,
-        storeFactory.store,
+        storeFactory.state,
       );
     }
 
-    updateStore(storeFactory.store);
+    updateStore(storeFactory.state);
   };
 }
 
@@ -67,7 +67,7 @@ export function useStateMachine<TCallback extends AnyCallback, TActions extends 
   actions: ActionsOutput<TCallback, TActions>;
   state: GlobalState;
 } {
-  const { store, updateStore } = useStateMachineContext();
+  const { globalState, setGlobalState } = useStateMachineContext();
 
   return React.useMemo(
     () => ({
@@ -75,13 +75,13 @@ export function useStateMachine<TCallback extends AnyCallback, TActions extends 
         ? Object.entries(actions).reduce(
             (previous, [key, callback]) =>
               Object.assign({}, previous, {
-                [key]: actionTemplate(updateStore, callback),
+                [key]: actionTemplate(setGlobalState, callback),
               }),
             {},
           )
         : ({} as any),
-      state: store,
+      state: globalState,
     }),
-    [store, actions, updateStore],
+    [globalState, actions, setGlobalState],
   );
 }

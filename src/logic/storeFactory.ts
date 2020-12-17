@@ -4,7 +4,7 @@ import { MiddleWare, GlobalState } from '../types';
 
 class StoreFactory {
   public storageType: Storage;
-  public store: GlobalState = {};
+  public state: GlobalState = {};
   public middleWares: MiddleWare[] = [];
 
   constructor(public name = STORE_DEFAULT_NAME) {
@@ -15,7 +15,7 @@ class StoreFactory {
   }
 
   updateStore(defaultValues: GlobalState) {
-    this.store = getStoreData(this.storageType, this.name) || defaultValues;
+    this.state = getStoreData(this.storageType, this.name) || defaultValues;
   }
 
   updateMiddleWares(middleWares: MiddleWare[]) {

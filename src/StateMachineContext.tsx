@@ -5,11 +5,11 @@ import { StateMachineContextValue } from './types';
 const StateMachineContext = React.createContext<StateMachineContextValue>(undefined as any);
 
 export const StateMachineProvider: React.FC = ({ children }) => {
-  const [store, updateStore] = React.useState(storeFactory.store);
+  const [globalState, setGlobalState] = React.useState(storeFactory.state);
 
   return (
     <StateMachineContext.Provider
-      value={{ store, updateStore }}
+      value={{ globalState, setGlobalState }}
     >
       { children }
     </StateMachineContext.Provider>

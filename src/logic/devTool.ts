@@ -3,7 +3,7 @@ import { GlobalState } from "../types";
 export function setUpDevTools(
   storageType: Storage,
   name: string,
-  store: GlobalState,
+  state: GlobalState,
 ) {
   if (typeof window === 'undefined') return;
 
@@ -17,7 +17,7 @@ export function setUpDevTools(
   window.__LSM_GET_STORE__ = () => storageType.getItem(name);
 
   window.__LSM_SAVE_TO__ = (name: any) =>
-    window.localStorage.setItem(name, JSON.stringify(store));
+    window.localStorage.setItem(name, JSON.stringify(state));
 
   window.__LSM_LOAD__ = ({
     storeName,
