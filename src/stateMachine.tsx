@@ -2,18 +2,19 @@ import * as React from 'react';
 import StoreFactory from './logic/storeFactory';
 import { setUpDevTools } from './logic/devTool';
 import {
-  StoreUpdateFunction,
   StateMachineOptions,
   DeepPartial,
-  ActionsArg,
-  Actions,
+  GlobalState,
+  AnyCallback,
+  AnyActions,
+  ActionsOutput,
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
 const storeFactory = new StoreFactory(STORE_DEFAULT_NAME);
 
-export function createStore<T>(
-  defaultStoreData: T,
+export function createStore(
+  defaultStoreData: GlobalState,
   options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
@@ -45,7 +46,7 @@ const StateMachineContext = React.createContext({
   updateStore: (payload: unknown) => payload,
 });
 
-export function StateMachineProvider<T>(props: T) {
+export function StateMachineProvider(props: GlobalState) {
   const [globalState, updateStore] = React.useState(storeFactory.store);
 
   return (
@@ -56,22 +57,22 @@ export function StateMachineProvider<T>(props: T) {
           updateStore,
         }),
         [globalState],
-      )}
+      ) as any}
       {...props}
     />
   );
 }
 
-function actionTemplate<T>(
-  updateStore: React.Dispatch<T>,
-  callback: StoreUpdateFunction<T>,
+function actionTemplate<TCallback extends AnyCallback>(
+  updateStore: React.Dispatch<GlobalState>,
+  callback: TCallback,
 ) {
-  return <K extends DeepPartial<T>>(payload: K) => {
+  return <K extends DeepPartial<GlobalState>>(payload: K) => {
     if (process.env.NODE_ENV !== 'production') {
       window[STORE_ACTION_NAME] = callback ? callback.name : '';
     }
 
-    storeFactory.store = callback(storeFactory.store as T, payload);
+    storeFactory.store = callback(storeFactory.store as GlobalState, payload);
 
     storeFactory.storageType.setItem(
       storeFactory.name,
@@ -86,18 +87,15 @@ function actionTemplate<T>(
       );
     }
 
-    updateStore(storeFactory.store as T);
+    updateStore(storeFactory.store as GlobalState);
   };
 }
 
-export function useStateMachine<
-  T,
-  TActions extends ActionsArg<T> = ActionsArg<T>
->(
+export function useStateMachine<TCallback extends AnyCallback, TActions extends AnyActions<TCallback>>(
   actions?: TActions,
 ): {
-  actions: Actions<T, TActions>;
-  state: T;
+  actions: ActionsOutput<TCallback, TActions>;
+  state: GlobalState;
 } {
   const { store, updateStore } = React.useContext(StateMachineContext);
 
@@ -107,12 +105,12 @@ export function useStateMachine<
         ? Object.entries(actions).reduce(
             (previous, [key, callback]) =>
               Object.assign({}, previous, {
-                [key]: actionTemplate<T>(updateStore, callback),
+                [key]: actionTemplate(updateStore, callback),
               }),
             {},
           )
         : ({} as any),
-      state: store as T,
+      state: store as GlobalState,
     }),
     [store, actions],
   );

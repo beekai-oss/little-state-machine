@@ -1,9 +1,11 @@
-export function setUpDevTools<T>(
+import { GlobalState } from "../types";
+
+export function setUpDevTools(
   storageType: Storage,
   name: string,
-  store: T,
+  store?: GlobalState,
 ) {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || typeof store === 'undefined') return;
 
   window.__LSM_DEBUG__ = (value: string) =>
     storageType.setItem('___LSM_DEBUG__', value);

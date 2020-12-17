@@ -1,11 +1,11 @@
 import { STORE_DEFAULT_NAME } from '../constants';
 import getStoreData from './getBrowserStoreData';
-import { MiddleWare } from '../types';
+import { MiddleWare, GlobalState } from '../types';
 
 export default class StoreFactory {
   public name: string = STORE_DEFAULT_NAME;
   public storageType: Storage;
-  public store: unknown = undefined;
+  public store: GlobalState | undefined = undefined;
   public middleWares: MiddleWare[] = [];
 
   constructor(name: string) {
@@ -16,7 +16,7 @@ export default class StoreFactory {
     this.name = name;
   }
 
-  updateStore<T>(defaultValues: T) {
+  updateStore(defaultValues: GlobalState) {
     this.store = getStoreData(this.storageType, this.name) || defaultValues;
   }
 
