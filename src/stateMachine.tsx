@@ -1,5 +1,6 @@
 import * as React from 'react';
-import StoreFactory from './logic/storeFactory';
+import { useStateMachineContext } from './StateMachineContext';
+import storeFactory from './logic/storeFactory';
 import { setUpDevTools } from './logic/devTool';
 import {
   StateMachineOptions,
@@ -10,8 +11,6 @@ import {
   ActionsOutput,
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
-
-const storeFactory = new StoreFactory(STORE_DEFAULT_NAME);
 
 export function createStore(
   defaultStoreData: GlobalState,
@@ -39,28 +38,6 @@ export function createStore(
   }
 
   storeFactory.updateStore(defaultStoreData);
-}
-
-const StateMachineContext = React.createContext({
-  store: storeFactory.store,
-  updateStore: (payload: unknown) => payload,
-});
-
-export function StateMachineProvider(props: GlobalState) {
-  const [globalState, updateStore] = React.useState(storeFactory.store);
-
-  return (
-    <StateMachineContext.Provider
-      value={React.useMemo(
-        () => ({
-          store: globalState,
-          updateStore,
-        }),
-        [globalState],
-      ) as any}
-      {...props}
-    />
-  );
 }
 
 function actionTemplate<TCallback extends AnyCallback>(
@@ -97,7 +74,7 @@ export function useStateMachine<TCallback extends AnyCallback, TActions extends 
   actions: ActionsOutput<TCallback, TActions>;
   state: GlobalState;
 } {
-  const { store, updateStore } = React.useContext(StateMachineContext);
+  const { store, updateStore } = useStateMachineContext();
 
   return React.useMemo(
     () => ({

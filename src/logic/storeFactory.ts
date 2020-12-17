@@ -2,7 +2,7 @@ import { STORE_DEFAULT_NAME } from '../constants';
 import getStoreData from './getBrowserStoreData';
 import { MiddleWare, GlobalState } from '../types';
 
-export default class StoreFactory {
+class StoreFactory {
   public name: string = STORE_DEFAULT_NAME;
   public storageType: Storage;
   public store: GlobalState | undefined = undefined;
@@ -24,3 +24,5 @@ export default class StoreFactory {
     return (this.middleWares = middleWares);
   }
 }
+
+export default new StoreFactory(STORE_DEFAULT_NAME);

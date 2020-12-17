@@ -1,6 +1,8 @@
 import {
-  createStore,
   StateMachineProvider,
+} from './StateMachineContext';
+import {
+  createStore,
   useStateMachine,
 } from './stateMachine';
 
