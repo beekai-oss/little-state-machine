@@ -7,6 +7,8 @@ export function setUpDevTools(
 ) {
   if (typeof window === 'undefined' || typeof store === 'undefined') return;
 
+  window.__LSM_NAME__ = name;
+
   window.__LSM_DEBUG__ = (value: string) =>
     storageType.setItem('___LSM_DEBUG__', value);
 

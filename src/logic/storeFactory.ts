@@ -3,17 +3,15 @@ import getStoreData from './getBrowserStoreData';
 import { MiddleWare, GlobalState } from '../types';
 
 class StoreFactory {
-  public name: string = STORE_DEFAULT_NAME;
   public storageType: Storage;
   public store: GlobalState | undefined = undefined;
   public middleWares: MiddleWare[] = [];
 
-  constructor(name: string) {
+  constructor(public name = STORE_DEFAULT_NAME) {
     this.storageType =
       typeof sessionStorage !== 'undefined'
         ? window.sessionStorage
         : ({} as Storage);
-    this.name = name;
   }
 
   updateStore(defaultValues: GlobalState) {
@@ -25,4 +23,4 @@ class StoreFactory {
   }
 }
 
-export default new StoreFactory(STORE_DEFAULT_NAME);
+export default new StoreFactory();

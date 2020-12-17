@@ -23,12 +23,6 @@ export function createStore(
   storeFactory.updateMiddleWares(options.middleWares);
 
   if (process.env.NODE_ENV !== 'production') {
-    if (typeof window !== 'undefined') {
-      window['__LSM_NAME__'] = storeFactory.name;
-    }
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
     setUpDevTools(
       storeFactory.storageType,
       storeFactory.name,
@@ -88,6 +82,6 @@ export function useStateMachine<TCallback extends AnyCallback, TActions extends 
         : ({} as any),
       state: store,
     }),
-    [store, actions],
+    [store, actions, updateStore],
   );
 }
