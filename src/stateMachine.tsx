@@ -12,7 +12,7 @@ import {
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
 export function createStore(
-  defaultGlobalState: GlobalState,
+  defaultState: GlobalState,
   options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
     middleWares: [],
@@ -30,7 +30,7 @@ export function createStore(
     );
   }
 
-  storeFactory.updateStore(defaultGlobalState);
+  storeFactory.updateStore(defaultState);
 }
 
 function actionTemplate<TCallback extends AnyCallback>(
