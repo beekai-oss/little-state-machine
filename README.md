@@ -14,7 +14,7 @@ State management made super simple
 
 <h2>✨ Features</h2>
 
-- Tiny with 0 dependency and simple (639B _gzip_)
+- Tiny with 0 dependency and simple (715B _gzip_)
 - Persist state by default (`sessionStorage` or `localStorage`)
 - Build with React Hooks
 
