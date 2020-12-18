@@ -66,7 +66,58 @@ const { actions, state } = useStateMachine<T>({
 });
 ```
 
-## ⌨️ Type Safety
+<h2>💁‍♂️ Tutorial</h2>
+
+Quick video tutorial on little state machine.
+
+<a href="https://scrimba.com/scrim/ceqRebca">
+<img src="https://raw.githubusercontent.com/bluebill1049/little-state-machine/master/docs/tutorial.png" />
+</a>
+
+<h2>📖 Example</h2>
+
+Check out the <a href="https://codesandbox.io/s/wild-dawn-ud8bq">Demo</a>.
+
+```tsx
+import React from 'react';
+import {
+  StateMachineProvider,
+  createStore,
+  useStateMachine,
+} from 'little-state-machine';
+
+createStore({
+  yourDetail: { name: '' },
+});
+
+function updateName(state, payload) {
+  return {
+    ...state,
+    yourDetail: {
+      ...state.yourDetail,
+      ...payload,
+    },
+  };
+}
+
+function YourComponent() {
+  const { actions, state } = useStateMachine(updateName);
+
+  return (
+    <div onClick={() => actions.updateName({ name: 'bill' })}>
+      {state.yourDetail.name}
+    </div>
+  );
+}
+
+export default () => (
+  <StateMachineProvider>
+    <YourComponent />
+  </StateMachineProvider>
+);
+```
+
+## ⌨️ Type Safety (TS)
 
 You can create a `global.d.ts` file to declare your GlobalState's type.
 
@@ -114,57 +165,6 @@ const YourComponent = () => {
 };
 
 const App = () => (
-  <StateMachineProvider>
-    <YourComponent />
-  </StateMachineProvider>
-);
-```
-
-<h2>💁‍♂️ Tutorial</h2>
-
-Quick video tutorial on little state machine.
-
-<a href="https://scrimba.com/scrim/ceqRebca">
-<img src="https://raw.githubusercontent.com/bluebill1049/little-state-machine/master/docs/tutorial.png" />
-</a>
-
-<h2>📖 Example</h2>
-
-Check out the <a href="https://codesandbox.io/s/wild-dawn-ud8bq">Demo</a>.
-
-```tsx
-import React from 'react';
-import {
-  StateMachineProvider,
-  createStore,
-  useStateMachine,
-} from 'little-state-machine';
-
-createStore({
-  yourDetail: { name: '' },
-});
-
-function updateName(state, payload) {
-  return {
-    ...state,
-    yourDetail: {
-      ...state.yourDetail,
-      ...payload,
-    },
-  };
-}
-
-function YourComponent() {
-  const { actions, state } = useStateMachine(updateName);
-
-  return (
-    <div onClick={() => actions.updateName({ name: 'bill' })}>
-      {state.yourDetail.name}
-    </div>
-  );
-}
-
-export default () => (
   <StateMachineProvider>
     <YourComponent />
   </StateMachineProvider>
