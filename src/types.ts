@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 export interface GlobalState {};
 
 export type AnyCallback = (state: GlobalState, payload: any) => GlobalState
