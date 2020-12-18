@@ -66,6 +66,60 @@ const { actions, state } = useStateMachine<T>({
 });
 ```
 
+## ⌨️ Type Safety
+
+You can create a `global.d.ts` file to declare your GlobalState's type.
+
+```ts
+declare module 'little-state-machine' {
+  interface GlobalState {
+    yourDetail: {
+      name: string;
+    };
+  }
+}
+```
+
+```tsx
+import * as React from 'react';
+import {
+  createStore,
+  useStateMachine,
+  StateMachineProvider,
+  GlobalState,
+} from 'little-state-machine';
+
+createStore({
+  yourDetail: { name: '' },
+});
+
+const updateName = (state: GlobalState, payload: { name: string }) => ({
+  ...state,
+  yourDetail: {
+    ...state.yourDetail,
+    ...payload,
+  },
+});
+
+const YourComponent = () => {
+  const { actions, state } = useStateMachine({
+    updateName
+  }));
+
+  return (
+    <div onClick={() => actions.updateName({ name: 'Kotaro' })}>
+      {state.yourDetail.name}
+    </div>
+  );
+};
+
+const App = () => (
+  <StateMachineProvider>
+    <YourComponent />
+  </StateMachineProvider>
+);
+```
+
 <h2>💁‍♂️ Tutorial</h2>
 
 Quick video tutorial on little state machine.

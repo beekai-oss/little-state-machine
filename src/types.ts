@@ -1,18 +1,17 @@
-export type Store = Record<string, any>;
+export interface GlobalState {};
 
-export type DeepPartial<T> = {
-  [P in keyof T]?: DeepPartial<T[P]>;
+export type AnyCallback = (state: GlobalState, payload: any) => GlobalState
+
+export type AnyActions<TCallback> = Record<string, TCallback>;
+
+export type ActionsOutput<TCallback extends AnyCallback, TActions extends AnyActions<TCallback>> = {
+  [K in keyof TActions]: (payload: Parameters<TActions[K]>[1]) => void;
+}
+
+export type StateMachineContextValue = {
+  state: GlobalState;
+  setState: React.Dispatch<React.SetStateAction<GlobalState>>
 };
-
-export type StoreUpdateFunction<T> = (store: T, payload: DeepPartial<T>) => T;
-
-export type Action<T> = (payload: DeepPartial<T>) => void;
-
-export type Actions<T, K> = Record<keyof K, Action<T>>;
-
-export type ActionArg<T> = (globalStore: T, payload: DeepPartial<T>) => T;
-
-export type ActionsArg<T> = Record<string, ActionArg<T>>;
 
 export type MiddleWare = <T>(arg: T) => T;
 
