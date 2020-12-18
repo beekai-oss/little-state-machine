@@ -66,7 +66,7 @@ const { actions, state } = useStateMachine<T>({
 });
 ```
 
-## Type Safety
+## ⌨️ Type Safety
 
 You can create a `global.d.ts` file to declare your GlobalState's type.
 
