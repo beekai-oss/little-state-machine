@@ -5,11 +5,11 @@ import { StateMachineContextValue } from './types';
 const StateMachineContext = React.createContext<StateMachineContextValue>(undefined as any);
 
 export const StateMachineProvider: React.FC = ({ children }) => {
-  const [globalState, setGlobalState] = React.useState(storeFactory.state);
+  const [state, setState] = React.useState(storeFactory.state);
 
   return (
     <StateMachineContext.Provider
-      value={{ globalState, setGlobalState }}
+      value={{ state, setState }}
     >
       { children }
     </StateMachineContext.Provider>
@@ -20,8 +20,8 @@ export function useStateMachineContext() {
   const value = React.useContext<StateMachineContextValue>(StateMachineContext);
 
   if (process.env.NODE_ENV !== 'production') {
-    if (!!value) {
-      console.error(`StateMachine context is undefined, please verify you are calling useStateMachineContext() as child of a <StateMachineProvider> component.`)
+    if (!value) {
+      console.error(`StateMachine context is undefined, please verify you are calling useStateMachine() as child of a <StateMachineProvider> component.`)
     }
   }
 

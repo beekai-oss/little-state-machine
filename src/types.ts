@@ -9,8 +9,8 @@ export type ActionsOutput<TCallback extends AnyCallback, TActions extends AnyAct
 }
 
 export type StateMachineContextValue = {
-  globalState: GlobalState;
-  setGlobalState: React.Dispatch<React.SetStateAction<GlobalState>>
+  state: GlobalState;
+  setState: React.Dispatch<React.SetStateAction<GlobalState>>
 };
 
 export type MiddleWare = <T>(arg: T) => T;

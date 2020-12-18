@@ -34,7 +34,7 @@ export function createStore(
 }
 
 function actionTemplate<TCallback extends AnyCallback>(
-  updateStore: React.Dispatch<GlobalState>,
+  setState: React.Dispatch<React.SetStateAction<GlobalState>>,
   callback: TCallback,
 ) {
   return (payload: Parameters<TCallback>[1]) => {
@@ -57,7 +57,7 @@ function actionTemplate<TCallback extends AnyCallback>(
       );
     }
 
-    updateStore(storeFactory.state);
+    setState(storeFactory.state);
   };
 }
 
@@ -67,7 +67,7 @@ export function useStateMachine<TCallback extends AnyCallback, TActions extends 
   actions: ActionsOutput<TCallback, TActions>;
   state: GlobalState;
 } {
-  const { globalState, setGlobalState } = useStateMachineContext();
+  const { state, setState } = useStateMachineContext();
 
   return React.useMemo(
     () => ({
@@ -75,13 +75,13 @@ export function useStateMachine<TCallback extends AnyCallback, TActions extends 
         ? Object.entries(actions).reduce(
             (previous, [key, callback]) =>
               Object.assign({}, previous, {
-                [key]: actionTemplate(setGlobalState, callback),
+                [key]: actionTemplate(setState, callback),
               }),
             {},
           )
         : ({} as any),
-      state: globalState,
+      state,
     }),
-    [globalState, actions, setGlobalState],
+    [state, setState, actions],
   );
 }
