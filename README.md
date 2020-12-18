@@ -122,6 +122,8 @@ export default () => (
 You can create a `global.d.ts` file to declare your GlobalState's type.
 
 ```ts
+import 'little-state-machine';
+
 declare module 'little-state-machine' {
   interface GlobalState {
     yourDetail: {
