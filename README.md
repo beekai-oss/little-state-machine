@@ -101,7 +101,7 @@ function updateName(state, payload) {
 }
 
 function YourComponent() {
-  const { actions, state } = useStateMachine(updateName);
+  const { actions, state } = useStateMachine({ updateName });
 
   return (
     <div onClick={() => actions.updateName({ name: 'bill' })}>
