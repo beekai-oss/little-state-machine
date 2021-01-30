@@ -15,11 +15,8 @@
     "build": "npm-run-all --parallel build:*",
     "build:min": "microbundle -f umd,cjs --jsx React.createElement --define process.env.NODE_ENV=production",
     "build:es": "microbundle -f es --jsx React.createElement",
-    "release": "npm version",
-    "postrelease": "yarn publish && git push --follow-tags",
     "test": "jest",
-    "test:watch": "yarn test -- --watchAll",
-    "prepublish": "yarn run prebuild && yarn build"
+    "test:watch": "yarn test --watchAll"
   },
   "keywords": [
     "state",
