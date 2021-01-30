@@ -8,10 +8,14 @@ class StoreFactory {
   public middleWares: MiddleWare[] = [];
 
   constructor(public name = STORE_DEFAULT_NAME) {
-    this.storageType =
-      typeof sessionStorage !== 'undefined'
-        ? window.sessionStorage
-        : ({} as Storage);
+    try {
+      this.storageType =
+        typeof sessionStorage !== 'undefined'
+          ? window.sessionStorage
+          : ({} as Storage);
+    } catch {
+      this.storageType = {} as Storage;
+    }
   }
 
   updateStore(defaultValues: GlobalState) {
