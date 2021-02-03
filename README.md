@@ -157,7 +157,7 @@ const updateName = (state: GlobalState, payload: { name: string }) => ({
 const YourComponent = () => {
   const { actions, state } = useStateMachine({
     updateName
-  }));
+  });
 
   return (
     <div onClick={() => actions.updateName({ name: 'Kotaro' })}>
