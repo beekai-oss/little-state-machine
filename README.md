@@ -121,6 +121,8 @@ export default () => (
 
 You can create a `global.d.ts` file to declare your GlobalState's type.
 
+Checkout the [example](https://codesandbox.io/s/typescript-forked-xs30h).
+
 ```ts
 import 'little-state-machine';
 
