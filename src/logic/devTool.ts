@@ -7,12 +7,14 @@ export function setUpDevTools(
 ) {
   if (typeof window === 'undefined') return;
 
+  window.__LSM__ = name;
+
   window.__LSM_NAME__ = name;
 
   window.__LSM_DEBUG__ = (value: string) =>
     storageType.setItem('___LSM_DEBUG__', value);
 
-  window.__LSM_RESET__ = () => storageType.clear();
+  window.__LSM_RESET__ = () => storageType.removeItem(name);
 
   window.__LSM_GET_STORE__ = () => storageType.getItem(name);
 
