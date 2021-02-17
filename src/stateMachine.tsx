@@ -20,7 +20,7 @@ export function createStore(
 ) {
   options.name && (storeFactory.name = options.name);
   options.storageType && (storeFactory.storageType = options.storageType);
-  storeFactory.updateMiddleWares(options.middleWares);
+  options.middleWares && storeFactory.updateMiddleWares(options.middleWares);
 
   if (process.env.NODE_ENV !== 'production') {
     setUpDevTools(
@@ -61,7 +61,10 @@ function actionTemplate<TCallback extends AnyCallback>(
   };
 }
 
-export function useStateMachine<TCallback extends AnyCallback, TActions extends AnyActions<TCallback>>(
+export function useStateMachine<
+  TCallback extends AnyCallback,
+  TActions extends AnyActions<TCallback>
+>(
   actions?: TActions,
 ): {
   actions: ActionsOutput<TCallback, TActions>;
