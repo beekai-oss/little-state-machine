@@ -17,8 +17,8 @@ export type StateMachineContextValue = {
 
 export type MiddleWare = (
   state: GlobalState,
-  callbackName: string,
   payload: any,
+  callbackName: string,
 ) => GlobalState;
 
 export type StateMachineOptions = {
