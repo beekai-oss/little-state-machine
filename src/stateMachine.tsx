@@ -52,7 +52,7 @@ function actionTemplate<TCallback extends AnyCallback>(
     if (storeFactory.middleWares.length) {
       storeFactory.state = storeFactory.middleWares.reduce(
         (currentValue, currentFunction) =>
-          currentFunction(currentValue) || currentValue,
+          currentFunction(currentValue, callback.name, payload) || currentValue,
         storeFactory.state,
       );
     }

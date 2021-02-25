@@ -15,7 +15,11 @@ export type StateMachineContextValue = {
   setState: React.Dispatch<React.SetStateAction<GlobalState>>
 };
 
-export type MiddleWare = <T>(arg: T) => T;
+export type MiddleWare = (
+  state: GlobalState,
+  payload: any,
+  callbackName: string,
+) => GlobalState;
 
 export type StateMachineOptions = {
   name: string;
