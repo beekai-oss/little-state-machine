@@ -71,20 +71,18 @@ export function useStateMachine<
   state: GlobalState;
 } {
   const { state, setState } = useStateMachineContext();
-
-  return React.useMemo(
-    () => ({
-      actions: actions
-        ? Object.entries(actions).reduce(
-            (previous, [key, callback]) =>
-              Object.assign({}, previous, {
-                [key]: actionTemplate(setState, callback),
-              }),
-            {},
-          )
-        : ({} as any),
-      state,
-    }),
-    [state, setState],
+  const actionsRef = React.useRef(
+    Object.entries(actions || {}).reduce(
+      (previous, [key, callback]) =>
+        Object.assign({}, previous, {
+          [key]: actionTemplate(setState, callback),
+        }),
+      {} as ActionsOutput<TCallback, TActions>,
+    ),
   );
+
+  return {
+    actions: actionsRef.current,
+    state,
+  };
 }
