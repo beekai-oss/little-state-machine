@@ -85,6 +85,6 @@ export function useStateMachine<
         : ({} as any),
       state,
     }),
-    [state, setState, actions],
+    [state, setState],
   );
 }
