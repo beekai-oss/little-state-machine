@@ -8,6 +8,7 @@ import {
   AnyCallback,
   AnyActions,
   ActionsOutput,
+  ActionOptions,
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
@@ -39,9 +40,7 @@ function actionTemplate<TCallback extends AnyCallback>(
 ) {
   return (
     payload: Parameters<TCallback>[1],
-    options: {
-      persist: boolean;
-    } = {
+    options: ActionOptions = {
       persist: true,
     },
   ) => {

@@ -1,18 +1,28 @@
 import * as React from 'react';
 
-export interface GlobalState {};
+export interface GlobalState {}
 
-export type AnyCallback = (state: GlobalState, payload: any) => GlobalState
+export type AnyCallback = (state: GlobalState, payload: any) => GlobalState;
+
+export type ActionOptions = {
+  persist: boolean;
+};
 
 export type AnyActions<TCallback> = Record<string, TCallback>;
 
-export type ActionsOutput<TCallback extends AnyCallback, TActions extends AnyActions<TCallback>> = {
-  [K in keyof TActions]: (payload: Parameters<TActions[K]>[1]) => void;
-}
+export type ActionsOutput<
+  TCallback extends AnyCallback,
+  TActions extends AnyActions<TCallback>
+> = {
+  [K in keyof TActions]: (
+    payload: Parameters<TActions[K]>[1],
+    options?: ActionOptions,
+  ) => void;
+};
 
 export type StateMachineContextValue = {
   state: GlobalState;
-  setState: React.Dispatch<React.SetStateAction<GlobalState>>
+  setState: React.Dispatch<React.SetStateAction<GlobalState>>;
 };
 
 export type MiddleWare = (
