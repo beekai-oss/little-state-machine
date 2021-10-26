@@ -44,11 +44,6 @@ function actionTemplate<TCallback extends AnyCallback>(
 
     storeFactory.state = callback(storeFactory.state, payload);
 
-    storeFactory.storageType.setItem(
-      storeFactory.name,
-      JSON.stringify(storeFactory.state),
-    );
-
     if (storeFactory.middleWares.length) {
       storeFactory.state = storeFactory.middleWares.reduce(
         (currentValue, currentFunction) =>
@@ -56,6 +51,11 @@ function actionTemplate<TCallback extends AnyCallback>(
         storeFactory.state,
       );
     }
+
+    storeFactory.storageType.setItem(
+      storeFactory.name,
+      JSON.stringify(storeFactory.state),
+    );
 
     setState(storeFactory.state);
   };
