@@ -8,6 +8,7 @@ import {
   AnyCallback,
   AnyActions,
   ActionsOutput,
+  ActionOptions,
 } from './types';
 import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
 
@@ -37,17 +38,24 @@ function actionTemplate<TCallback extends AnyCallback>(
   setState: React.Dispatch<React.SetStateAction<GlobalState>>,
   callback: TCallback,
 ) {
-  return (payload: Parameters<TCallback>[1]) => {
+  return (
+    payload: Parameters<TCallback>[1],
+    options: ActionOptions = {
+      persist: true,
+    },
+  ) => {
     if (process.env.NODE_ENV !== 'production') {
       window[STORE_ACTION_NAME] = callback ? callback.name : '';
     }
 
     storeFactory.state = callback(storeFactory.state, payload);
 
-    storeFactory.storageType.setItem(
-      storeFactory.name,
-      JSON.stringify(storeFactory.state),
-    );
+    if (options.persist) {
+      storeFactory.storageType.setItem(
+        storeFactory.name,
+        JSON.stringify(storeFactory.state),
+      );
+    }
 
     if (storeFactory.middleWares.length) {
       storeFactory.state = storeFactory.middleWares.reduce(
