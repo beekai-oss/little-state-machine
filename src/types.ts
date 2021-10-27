@@ -1,18 +1,21 @@
 import * as React from 'react';
 
-export interface GlobalState {};
+export interface GlobalState {}
 
-export type AnyCallback = (state: GlobalState, payload: any) => GlobalState
+export type AnyCallback = (state: GlobalState, payload: any) => GlobalState;
 
 export type AnyActions<TCallback> = Record<string, TCallback>;
 
-export type ActionsOutput<TCallback extends AnyCallback, TActions extends AnyActions<TCallback>> = {
+export type ActionsOutput<
+  TCallback extends AnyCallback,
+  TActions extends AnyActions<TCallback>
+> = {
   [K in keyof TActions]: (payload: Parameters<TActions[K]>[1]) => void;
-}
+};
 
 export type StateMachineContextValue = {
   state: GlobalState;
-  setState: React.Dispatch<React.SetStateAction<GlobalState>>
+  setState: React.Dispatch<React.SetStateAction<GlobalState>>;
 };
 
 export type MiddleWare = (
@@ -21,11 +24,14 @@ export type MiddleWare = (
   callbackName: string,
 ) => GlobalState;
 
-export type StateMachineOptions = {
+export type PersistOptions = 'onAction' | 'none' | 'beforeUnload';
+
+export type StateMachineOptions = Partial<{
   name: string;
   middleWares: MiddleWare[];
-  storageType?: Storage;
-};
+  storageType: Storage;
+  persist: PersistOptions;
+}>;
 
 declare global {
   interface Window {

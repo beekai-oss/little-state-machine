@@ -8,19 +8,22 @@ import {
   AnyCallback,
   AnyActions,
   ActionsOutput,
+  PersistOptions,
 } from './types';
-import { STORE_ACTION_NAME, STORE_DEFAULT_NAME } from './constants';
+import { STORE_ACTION_NAME } from './constants';
+
+let persistOption: PersistOptions = 'onAction';
 
 export function createStore(
   defaultState: GlobalState,
-  options: StateMachineOptions = {
-    name: STORE_DEFAULT_NAME,
-    middleWares: [],
-  },
+  options: StateMachineOptions,
 ) {
-  options.name && (storeFactory.name = options.name);
-  options.storageType && (storeFactory.storageType = options.storageType);
-  options.middleWares && storeFactory.updateMiddleWares(options.middleWares);
+  if (options) {
+    options.name && (storeFactory.name = options.name);
+    options.storageType && (storeFactory.storageType = options.storageType);
+    options.middleWares && (storeFactory.middleWares = options.middleWares);
+    options.persist && (persistOption = options.persist);
+  }
 
   if (process.env.NODE_ENV !== 'production') {
     setUpDevTools(
@@ -51,12 +54,8 @@ const actionTemplate = <TCallback extends AnyCallback>(
     );
   }
 
-  storeFactory.storageType.setItem(
-    storeFactory.name,
-    JSON.stringify(storeFactory.state),
-  );
-
   setState(storeFactory.state);
+  persistOption === 'onAction' && storeFactory.saveStore();
 };
 
 export function useStateMachine<
@@ -78,6 +77,12 @@ export function useStateMachine<
       {} as ActionsOutput<TCallback, TActions>,
     ),
   );
+
+  React.useEffect(() => {
+    if (persistOption === 'beforeUnload') {
+      window.onbeforeunload = () => storeFactory.saveStore();
+    }
+  }, []);
 
   return {
     actions: actionsRef.current,
