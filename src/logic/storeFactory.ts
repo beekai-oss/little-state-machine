@@ -1,30 +1,57 @@
 import { STORE_DEFAULT_NAME } from '../constants';
-import getStoreData from './getBrowserStoreData';
 import { MiddleWare, GlobalState } from '../types';
 
-class StoreFactory {
-  public storageType: Storage;
-  public state: GlobalState = {};
-  public middleWares: MiddleWare[] = [];
+function StoreFactory() {
+  let storageType: Storage;
+  let state: GlobalState = {};
+  let middleWares: MiddleWare[] = [];
+  let name = STORE_DEFAULT_NAME;
 
-  constructor(public name = STORE_DEFAULT_NAME) {
-    try {
-      this.storageType =
-        typeof sessionStorage !== 'undefined'
-          ? window.sessionStorage
-          : ({} as Storage);
-    } catch {
-      this.storageType = {} as Storage;
-    }
+  try {
+    storageType =
+      typeof sessionStorage !== 'undefined'
+        ? window.sessionStorage
+        : ({} as Storage);
+  } catch {
+    storageType = {} as Storage;
   }
 
-  updateStore(defaultValues: GlobalState) {
-    this.state = getStoreData(this.storageType, this.name) || defaultValues;
-  }
-
-  updateMiddleWares(middleWares: MiddleWare[]) {
-    return (this.middleWares = middleWares);
-  }
+  return {
+    updateStore(defaultValues: GlobalState) {
+      try {
+        state = JSON.parse(storageType.getItem(name) || '') || defaultValues;
+      } catch {
+        state = defaultValues;
+      }
+    },
+    saveStore() {
+      storageType.setItem(name, JSON.stringify(state));
+    },
+    get middleWares() {
+      return middleWares;
+    },
+    set middleWares(wares: MiddleWare[]) {
+      middleWares = wares;
+    },
+    get state() {
+      return state;
+    },
+    set state(value) {
+      state = value;
+    },
+    get name() {
+      return name;
+    },
+    set name(value) {
+      name = value;
+    },
+    get storageType() {
+      return storageType;
+    },
+    set storageType(value) {
+      storageType = value;
+    },
+  };
 }
 
-export default new StoreFactory();
+export default StoreFactory();
