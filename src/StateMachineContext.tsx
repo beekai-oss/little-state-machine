@@ -21,7 +21,7 @@ export function useStateMachineContext() {
 
   if (process.env.NODE_ENV !== 'production') {
     if (!value) {
-      console.error(`StateMachine context is undefined, please verify you are calling useStateMachine() as child of a <StateMachineProvider> component.`)
+      console.error(`LSM context is undefined.`)
     }
   }
 
