@@ -26,8 +26,9 @@ export function createStore(
 
   if (process.env.NODE_ENV !== 'production') {
     if (typeof window !== 'undefined') {
-      window.__LSM_NAME__ = name;
-      window.__LSM_RESET__ = () => storeFactory.storageType.removeItem(name);
+      window.__LSM_NAME__ = storeFactory.name;
+      window.__LSM_RESET__ = () =>
+        storeFactory.storageType.removeItem(storeFactory.name);
     }
   }
 
