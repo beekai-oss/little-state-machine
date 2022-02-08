@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useStateMachineContext } from './StateMachineContext';
 import storeFactory from './logic/storeFactory';
-import { setUpDevTools } from './logic/devTool';
 import {
   StateMachineOptions,
   GlobalState,
@@ -26,11 +25,10 @@ export function createStore(
   }
 
   if (process.env.NODE_ENV !== 'production') {
-    setUpDevTools(
-      storeFactory.storageType,
-      storeFactory.name,
-      storeFactory.state,
-    );
+    if (typeof window !== 'undefined') {
+      window.__LSM_NAME__ = name;
+      window.__LSM_RESET__ = () => storeFactory.storageType.removeItem(name);
+    }
   }
 
   storeFactory.updateStore(defaultState);
