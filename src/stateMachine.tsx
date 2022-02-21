@@ -15,7 +15,7 @@ let persistOption: PersistOptions = 'onAction';
 
 export function createStore(
   defaultState: GlobalState,
-  options: StateMachineOptions,
+  options?: StateMachineOptions,
 ) {
   if (options) {
     options.name && (storeFactory.name = options.name);
