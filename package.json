@@ -5,7 +5,7 @@
   "files": [
     "dist"
   ],
-  "version": "4.2.2",
+  "version": "4.2.3",
   "main": "dist/little-state-machine.js",
   "module": "dist/little-state-machine.es.js",
   "unpkg": "dist/little-state-machine.umd.js",
