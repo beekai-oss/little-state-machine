@@ -6,7 +6,7 @@ function StoreFactory() {
     name: STORE_DEFAULT_NAME,
     middleWares: [] as MiddleWare[],
     storageType: {} as Storage,
-    persistOption: '',
+    persist: '',
   };
   let state: GlobalState = {};
 
@@ -20,7 +20,9 @@ function StoreFactory() {
   return {
     updateStore(defaultValues: GlobalState) {
       try {
-        state = JSON.parse(options.storageType.getItem(options.name) || '') || defaultValues;
+        state =
+          JSON.parse(options.storageType.getItem(options.name) || '') ||
+          defaultValues;
       } catch {
         state = defaultValues;
       }

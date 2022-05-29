@@ -7,11 +7,8 @@ import {
   AnyCallback,
   AnyActions,
   ActionsOutput,
-  PersistOptions,
 } from './types';
 import { STORE_ACTION_NAME } from './constants';
-
-export let persistOption: PersistOptions = 'onAction';
 
 export function createStore(
   defaultState: GlobalState,
@@ -20,7 +17,7 @@ export function createStore(
   if (options) {
     storeFactory.options = {
       ...storeFactory.options,
-      ...options
+      ...options,
     };
   }
 
@@ -56,7 +53,7 @@ const actionTemplate =
     }
 
     setState(storeFactory.state);
-    persistOption === 'onAction' && storeFactory.saveStore();
+    storeFactory.options.persist === 'onAction' && storeFactory.saveStore();
   };
 
 export function useStateMachine<
