@@ -7,59 +7,58 @@ import {
   AnyCallback,
   AnyActions,
   ActionsOutput,
-  PersistOptions,
 } from './types';
 import { STORE_ACTION_NAME } from './constants';
-
-let persistOption: PersistOptions = 'onAction';
 
 export function createStore(
   defaultState: GlobalState,
   options?: StateMachineOptions,
 ) {
   if (options) {
-    options.name && (storeFactory.name = options.name);
-    options.storageType && (storeFactory.storageType = options.storageType);
-    options.middleWares && (storeFactory.middleWares = options.middleWares);
-    options.persist && (persistOption = options.persist);
+    storeFactory.options = {
+      ...storeFactory.options,
+      ...options,
+    };
   }
 
   if (process.env.NODE_ENV !== 'production') {
     if (typeof window !== 'undefined') {
-      window.__LSM_NAME__ = storeFactory.name;
+      window.__LSM_NAME__ = storeFactory.options.name;
       window.__LSM_RESET__ = () =>
-        storeFactory.storageType.removeItem(storeFactory.name);
+        storeFactory.options.storageType.removeItem(storeFactory.options.name);
     }
   }
 
   storeFactory.updateStore(defaultState);
 }
 
-const actionTemplate = <TCallback extends AnyCallback>(
-  setState: React.Dispatch<React.SetStateAction<GlobalState>>,
-  callback: TCallback,
-) => (payload: Parameters<TCallback>[1]) => {
-  if (process.env.NODE_ENV !== 'production') {
-    window[STORE_ACTION_NAME] = callback.name;
-  }
+const actionTemplate =
+  <TCallback extends AnyCallback>(
+    setState: React.Dispatch<React.SetStateAction<GlobalState>>,
+    callback: TCallback,
+  ) =>
+  (payload: Parameters<TCallback>[1]) => {
+    if (process.env.NODE_ENV !== 'production') {
+      window[STORE_ACTION_NAME] = callback.name;
+    }
 
-  storeFactory.state = callback(storeFactory.state, payload);
+    storeFactory.state = callback(storeFactory.state, payload);
 
-  if (storeFactory.middleWares) {
-    storeFactory.state = storeFactory.middleWares.reduce(
-      (currentValue, currentFunction) =>
-        currentFunction(currentValue, callback.name, payload) || currentValue,
-      storeFactory.state,
-    );
-  }
+    if (storeFactory.options.middleWares) {
+      storeFactory.state = storeFactory.options.middleWares.reduce(
+        (currentValue, currentFunction) =>
+          currentFunction(currentValue, callback.name, payload) || currentValue,
+        storeFactory.state,
+      );
+    }
 
-  setState(storeFactory.state);
-  persistOption === 'onAction' && storeFactory.saveStore();
-};
+    setState(storeFactory.state);
+    storeFactory.options.persist === 'onAction' && storeFactory.saveStore();
+  };
 
 export function useStateMachine<
   TCallback extends AnyCallback,
-  TActions extends AnyActions<TCallback>
+  TActions extends AnyActions<TCallback>,
 >(
   actions?: TActions,
 ): {
@@ -76,12 +75,6 @@ export function useStateMachine<
       {} as ActionsOutput<TCallback, TActions>,
     ),
   );
-
-  React.useEffect(() => {
-    if (persistOption === 'beforeUnload') {
-      window.onbeforeunload = () => storeFactory.saveStore();
-    }
-  }, []);
 
   return {
     actions: actionsRef.current,

@@ -2,36 +2,33 @@ import { STORE_DEFAULT_NAME } from '../constants';
 import { MiddleWare, GlobalState } from '../types';
 
 function StoreFactory() {
-  let storageType: Storage;
+  let options = {
+    name: STORE_DEFAULT_NAME,
+    middleWares: [] as MiddleWare[],
+    storageType: {} as Storage,
+    persist: '',
+  };
   let state: GlobalState = {};
-  let middleWares: MiddleWare[] = [];
-  let name = STORE_DEFAULT_NAME;
 
   try {
-    storageType =
+    options.storageType =
       typeof sessionStorage !== 'undefined'
         ? window.sessionStorage
         : ({} as Storage);
-  } catch {
-    storageType = {} as Storage;
-  }
+  } catch {}
 
   return {
     updateStore(defaultValues: GlobalState) {
       try {
-        state = JSON.parse(storageType.getItem(name) || '') || defaultValues;
+        state =
+          JSON.parse(options.storageType.getItem(options.name) || '') ||
+          defaultValues;
       } catch {
         state = defaultValues;
       }
     },
     saveStore() {
-      storageType.setItem(name, JSON.stringify(state));
-    },
-    get middleWares() {
-      return middleWares;
-    },
-    set middleWares(wares: MiddleWare[]) {
-      middleWares = wares;
+      options.storageType.setItem(options.name, JSON.stringify(state));
     },
     get state() {
       return state;
@@ -39,17 +36,11 @@ function StoreFactory() {
     set state(value) {
       state = value;
     },
-    get name() {
-      return name;
+    get options() {
+      return options;
     },
-    set name(value) {
-      name = value;
-    },
-    get storageType() {
-      return storageType;
-    },
-    set storageType(value) {
-      storageType = value;
+    set options(value) {
+      options = value;
     },
   };
 }
