@@ -8,7 +8,7 @@ import {
   AnyActions,
   ActionsOutput,
 } from './types';
-import { STORE_ACTION_NAME } from './constants';
+import { PERSIST_BEFORE_UNLOAD, STORE_ACTION_NAME } from './constants';
 
 export function createStore(
   defaultState: GlobalState,
@@ -53,7 +53,8 @@ const actionTemplate =
     }
 
     setState(storeFactory.state);
-    storeFactory.options.persist === 'onAction' && storeFactory.saveStore();
+    storeFactory.options.persist !== PERSIST_BEFORE_UNLOAD &&
+      storeFactory.saveStore();
   };
 
 export function useStateMachine<
