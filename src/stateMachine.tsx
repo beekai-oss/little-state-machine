@@ -35,31 +35,33 @@ export function createStore(
   storeFactory.updateStore(defaultState);
 }
 
-const actionTemplate = <TCallback extends AnyCallback>(
-  setState: React.Dispatch<React.SetStateAction<GlobalState>>,
-  callback: TCallback,
-) => (payload: Parameters<TCallback>[1]) => {
-  if (process.env.NODE_ENV !== 'production') {
-    window[STORE_ACTION_NAME] = callback.name;
-  }
+const actionTemplate =
+  <TCallback extends AnyCallback>(
+    setState: React.Dispatch<React.SetStateAction<GlobalState>>,
+    callback: TCallback,
+  ) =>
+  (payload: Parameters<TCallback>[1]) => {
+    if (process.env.NODE_ENV !== 'production') {
+      window[STORE_ACTION_NAME] = callback.name;
+    }
 
-  storeFactory.state = callback(storeFactory.state, payload);
+    storeFactory.state = callback(storeFactory.state, payload);
 
-  if (storeFactory.middleWares) {
-    storeFactory.state = storeFactory.middleWares.reduce(
-      (currentValue, currentFunction) =>
-        currentFunction(currentValue, callback.name, payload) || currentValue,
-      storeFactory.state,
-    );
-  }
+    if (storeFactory.middleWares) {
+      storeFactory.state = storeFactory.middleWares.reduce(
+        (currentValue, currentFunction) =>
+          currentFunction(currentValue, callback.name, payload) || currentValue,
+        storeFactory.state,
+      );
+    }
 
-  setState(storeFactory.state);
-  persistOption === 'onAction' && storeFactory.saveStore();
-};
+    setState(storeFactory.state);
+    persistOption === 'onAction' && storeFactory.saveStore();
+  };
 
 export function useStateMachine<
   TCallback extends AnyCallback,
-  TActions extends AnyActions<TCallback>
+  TActions extends AnyActions<TCallback>,
 >(
   actions?: TActions,
 ): {

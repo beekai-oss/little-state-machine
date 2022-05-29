@@ -8,7 +8,7 @@ export type AnyActions<TCallback> = Record<string, TCallback>;
 
 export type ActionsOutput<
   TCallback extends AnyCallback,
-  TActions extends AnyActions<TCallback>
+  TActions extends AnyActions<TCallback>,
 > = {
   [K in keyof TActions]: (payload?: Parameters<TActions[K]>[1]) => void;
 };
