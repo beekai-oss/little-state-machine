@@ -11,7 +11,7 @@ import {
 } from './types';
 import { STORE_ACTION_NAME } from './constants';
 
-let persistOption: PersistOptions = 'onAction';
+export let persistOption: PersistOptions = 'onAction';
 
 export function createStore(
   defaultState: GlobalState,
@@ -76,12 +76,6 @@ export function useStateMachine<
       {} as ActionsOutput<TCallback, TActions>,
     ),
   );
-
-  React.useEffect(() => {
-    if (persistOption === 'beforeUnload') {
-      window.onbeforeunload = () => storeFactory.saveStore();
-    }
-  }, []);
 
   return {
     actions: actionsRef.current,
