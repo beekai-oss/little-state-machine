@@ -15,10 +15,9 @@ export const StateMachineProvider: React.FC<PropsChildren> = ({ children }) => {
   const [state, setState] = React.useState(storeFactory.state);
 
   React.useEffect(() => {
-    debugger;
-    if (persistOption === 'beforeUnload') {
+    if (storeFactory.options.persistOption === 'beforeUnload') {
       window.onbeforeunload = () => storeFactory.saveStore();
-      storeFactory.storageType.removeItem(storeFactory.name);
+      storeFactory.options.storageType.removeItem(storeFactory.options.name);
     }
   }, [persistOption]);
 
@@ -29,14 +28,5 @@ export const StateMachineProvider: React.FC<PropsChildren> = ({ children }) => {
   );
 };
 
-export function useStateMachineContext() {
-  const value = React.useContext<StateMachineContextValue>(StateMachineContext);
-
-  if (process.env.NODE_ENV !== 'production') {
-    if (!value) {
-      console.error(`LSM context is undefined.`);
-    }
-  }
-
-  return value;
-}
+export const useStateMachineContext = () =>
+  React.useContext<StateMachineContextValue>(StateMachineContext);

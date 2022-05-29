@@ -5,7 +5,7 @@
   "files": [
     "dist"
   ],
-  "version": "4.3.3-beta.0",
+  "version": "4.3.3-beta.4",
   "main": "dist/little-state-machine.js",
   "module": "dist/little-state-machine.es.js",
   "unpkg": "dist/little-state-machine.umd.js",
@@ -16,6 +16,7 @@
     "build:min": "microbundle -f umd,cjs --jsx React.createElement --define process.env.NODE_ENV=production",
     "build:es": "microbundle -f es --jsx React.createElement",
     "test": "jest",
+    "prepublishOnly": "yarn && yarn prettier && yarn build",
     "prettier": "prettier --config .prettierrc --write \"**/*.{ts,tsx}\"",
     "test:watch": "yarn test --watchAll"
   },

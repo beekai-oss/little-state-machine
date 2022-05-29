@@ -18,17 +18,17 @@ export function createStore(
   options?: StateMachineOptions,
 ) {
   if (options) {
-    options.name && (storeFactory.name = options.name);
-    options.storageType && (storeFactory.storageType = options.storageType);
-    options.middleWares && (storeFactory.middleWares = options.middleWares);
-    options.persist && (persistOption = options.persist);
+    storeFactory.options = {
+      ...storeFactory.options,
+      ...options
+    };
   }
 
   if (process.env.NODE_ENV !== 'production') {
     if (typeof window !== 'undefined') {
-      window.__LSM_NAME__ = storeFactory.name;
+      window.__LSM_NAME__ = storeFactory.options.name;
       window.__LSM_RESET__ = () =>
-        storeFactory.storageType.removeItem(storeFactory.name);
+        storeFactory.options.storageType.removeItem(storeFactory.options.name);
     }
   }
 
@@ -47,8 +47,8 @@ const actionTemplate =
 
     storeFactory.state = callback(storeFactory.state, payload);
 
-    if (storeFactory.middleWares) {
-      storeFactory.state = storeFactory.middleWares.reduce(
+    if (storeFactory.options.middleWares) {
+      storeFactory.state = storeFactory.options.middleWares.reduce(
         (currentValue, currentFunction) =>
           currentFunction(currentValue, callback.name, payload) || currentValue,
         storeFactory.state,
