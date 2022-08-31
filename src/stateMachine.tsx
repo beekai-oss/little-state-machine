@@ -37,7 +37,7 @@ const actionTemplate =
     setState: React.Dispatch<React.SetStateAction<GlobalState>>,
     callback: TCallback,
   ) =>
-  (payload: Parameters<TCallback>[1]) => {
+  (payload: Parameters<TCallback>[1], options?: { skipRender: boolean }) => {
     if (process.env.NODE_ENV !== 'production') {
       window[STORE_ACTION_NAME] = callback.name;
     }
@@ -52,7 +52,7 @@ const actionTemplate =
       );
     }
 
-    setState(storeFactory.state);
+    (!options || !options.skipRender) && setState(storeFactory.state);
     storeFactory.options.persist !== PERSIST_BEFORE_UNLOAD &&
       storeFactory.saveStore();
   };
