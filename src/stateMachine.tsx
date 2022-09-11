@@ -65,6 +65,7 @@ export function useStateMachine<
 ): {
   actions: ActionsOutput<TCallback, TActions>;
   state: GlobalState;
+  getState: () => GlobalState
 } {
   const { state, setState } = useStateMachineContext();
   const actionsRef = React.useRef(
@@ -80,5 +81,6 @@ export function useStateMachine<
   return {
     actions: actionsRef.current,
     state,
+    getState: () => storeFactory.state
   };
 }
