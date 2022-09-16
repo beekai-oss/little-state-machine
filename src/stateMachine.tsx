@@ -8,7 +8,7 @@ import {
   AnyActions,
   ActionsOutput,
 } from './types';
-import { PERSIST_BEFORE_UNLOAD, STORE_ACTION_NAME } from './constants';
+import { PersistOption, STORE_ACTION_NAME } from './constants';
 
 export function createStore(
   defaultState: GlobalState,
@@ -25,7 +25,9 @@ export function createStore(
     if (typeof window !== 'undefined') {
       window.__LSM_NAME__ = storeFactory.options.name;
       window.__LSM_RESET__ = () =>
-        storeFactory.options.storageType.removeItem(storeFactory.options.name);
+        storeFactory.options.storageType?.removeItem(
+          storeFactory.options.name!,
+        );
     }
   }
 
@@ -53,8 +55,10 @@ const actionTemplate =
     }
 
     (!options || !options.skipRender) && setState(storeFactory.state);
-    storeFactory.options.persist !== PERSIST_BEFORE_UNLOAD &&
+
+    if (storeFactory.options.persist === PersistOption.OnAction) {
       storeFactory.saveStore();
+    }
   };
 
 export function useStateMachine<

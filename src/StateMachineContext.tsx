@@ -1,7 +1,7 @@
 import * as React from 'react';
 import storeFactory from './logic/storeFactory';
 import { StateMachineContextValue } from './types';
-import { PERSIST_BEFORE_UNLOAD } from './constants';
+import { PersistOption } from './constants';
 
 type PropsChildren = {
   children?: React.ReactNode;
@@ -15,9 +15,9 @@ export const StateMachineProvider: React.FC<PropsChildren> = ({ children }) => {
   const [state, setState] = React.useState(storeFactory.state);
 
   React.useEffect(() => {
-    if (storeFactory.options.persist === PERSIST_BEFORE_UNLOAD) {
+    if (storeFactory.options.persist === PersistOption.BeforeUnload) {
       window.onbeforeunload = () => storeFactory.saveStore();
-      storeFactory.options.storageType.removeItem(storeFactory.options.name);
+      storeFactory.options.storageType?.removeItem(storeFactory.options.name!);
     }
   }, []);
 
