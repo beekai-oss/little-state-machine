@@ -8,7 +8,7 @@ import {
   AnyActions,
   ActionsOutput,
 } from './types';
-import { PersistOption, STORE_ACTION_NAME } from './constants';
+import { PERSIST_OPTION, STORE_ACTION_NAME } from './constants';
 
 export function createStore(
   defaultState: GlobalState,
@@ -25,9 +25,8 @@ export function createStore(
     if (typeof window !== 'undefined') {
       window.__LSM_NAME__ = storeFactory.options.name;
       window.__LSM_RESET__ = () =>
-        storeFactory.options.storageType?.removeItem(
-          storeFactory.options.name!,
-        );
+        storeFactory.options.storageType &&
+        storeFactory.options.storageType.removeItem(storeFactory.options.name!);
     }
   }
 
@@ -56,7 +55,7 @@ const actionTemplate =
 
     (!options || !options.skipRender) && setState(storeFactory.state);
 
-    if (storeFactory.options.persist === PersistOption.OnAction) {
+    if (storeFactory.options.persist === PERSIST_OPTION.ACTION) {
       storeFactory.saveStore();
     }
   };

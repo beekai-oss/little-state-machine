@@ -1,4 +1,4 @@
-import { PersistOption } from './constants';
+import { PERSIST_OPTION } from './constants';
 import * as React from 'react';
 
 export interface GlobalState {}
@@ -28,13 +28,11 @@ export type MiddleWare = (
   callbackName: string,
 ) => GlobalState;
 
-export type PersistOptions = `${PersistOption}`;
-
 export type StateMachineOptions = Partial<{
   name: string;
   middleWares: MiddleWare[];
   storageType: Storage;
-  persist: PersistOptions | PersistOption;
+  persist: typeof PERSIST_OPTION[keyof typeof PERSIST_OPTION];
 }>;
 
 declare global {

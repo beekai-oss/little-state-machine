@@ -1,12 +1,11 @@
-import { PersistOption, STORE_DEFAULT_NAME } from '../constants';
-import { MiddleWare, GlobalState, StateMachineOptions } from '../types';
+import { PERSIST_OPTION, STORE_DEFAULT_NAME } from '../constants';
+import { GlobalState, StateMachineOptions } from '../types';
 
 function StoreFactory() {
   let options: StateMachineOptions = {
     name: STORE_DEFAULT_NAME,
-    middleWares: [] as MiddleWare[],
-    storageType: undefined,
-    persist: PersistOption.OnAction,
+    middleWares: [],
+    persist: PERSIST_OPTION.ACTION,
   };
   let state: GlobalState = {};
 
@@ -19,14 +18,16 @@ function StoreFactory() {
     updateStore(defaultValues: GlobalState) {
       try {
         state =
-          JSON.parse(options.storageType?.getItem(options.name!) || '') ||
+          (options.storageType &&
+            JSON.parse(options.storageType.getItem(options.name!) || '')) ||
           defaultValues;
       } catch {
         state = defaultValues;
       }
     },
     saveStore() {
-      options.storageType?.setItem(options.name!, JSON.stringify(state));
+      options.storageType &&
+        options.storageType.setItem(options.name!, JSON.stringify(state));
     },
     get state() {
       return state;
