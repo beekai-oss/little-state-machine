@@ -71,14 +71,6 @@ const { actions, state } = useStateMachine<T>({
 });
 ```
 
-<h2>💁‍♂️ Tutorial</h2>
-
-Quick video tutorial on little state machine.
-
-<a href="https://scrimba.com/scrim/ceqRebca">
-<img src="https://raw.githubusercontent.com/bluebill1049/little-state-machine/master/docs/tutorial.png" />
-</a>
-
 <h2>📖 Example</h2>
 
 Check out the <a href="https://codesandbox.io/s/wild-dawn-ud8bq">Demo</a>.
@@ -139,6 +131,14 @@ declare module 'little-state-machine' {
   }
 }
 ```
+
+<h2>💁‍♂️ Tutorial</h2>
+
+Quick video tutorial on little state machine.
+
+<a href="https://scrimba.com/scrim/ceqRebca">
+<img src="https://raw.githubusercontent.com/bluebill1049/little-state-machine/master/docs/tutorial.png" />
+</a>
 
 <h2>⚒ DevTool</h2>
 
