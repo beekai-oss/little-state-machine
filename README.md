@@ -53,12 +53,10 @@ createStore(
      middleWares?: [ log ]; // function to invoke each action
      storageType?: Storage; // session/local storage (default to session)
      
-     // one of 'none' | 'action' | 'beforeUnload'
+     persist?: 'action' // onAction is default if not provided
      // when 'none' is used then state is not persisted
      // when 'action' is used then state is saved to the storage after store action is completed
-     // when 'beforeUnload' is used then state is saved to storage before page unload and is restored
-     // after next page load and then storage is cleared
-     persist?: 'action' // onAction is default if not provided
+     // when 'beforeUnload' is used then state is saved to storage before page unloa
   },
 );
 ```
@@ -117,7 +115,7 @@ function YourComponent() {
   );
 }
 
-export default () => (
+const App = () => (
   <StateMachineProvider>
     <YourComponent />
   </StateMachineProvider>
@@ -140,46 +138,6 @@ declare module 'little-state-machine' {
     };
   }
 }
-```
-
-```tsx
-import * as React from 'react';
-import {
-  createStore,
-  useStateMachine,
-  StateMachineProvider,
-  GlobalState,
-} from 'little-state-machine';
-
-createStore({
-  yourDetail: { name: '' },
-});
-
-const updateName = (state: GlobalState, payload: { name: string }) => ({
-  ...state,
-  yourDetail: {
-    ...state.yourDetail,
-    ...payload,
-  },
-});
-
-const YourComponent = () => {
-  const { actions, state } = useStateMachine({
-    updateName,
-  });
-
-  return (
-    <div onClick={() => actions.updateName({ name: 'Kotaro' })}>
-      {state.yourDetail.name}
-    </div>
-  );
-};
-
-const App = () => (
-  <StateMachineProvider>
-    <YourComponent />
-  </StateMachineProvider>
-);
 ```
 
 <h2>⚒ DevTool</h2>
