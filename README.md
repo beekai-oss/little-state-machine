@@ -52,6 +52,13 @@ createStore(
      name?: string; // rename the store
      middleWares?: [ log ]; // function to invoke each action
      storageType?: Storage; // session/local storage (default to session)
+     
+     // one of 'none' | 'action' | 'beforeUnload'
+     // when 'none' is used then state is not persisted
+     // when 'action' is used then state is saved to the storage after store action is completed
+     // when 'beforeUnload' is used then state is saved to storage before page unload and is restored
+     // after next page load and then storage is cleared
+     persist?: 'action' // onAction is default if not provided
   },
 );
 ```
