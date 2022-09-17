@@ -58,7 +58,7 @@ createStore(
      // when 'action' is used then state is saved to the storage after store action is completed
      // when 'beforeUnload' is used then state is saved to storage before page unload and is restored
      // after next page load and then storage is cleared
-     persist?: 'onAction' // onAction is default if not provided
+     persist?: 'action' // onAction is default if not provided
   },
 );
 ```
