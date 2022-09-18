@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Little State Machine</h1>
+    <h1>📠 Little State Machine</h1>
     
 State management made super simple
 </div>
