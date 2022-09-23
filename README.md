@@ -66,7 +66,7 @@ createStore(
 This hook function will return action/actions and state of the app.
 
 ```tsx
-const { actions, state } = useStateMachine<T>({
+const { actions, state, getState } = useStateMachine<T>({
   updateYourDetail,
 });
 ```

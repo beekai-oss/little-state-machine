@@ -33,7 +33,7 @@ jobs:
   publish-module:
     name: 'Publish Module to NPM on Node ${{ matrix.node }} and ${{ matrix.os }}'
     needs: build
-    if: github.repository == 'bluebill1049/little-state-machine' && (github.ref == 'refs/heads/master')
+    if: github.repository == 'beekai-oss/little-state-machine' && (github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
