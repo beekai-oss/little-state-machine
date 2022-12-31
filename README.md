@@ -151,3 +151,7 @@ import { DevTool } from 'little-state-machine-devtools';
   <DevTool />
 </StateMachineProvider>;
 ```
+
+## By the makers of BEEKAI
+
+We also make [BEEKAI](https://www.beekai.com/). Build the next-generation forms with modern technology and best in class user experience and accessibility.
