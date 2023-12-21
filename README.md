@@ -155,3 +155,11 @@ import { DevTool } from 'little-state-machine-devtools';
 ## By the makers of BEEKAI
 
 We also make [BEEKAI](https://www.beekai.com/). Build the next-generation forms with modern technology and best in class user experience and accessibility.
+
+<h2>🤝 Contributors</h2>
+
+Thanks go to these wonderful people:
+
+<a href="https://github.com/beekai-oss/little-state-machine/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=beekai-oss/little-state-machine" />
+</a>
