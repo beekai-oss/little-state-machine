@@ -8,6 +8,20 @@ function StoreFactory() {
     persist: PERSIST_OPTION.ACTION,
   };
   let state: GlobalState = {};
+  const listeners = new Set<() => void>();
+
+  const setState = (dispatchAction: ((payload: GlobalState) => GlobalState) | GlobalState) => {
+    state = typeof dispatchAction === 'function' ? dispatchAction(state) : state;
+
+    for (const listener of listeners) {
+      listener();
+    }
+  };
+
+  const subscribe = (listener: () => void) => {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  };
 
   try {
     options.storageType =
@@ -15,6 +29,7 @@ function StoreFactory() {
   } catch {}
 
   return {
+    subscribe,
     updateStore(defaultValues: GlobalState) {
       try {
         state =
@@ -32,6 +47,8 @@ function StoreFactory() {
     get state() {
       return state;
     },
+    getState: () => state,
+    setState,
     set state(value) {
       state = value;
     },

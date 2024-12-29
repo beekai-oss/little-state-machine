@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useStateMachineContext } from './StateMachineContext';
 import storeFactory from './logic/storeFactory';
 import {
   StateMachineOptions,
@@ -63,27 +62,50 @@ const actionTemplate =
 export function useStateMachine<
   TCallback extends AnyCallback,
   TActions extends AnyActions<TCallback>,
+  TStore
 >(
   actions?: TActions,
+  selector?: ((payload: TStore) => TStore) | undefined
 ): {
   actions: ActionsOutput<TCallback, TActions>;
   state: GlobalState;
   getState: () => GlobalState;
 } {
-  const { state, setState } = useStateMachineContext();
   const actionsRef = React.useRef(
     Object.entries(actions || {}).reduce(
       (previous, [key, callback]) =>
         Object.assign({}, previous, {
-          [key]: actionTemplate(setState, callback),
+          [key]: actionTemplate(storeFactory.setState, callback),
         }),
       {} as ActionsOutput<TCallback, TActions>,
     ),
   );
 
+  const selectorRef = React.useRef(selector);
+  const previousSelectedStateRef = React.useRef<TStore | undefined>(undefined);
+
+  const getSnapshot = React.useCallback(() => {
+    const currentStore = storeFactory.getState();
+
+    if (!selectorRef.current) return currentStore;
+
+    const newSelectedState = selectorRef.current(currentStore as TStore);
+
+    const selectedStateHasChanged =
+      JSON.stringify(previousSelectedStateRef.current) !== JSON.stringify(newSelectedState);
+
+    if (selectedStateHasChanged) {
+      previousSelectedStateRef.current = newSelectedState;
+    }
+
+    return previousSelectedStateRef.current;
+  }, []);
+
+  React.useSyncExternalStore(storeFactory.subscribe, getSnapshot, () => undefined);
+
   return {
     actions: actionsRef.current,
-    state,
+    state: storeFactory.state,
     getState: React.useCallback(() => storeFactory.state, []),
   };
 }
