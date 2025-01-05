@@ -1,5 +1,4 @@
 import { PERSIST_OPTION } from './constants';
-import * as React from 'react';
 
 export interface GlobalState {}
 
@@ -13,13 +12,7 @@ export type ActionsOutput<
 > = {
   [K in keyof TActions]: (
     payload?: Parameters<TActions[K]>[1],
-    options?: { skipRender: boolean },
   ) => void;
-};
-
-export type StateMachineContextValue = {
-  state: GlobalState;
-  setState: React.Dispatch<React.SetStateAction<GlobalState>>;
 };
 
 export type MiddleWare = (
