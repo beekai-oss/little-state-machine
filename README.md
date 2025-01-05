@@ -16,7 +16,7 @@ State management made super simple
 
 - Tiny with 0 dependency and simple (715B _gzip_)
 - Persist state by default (`sessionStorage` or `localStorage`)
-- Build with React Hooks
+- Fine-tune the performance with partial render and selector
 
 <h2>📦 Installation</h2>
 
@@ -24,19 +24,9 @@ State management made super simple
 
 <h2>🕹 API</h2>
 
-#### 🔗 `StateMachineProvider`
-
-This is a Provider Component to wrapper around your entire app in order to create context.
-
-```tsx
-<StateMachineProvider>
-  <App />
-</StateMachineProvider>
-```
-
 #### 🔗 `createStore`
 
-Function to initialize the global store, invoked at your app root (where `<StateMachineProvider />` lives).
+Function to initialize the global store.
 
 ```tsx
 function log(store) {
@@ -52,7 +42,6 @@ createStore(
      name?: string; // rename the store
      middleWares?: [ log ]; // function to invoke each action
      storageType?: Storage; // session/local storage (default to session)
-     
      persist?: 'action' // onAction is default if not provided
      // when 'none' is used then state is not persisted
      // when 'action' is used then state is saved to the storage after store action is completed
@@ -66,22 +55,20 @@ createStore(
 This hook function will return action/actions and state of the app.
 
 ```tsx
+// Optional selector to ioslate re-render based selected state
+const selector = state => state.data;
+
 const { actions, state, getState } = useStateMachine<T>({
   updateYourDetail,
-});
+}, selector);
 ```
 
 <h2>📖 Example</h2>
 
-Check out the <a href="https://codesandbox.io/s/wild-dawn-ud8bq">Demo</a>.
+Check out the <a href="https://codesandbox.io/p/sandbox/compassionate-forest-ql3f56?workspaceId=ws_4xFLLpCJQLXZtvdkd1DS72">Demo</a>.
 
 ```tsx
-import React from 'react';
-import {
-  StateMachineProvider,
-  createStore,
-  useStateMachine,
-} from 'little-state-machine';
+import { createStore, useStateMachine } from 'little-state-machine';
 
 createStore({
   yourDetail: { name: '' },
@@ -97,20 +84,31 @@ function updateName(state, payload) {
   };
 }
 
+function selector() {
+  return state => state.yourDetails.name.length > 10;
+}
+
 function YourComponent() {
   const { actions, state } = useStateMachine({ updateName });
 
   return (
-    <div onClick={() => actions.updateName({ name: 'bill' })}>
+    <buttton onClick={() => actions.updateName({ name: 'bill' })}>
       {state.yourDetail.name}
-    </div>
+    </buttton>
   );
 }
 
+function YourComponentSelectorRender() {
+  const { actions, state } = useStateMachine({ updateName }, selector);
+
+  return <p>{state.yourDetail.name]</p>;
+}
+
 const App = () => (
-  <StateMachineProvider>
+  <>
     <YourComponent />
-  </StateMachineProvider>
+    <YourComponentSelectorRender />
+  </>
 );
 ```
 
@@ -132,24 +130,16 @@ declare module 'little-state-machine' {
 }
 ```
 
-<h2>💁‍♂️ Tutorial</h2>
+## ⌨️ Migrate to V5
 
-Quick video tutorial on little state machine.
+`StateMachineProvider` has been removed, simple API
 
-<a href="https://scrimba.com/scrim/ceqRebca">
-<img src="https://raw.githubusercontent.com/bluebill1049/little-state-machine/master/docs/tutorial.png" />
-</a>
-
-<h2>⚒ DevTool</h2>
-
-[DevTool](https://github.com/bluebill1049/little-state-machine-dev-tools) component to track your state change and action.
-
-```tsx
-import { DevTool } from 'little-state-machine-devtools';
-
-<StateMachineProvider>
-  <DevTool />
-</StateMachineProvider>;
+```diff
+const App = () => (
+- <StateMachineProvider>
+    <YourComponent />
+- <StateMachineProvider>
+);
 ```
 
 ## By the makers of BEEKAI
