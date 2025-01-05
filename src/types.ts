@@ -12,6 +12,7 @@ export type ActionsOutput<
 > = {
   [K in keyof TActions]: (
     payload?: Parameters<TActions[K]>[1],
+    options?: { skipRender: boolean },
   ) => void;
 };
 
