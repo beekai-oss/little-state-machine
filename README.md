@@ -84,8 +84,8 @@ function updateName(state, payload) {
   };
 }
 
-function selector() {
-  return state => state.yourDetails.name.length > 10;
+function selector(state) {
+  return state.yourDetails.name.length > 10;
 }
 
 function YourComponent() {
@@ -99,8 +99,7 @@ function YourComponent() {
 }
 
 function YourComponentSelectorRender() {
-  const { actions, state } = useStateMachine({ selector });
-
+  const { state } = useStateMachine({ selector });
   return <p>{state.yourDetail.name]</p>;
 }
 
@@ -143,7 +142,7 @@ const App = () => (
 ```
 
 - Actions now is an object payload `useStateMachine({ actions: { updateName } })`
-- Upgrade react to > 18
+- Upgrade react >= 18
 
 ## By the makers of BEEKAI
 
