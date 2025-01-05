@@ -62,11 +62,14 @@ const actionTemplate =
 export function useStateMachine<
   TCallback extends AnyCallback,
   TActions extends AnyActions<TCallback>,
-  TStore
->(
-  actions?: TActions,
-  selector?: ((payload: TStore) => TStore) | undefined
-): {
+  TStore,
+>({
+  actions,
+  selector,
+}: {
+  actions?: TActions;
+  selector?: ((payload: TStore) => TStore) | undefined;
+} = {}): {
   actions: ActionsOutput<TCallback, TActions>;
   state: GlobalState;
   getState: () => GlobalState;
@@ -92,7 +95,8 @@ export function useStateMachine<
     const newSelectedState = selectorRef.current(currentStore as TStore);
 
     const selectedStateHasChanged =
-      JSON.stringify(previousSelectedStateRef.current) !== JSON.stringify(newSelectedState);
+      JSON.stringify(previousSelectedStateRef.current) !==
+      JSON.stringify(newSelectedState);
 
     if (selectedStateHasChanged) {
       previousSelectedStateRef.current = newSelectedState;
@@ -101,7 +105,11 @@ export function useStateMachine<
     return previousSelectedStateRef.current;
   }, []);
 
-  React.useSyncExternalStore(storeFactory.subscribe, getSnapshot, () => undefined);
+  React.useSyncExternalStore(
+    storeFactory.subscribe,
+    getSnapshot,
+    () => undefined,
+  );
 
   return {
     actions: actionsRef.current,

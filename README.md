@@ -89,7 +89,7 @@ function selector() {
 }
 
 function YourComponent() {
-  const { actions, state } = useStateMachine({ updateName });
+  const { actions, state } = useStateMachine({ actions: { updateName } });
 
   return (
     <buttton onClick={() => actions.updateName({ name: 'bill' })}>
@@ -99,7 +99,7 @@ function YourComponent() {
 }
 
 function YourComponentSelectorRender() {
-  const { actions, state } = useStateMachine({ updateName }, selector);
+  const { actions, state } = useStateMachine({ selector });
 
   return <p>{state.yourDetail.name]</p>;
 }
@@ -132,7 +132,7 @@ declare module 'little-state-machine' {
 
 ## ⌨️ Migrate to V5
 
-`StateMachineProvider` has been removed, simple API
+- `StateMachineProvider` has been removed, simple API
 
 ```diff
 const App = () => (
@@ -141,6 +141,9 @@ const App = () => (
 - <StateMachineProvider>
 );
 ```
+
+- Actions now is an object payload `useStateMachine({ actions: { updateName } })`
+- Upgrade react to > 18
 
 ## By the makers of BEEKAI
 
