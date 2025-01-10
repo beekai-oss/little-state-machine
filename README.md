@@ -55,14 +55,9 @@ createStore(
 This hook function will return action/actions and the state of the app.
 
 ```tsx
-// Optional selector to isolate re-render based selected state
-const selector = state => state.data;
-
 const { actions, state, getState } = useStateMachine<T>({
-  actions: {
-    updateYourDetail,
-  }
-  selector,
+  actions?: Record<string, Function> // Optional action to update global state
+  selector?: Function, // Optional selector to isolate re-render based on selected state
 });
 ```
 
