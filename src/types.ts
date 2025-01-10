@@ -26,7 +26,7 @@ export type StateMachineOptions = Partial<{
   name: string;
   middleWares: MiddleWare[];
   storageType: Storage;
-  persist: typeof PERSIST_OPTION[keyof typeof PERSIST_OPTION];
+  persist: (typeof PERSIST_OPTION)[keyof typeof PERSIST_OPTION];
 }>;
 
 declare global {

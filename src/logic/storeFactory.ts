@@ -10,8 +10,11 @@ function StoreFactory() {
   let state: GlobalState = {};
   const listeners = new Set<() => void>();
 
-  const setState = (dispatchAction: ((payload: GlobalState) => GlobalState) | GlobalState) => {
-    state = typeof dispatchAction === 'function' ? dispatchAction(state) : state;
+  const setState = (
+    dispatchAction: ((payload: GlobalState) => GlobalState) | GlobalState,
+  ) => {
+    state =
+      typeof dispatchAction === 'function' ? dispatchAction(state) : state;
 
     for (const listener of listeners) {
       listener();
