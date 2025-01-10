@@ -52,15 +52,18 @@ createStore(
 
 #### 🔗 `useStateMachine`
 
-This hook function will return action/actions and state of the app.
+This hook function will return action/actions and the state of the app.
 
 ```tsx
-// Optional selector to ioslate re-render based selected state
+// Optional selector to isolate re-render based selected state
 const selector = state => state.data;
 
 const { actions, state, getState } = useStateMachine<T>({
-  updateYourDetail,
-}, selector);
+  actions: {
+    updateYourDetail,
+  }
+  selector,
+});
 ```
 
 <h2>📖 Example</h2>
@@ -115,7 +118,7 @@ const App = () => (
 
 You can create a `global.d.ts` file to declare your GlobalState's type.
 
-Checkout the [example](https://codesandbox.io/s/typescript-forked-xs30h).
+Check out the [example](https://codesandbox.io/s/typescript-forked-xs30h).
 
 ```ts
 import 'little-state-machine';
